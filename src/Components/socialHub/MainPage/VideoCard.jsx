@@ -30,8 +30,8 @@ const VideoCard = React.memo(({ video, handleOpenVideoEdit, handleDeleteVideo, i
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const { ref, inView } = useInView({ triggerOnce: true }); // Trigger once when in view
   const userId = Cookies.get("userID");
-  const {handleSaveVideo} = useSavedItems()
-
+  const {handleSaveVideo} = useSavedItems();
+  console.log(video);
   const isValidUrl = useCallback(
     (url) => {
       try {
@@ -69,7 +69,7 @@ const VideoCard = React.memo(({ video, handleOpenVideoEdit, handleDeleteVideo, i
       navigateTo({
         dest: `/socialHub/video/${video._id}`,
         state: { video: video, user }
-      });
+      }); 
     }
   }
   const handleNavToUser = () => { 

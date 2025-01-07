@@ -17,26 +17,35 @@ const InviteUsersModal = memo(({ community, followersArr, followedArr, onClose }
         const getAllUsers = async () => {
             setLoadingUsers(true);
             try {
-                if (followedArr.length == 0 && followedArr.length == 0)  { 
-                    setError("You don't have friends to invite")
+                if (followersArr.length === 0 && followedArr.length === 0) { 
+                    setError("You don't have friends to invite");
                     return;
                 }
+                
                 const followers = followersArr?.map((followerId) => 
                     axios.get(`${API.getUserById}/${followerId}`).then((response) => response.data)
                 ) || [];
-                const followed = followedArr?.map((followedID) =>
-                    axios.get(`${API.getUserById}/${followedID}`).then((response) => response.data)
+                
+                const followed = followedArr?.map((followedId) =>
+                    axios.get(`${API.getUserById}/${followedId}`).then((response) => response.data)
                 ) || [];
+                
                 const usersArray = await Promise.all([...followers, ...followed]);
-                setUsers(usersArray);
+
+                // Remove duplicates based on user ID
+                const uniqueUsers = Array.from(
+                    new Map(usersArray.map(user => [user._id, user])).values()
+                );
+
+                setUsers(uniqueUsers);
             } catch (error) {
                 if (error && error.response && error.response.data && error.response.data.message) { 
-                    setError(error.response.data.message)
-                    showToast('error', error.response.data.message)
-                }
-                else 
+                    setError(error.response.data.message);
+                    showToast('error', error.response.data.message);
+                } else {
                     setError(error.message);
-            }finally{ 
+                }
+            } finally { 
                 setLoadingUsers(false);
             }
         };

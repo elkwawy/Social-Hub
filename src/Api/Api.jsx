@@ -43,6 +43,7 @@ export const API = {
   likeVideo: `${BASE_URL}/users/like`, //   /:videoId
   disLikeVideo: `${BASE_URL}/users/dislike`, //   /:videoId
   getSavedVideos : `${BASE_URL}/videos/getSavedVideos`,
+  uploadVideo : `${BASE_URL}/videos/upload/video`,
   /* ======= Users ======= */
   getAllUsers: `${BASE_URL}/users/getRandomUsers`,
   searchByName: `${BASE_URL}/users/Search_Users_Name`,

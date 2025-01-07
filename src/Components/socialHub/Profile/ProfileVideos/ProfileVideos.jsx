@@ -12,7 +12,7 @@ const ProfileVideos = memo(() => {
     const {user} = useOutletContext();
     const {videos, getUserVideos, 
         loading:loadingVideos, addVideoLoading,  error, 
-        addNewVideo,handleAddNewVideoModal, 
+        addNewVideo,uploadNewVideo, handleAddNewVideoModal, 
         isAddNewVideoModalOpen, deleteVideo,
         handleOpenUploadVideoModal,
         isUploadVideoModal
@@ -29,6 +29,10 @@ const ProfileVideos = memo(() => {
     const handleAddNewVideo = (inputs) => { 
         if (user && user._id)
             addNewVideo(user._id, inputs);
+    }
+    const handleUploadVideo = (inputs) => { 
+        if (user && user._id)
+            uploadNewVideo(inputs);
     }
     
     if (loadingVideos)  
@@ -90,7 +94,7 @@ const ProfileVideos = memo(() => {
             {
                 isUploadVideoModal && 
                 <Modal title={'Upload video from device'} onClose={handleOpenUploadVideoModal} >
-                    <UploadVideoModal addVideo={handleAddNewVideo} addVideoLoading={addVideoLoading}  />
+                    <UploadVideoModal uploadVideo={handleUploadVideo} addVideoLoading={addVideoLoading}  />
                 </Modal>
             }
         </div>

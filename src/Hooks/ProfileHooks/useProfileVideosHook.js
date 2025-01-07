@@ -58,6 +58,27 @@ const useProfileVideosHook = () => {
             setAddVideoLoading(false);
         }
     };
+    const uploadNewVideo = async (videoDetails) => {
+        console.log(videoDetails);
+        
+        try {
+            setAddVideoLoading(true);
+            // setVideos((prevVideos) => [tempVideo, ...prevVideos]);
+            const response = await axios.post(`${API.uploadVideo}`, videoDetails);
+            console.log(response.data);
+            
+            // Replace the temporary video with the response data
+            setVideos(prev => [...prev, ...response.data]);
+            showToast('success', "Video added successfully");
+            handleAddNewVideoModal();
+        } catch (error) {
+            setError(error.response?.data?.message || "Something went wrong with uploading the video.");
+            console.log(error.response?.data?.message);
+            showToast('error', error.response?.data?.message || "Something went wrong with uploading the video.");
+        } finally {
+            setAddVideoLoading(false);
+        }
+    };
 
     const deleteVideo =  (videoId) => { 
         setVideos((prevVideos) => prevVideos.filter((video) => video._id !== videoId))
@@ -65,7 +86,7 @@ const useProfileVideosHook = () => {
 
     return { 
         videos, loading, addVideoLoading, 
-        error, getUserVideos, addNewVideo, deleteVideo, 
+        error, getUserVideos, addNewVideo,uploadNewVideo, deleteVideo, 
         handleAddNewVideoModal, isAddNewVideoModalOpen, 
         handleOpenUploadVideoModal, isUploadVideoModal 
     };
