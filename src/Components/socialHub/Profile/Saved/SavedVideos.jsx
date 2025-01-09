@@ -36,13 +36,16 @@ const SavedVideos = () => {
                     1280: { slidesPerView: 4 }, // أربع شرائح للشاشات الكبيرة
                 }}
                 >
-                {videos && videos.map((video) => (
-                    <SwiperSlide key={video._id} >
+                {videos && videos.map((video) => { 
+                    console.log("video: ", video)
+                    const vid  = {...video,userId:video.ownerId}
+                    return (<SwiperSlide key={video._id} >
                         <div>
-                            <VideoCard video={video} isSaved={true} unsaveVideo={handleUnSaveVideoClicked} />
+                            <VideoCard video={vid} isSaved={true} unsaveVideo={handleUnSaveVideoClicked} />
                         </div>
-                    </SwiperSlide>
-                ))}
+                    </SwiperSlide>)
+                }
+                )}
             </Swiper>
             :
             <div className="text-center text-gray-500 ">No saved videos.</div>

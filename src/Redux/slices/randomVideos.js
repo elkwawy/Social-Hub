@@ -7,7 +7,7 @@ export const getRandomVideos = createAsyncThunk(
     'randomVideos/getRandomVideos',
     async ({page}, { rejectWithValue }) => {
         try {
-            const res = await axios.get(`${API.getRandomVideos}`);
+            const res = await axios.get(`${API.getRandomVideos}?page=${page}`);
             return { videos: res.data.videos, page };
         } catch (error) {
         // Handle network errors (e.g., no connection, server is down)

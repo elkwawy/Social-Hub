@@ -2,6 +2,7 @@ import axios from "axios";
 import { API } from "../../Api/Api";
 import { useState } from "react";
 import { showToast } from "../../Utils/showToast";
+import Cookies from "js-cookie";
 
 const useProfileVideosHook = () => {
     const [videos, setVideos] = useState([]);
@@ -58,14 +59,59 @@ const useProfileVideosHook = () => {
             setAddVideoLoading(false);
         }
     };
+    const uploadNewVideo = async (inputs) => {
+        const formData = new FormData();
 
+        // Append file if available
+        if (inputs.videoFile) {
+            console.log("Enter");
+            formData.append('video', inputs.videoFile); // Key matches backend's `req.file`.
+        }
+
+        // Append other fields
+        formData.append('userId', Cookies.get("userID"));
+        formData.append('title', inputs.title);
+        formData.append('description', inputs.description);
+        formData.append('thumbnailUrl', inputs.thumbnailURL);
+
+        // Debugging: Log FormData
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+
+        try {
+            setAddVideoLoading(true);
+
+            // Send the request
+            const response = await axios.post(`${API.uploadVideo}`, formData);
+
+            // Handle success response
+            if (response.data.success) {
+                console.log('Video uploaded successfully:', response.data.video);
+                setVideos((prev) => [...prev, response.data.video]); // Add new video to state
+                showToast('success', "Video added successfully");
+                handleAddNewVideoModal(); // Close modal
+            } else {
+                console.error('Error uploading video:', response.data.message);
+            }
+        } catch (error) {
+            // Handle errors
+            const errorMessage = error.response?.data?.message || "Something went wrong with uploading the video.";
+            setError(errorMessage);
+            console.error(error);
+            showToast('error', errorMessage);
+        } finally {
+            // Always reset loading state
+            setAddVideoLoading(false);
+        }
+    };
     const deleteVideo =  (videoId) => { 
         setVideos((prevVideos) => prevVideos.filter((video) => video._id !== videoId))
     }
 
     return { 
         videos, loading, addVideoLoading, 
-        error, getUserVideos, addNewVideo, deleteVideo, 
+        error, getUserVideos, addNewVideo,uploadNewVideo, deleteVideo, 
         handleAddNewVideoModal, isAddNewVideoModalOpen, 
         handleOpenUploadVideoModal, isUploadVideoModal 
     };

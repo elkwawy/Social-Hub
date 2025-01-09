@@ -188,7 +188,7 @@ const optionsRef = useRef(null);
                       onClick={handleNavToVideoPlayer}
                       className="text-sm flex-wrap break-words text-wrap lg:text-xs xl:text-sm font-semibold break-all whitespace-normal overflow-hidden"
                     >
-                      {video.title.length > 50 ? video.title.slice(0, 50) + " ..." : video.title}
+                      {video.title.slice(0, 50) + " ..." }
                     </h3>
 
                   <div

@@ -29,9 +29,14 @@ const SavedPosts = memo(({user, edit}) => {
         savedPosts  && savedPosts.length > 0 ? 
         <div className="w-full max-w-4xl mx-auto px-4 py-7">
             <div className="space-y-4">
-                {savedPosts.map((post) => (
-                    <PostCard key={post._id} post={post} user={user} edit={edit} />
-                ))}
+                {savedPosts.map((post) => {
+                    const user = {
+                        _id: post.owner.id,
+                        name: post.owner.name,
+                        profilePicture: post.owner.profilePicture
+                    }
+                    return <PostCard key={post._id} post={post} user={user} edit={edit} />
+                })}
             </div>
         </div>
         : (!loading ? (

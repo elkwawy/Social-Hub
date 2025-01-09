@@ -1,27 +1,35 @@
 import Cookies from "js-cookie";
 import React, { memo, useEffect, useRef, useState } from "react";
-import { getMsgDateFormatted } from "../../../Utils/getMsgDateFormatted";
-import Loader from "./../../../Utils/Loader";
-import useChat from "../../../Hooks/useChat";
-import { IoCopy } from "react-icons/io5";
+import { IoCopy, IoExit } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { fetchMessages, sendMessage } from "../../../Redux/slices/chatSlice";
 import { reorderChatsWhenSend } from "../../../Redux/slices/userChats";
-import { Link } from "react-router-dom";
-import { IoExit } from "react-icons/io5";
+import { getMsgDateFormatted } from "../../../Utils/getMsgDateFormatted";
+import Loader from "./../../../Utils/Loader";
 const ChatScreen = memo(({ chat, setSelectedChat, setIsOpenSidebar }) => {
   const [message, setMessage] = useState("");
   const chatScreenRef = useRef(null);
   const userId = Cookies.get("userID");
   const { user } = useSelector((state) => state.user);
   const [groupedMessages, setGroupedMessages] = useState({});
-  const { messages, loading, error } = useSelector((state) => state.chat);
+  const { messages, newMessages, loading, error } = useSelector((state) => state.chat);
 
-  const dispatch = useDispatch();
+  
+  const dispatch = useDispatch()
   useEffect(() => {
-    if (chat?._id) {
+    if (chat?._id) { 
+      console.log("fetching");
       dispatch(fetchMessages(chat._id));
+      if (newMessages && newMessages.length) { 
+        console.log(newMessages);
+        console.log(messages);
+        
+        // loop on new Msgs
+        // mark each msg with its id using API.markMessagesAsRead(msgId)
+      }
     }
+
   }, [chat._id, dispatch]);
 
   const handleSendMessage = (receiverId) => {

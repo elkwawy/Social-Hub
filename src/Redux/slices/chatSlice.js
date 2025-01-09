@@ -3,10 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API } from "../../Api/Api";
 
-import { socket, SOCKET_URL } from "../../Pages/socialHub/SocialHubLayout";
-import { io } from "socket.io-client";
-
-
+import { socket } from "../../Pages/socialHub/SocialHubLayout";
 
 // Fetch messages thunk
 export const fetchMessages = createAsyncThunk(
@@ -60,6 +57,7 @@ const chatSlice = createSlice({
     name: "chat",
     initialState: {
         messages: [],
+        newMessages:[],
         loading: false,
         error: null,
     },
@@ -73,6 +71,12 @@ const chatSlice = createSlice({
         },
         clearChat:(state) => { 
             state.messages = [];
+        },
+        pushNewMessageToUnReadMessages: (state, action) => {
+            state.newMessages.push(action.payload);
+        },
+        clearNewMessages:(state) => { 
+            state.newMessages = [];
         }
     },
     extraReducers: (builder) => {
@@ -102,5 +106,5 @@ const chatSlice = createSlice({
     },
 });
 
-export const { addMessage, receiveMessage, clearChat } = chatSlice.actions;
+export const { addMessage, receiveMessage, clearChat,pushNewMessageToUnReadMessages,clearNewMessages } = chatSlice.actions;
 export default chatSlice.reducer;

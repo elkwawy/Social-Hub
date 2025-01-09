@@ -34,7 +34,10 @@ import History from "./Components/socialHub/Profile/History/History";
 const App = () => {
   const userID = Cookies.get("userID");
   const isAuthenticated = Boolean(userID); // if user has value (isAuth = true) else (isAuth = false)
-
+  if (!isAuthenticated) { 
+    Cookies.remove("userID");
+  }
+  
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-grow">
