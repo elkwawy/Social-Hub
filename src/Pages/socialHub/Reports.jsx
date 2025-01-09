@@ -5,7 +5,7 @@ import axios from "axios";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { formatDate } from "../../Utils/formatDate";
 import profile from "../../assets/profile.jpg";
-
+import { isValidUrl } from "../../Utils/validateURLs";
 const Reports = () => {
   const [values, setValues] = useState({
     input_sentence: "",
@@ -169,14 +169,18 @@ const Reports = () => {
         <h2 className="text-xl font-semibold text-gray-700 mb-4">My Reports</h2>
         {myReports.length > 0 ? (
           <ul className="divide-y divide-gray-200">
-            {myReports.map((report , index) => (
+            {myReports.map((report, index) => (
               <li
                 key={index}
                 className="flex justify-between items-start py-4 max-md:flex-col max-sm:space-y-5"
               >
                 <div className="flex items-start space-x-4">
                   <img
-                    src={report.reportedUser.profilePicture || profile}
+                    src={
+                      isValidUrl(report.reportedUser.profilePicture)
+                        ? report.reportedUser.profilePicture
+                        : profile
+                    }
                     alt={report.reportedUser.name}
                     className="w-12 h-12 rounded-full object-cover"
                   />
@@ -195,24 +199,14 @@ const Reports = () => {
                       {report.reason || "N/A"}
                     </p>
                     <p className="text-gray-600 text-sm">
-                      <span className="font-medium">Reported on: </span>
-                      {formatDate(report.createdAt)}
-                    </p>
-                    <p className="text-gray-600 text-sm">
                       <span className="font-medium">Content : </span>
                       {report.content}
                     </p>
                   </div>
                 </div>
-                {/*
-                  <button
-                    className="flex items-center text-sec-color hover:underline"
-                    onClick={() => downloadReport(report._id)}
-                  >
-                    <FaDownload className="mr-2" />
-                    Download
-                  </button>
-                  */}
+                <p className="text-gray-600 text-sm">
+                  {formatDate(report.createdAt)}
+                </p>
               </li>
             ))}
           </ul>

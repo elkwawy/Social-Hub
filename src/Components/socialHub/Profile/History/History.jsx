@@ -8,11 +8,12 @@ const History = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isFetching, setIsFetching] = useState(false);
 
-  // جلب الـ history بناءً على التاريخ
   const fetchHistory = async (date) => {
     setLoading(true);
     setError("");
+    setIsFetching(true);
     try {
       const [year, month, day] = date.split("-");
       const response = await axios.get(
@@ -21,18 +22,17 @@ const History = () => {
       setYourHistory(response.data.history);
     } catch (error) {
       setError(error.response.data.message);
+      setIsFetching(false);
       console.error(error);
     } finally {
       setLoading(false);
     }
   };
 
-  // التعامل مع تغيير التاريخ
   const handleDateChange = (e) => {
     setSelectedDate(e.target.value);
   };
 
-  // إرسال الطلب عند النقر على الزر
   const handleSubmit = () => {
     if (selectedDate) {
       fetchHistory(selectedDate);
@@ -44,15 +44,13 @@ const History = () => {
   console.log(selectedDate);
 
   return (
-    <div className="max-w-4xl mt-3 mx-auto p-6   rounded-lg">
-      {/* العنوان */}
-      <h1 className="text-2xl font-bold flex items-center gap-2 text-gray-800">
+    <div className="max-w-4xl  mt-3 mx-auto p-6 shadow  rounded-lg">
+      <h1 className="text-2xl font-bold flex items-center gap-2 text-gray-800 mb-5">
         <MdHistory className="text-sec-color" size={28} /> Your History
       </h1>
 
-      {/* حقل اختيار التاريخ */}
-      <div>
-        <div className=" mt-6">
+      <div className="flex  items-center justify-center gap-3 max-[460px]:flex-col">
+        <div className="w-[70%] sm:w-[80%] max-[460px]:w-full">
           <label
             htmlFor="history-date"
             className="block text-sm font-medium text-gray-700"
@@ -69,40 +67,36 @@ const History = () => {
           />
         </div>
 
-        {/* زر إرسال الطلب */}
         <button
           onClick={handleSubmit}
-          className="mt-4 w-full px-4 py-2 bg-sec-color hover:bg-main-color text-white rounded-md focus:outline-none"
+          className="mt-6 w-[30%] sm:w-[20%] max-[460px]:w-full max-[460px]:mt-1 px-4 py-2.5 bg-sec-color hover:bg-main-color text-white rounded-md focus:outline-none"
         >
-          {loading ? "Loading..." : "See your history"}
+          {loading ? "Loading..." : "See history"}
         </button>
       </div>
 
-      {/* عرض حالة التحميل أو الخطأ */}
-      {loading && <p className="mt-4 text-center text-gray-600">Loading...</p>}
       {error && <p className="mt-4 text-center text-red-500">{error}</p>}
 
-      {/* عرض الـ history */}
       <div className="mt-6 space-y-4">
-        {yourHistory?.length > 0 ? (
-          yourHistory.map((item, index) => (
-            <div
-              key={index}
-              className="p-4 bg-gray-50 border border-gray-200 rounded-lg"
-            >
-              <p className="text-sm text-gray-500">
-                {new Date(item.timestamp).toLocaleString()}{" "}
-                {/* تنسيق التاريخ والوقت */}
-              </p>
-              <p className="text-lg text-gray-800">{item.action}</p>{" "}
-              {/* عرض الـ action */}
-            </div>
-          ))
-        ) : (
-          <p className="text-center text-gray-600">
-            No history available for this date.
-          </p>
-        )}
+        {isFetching ? (
+          yourHistory?.length > 0 ? (
+            yourHistory.map((item, index) => (
+              <div
+                key={index}
+                className="p-4 bg-gray-50 border border-gray-200 rounded-lg"
+              >
+                <p className="text-sm text-gray-500">
+                  {new Date(item.timestamp).toLocaleString()}{" "}
+                </p>
+                <p className="text-lg text-gray-800">{item.action}</p>{" "}
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-600">
+              No history available for this date.
+            </p>
+          )
+        ) : null}
       </div>
     </div>
   );
