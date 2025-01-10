@@ -32,8 +32,6 @@ const PasswordForm = ({
           value={value}
           onChange={onChange}
           onBlur={onBlur}
-          required
-          minLength={6}
           className={`w-full relative p-2 outline-1 border-2 rounded-md bg-gray-50 ${
             condition
               ? "outline-red-400 border-red-400"

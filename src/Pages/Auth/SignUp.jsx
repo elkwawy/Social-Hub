@@ -105,7 +105,7 @@ const SignUp = () => {
         <p className="text-gray-600 text-center text-sm mb-6">
           Create your account by filling in the details below
         </p>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div className="username">
             <div className=" w-full  flex items-center justify-between gap-1  text-sm font-medium text-gray-700 ">
               <p className="mb-2">User Name:</p>
