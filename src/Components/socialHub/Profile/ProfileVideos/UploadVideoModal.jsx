@@ -1,13 +1,15 @@
 import React, { memo, useCallback, useRef, useState } from 'react';
 import { Img } from 'react-image';
 import Skeleton from 'react-loading-skeleton';
-import { isValidUrl, isVideoURL } from '../../../../Utils/validateURLs';
 import { IoMdAdd } from "react-icons/io";
 import AddNewTagModal from '../../MainPage/EditVideo/AddNewTagModal';
 import Loader from '../../../../Utils/Loader';
 import { IoCloudUploadOutline } from "react-icons/io5";
+import { IoMdClose } from "react-icons/io";
+import Cookies from 'js-cookie';
+import { formatFileSize, isValidUrl, isVideoURL } from '../../../../Utils/validateURLs';
 
-const UploadVideoModal = memo(({addVideo, addVideoLoading}) => {
+const UploadVideoModal = memo(({uploadVideo, addVideoLoading}) => {
     const [imgURL, setImgURL] = useState("");
     const [addNewTagModal, setAddNewTagModal] = useState(false);
     const [inputs, setInputs] = useState({
@@ -61,15 +63,17 @@ const UploadVideoModal = memo(({addVideo, addVideoLoading}) => {
 
     const handleAddVideo = () => {
         if (isValidInputs()) {
-            const details = {
-                title: inputs.title,
-                videoUrl: inputs.videoURL || null, // Keep the URL if provided
-                videoFile: inputs.videoFile, // Add the file for upload
-                thumbnailUrl: inputs.thumbnailURL,
-                description: inputs.description,
-                tags: inputs.tags,
-            };
-            addVideo(details);
+            // const details = {
+            //     userId: Cookies.get("userID") ,
+            //     title: inputs.title,
+            //     // videoUrl: inputs.videoURL || null, // Keep the URL if provided
+            //     file: inputs.videoFile, // Add the file for upload
+            //     thumbnailUrl: inputs.thumbnailURL,
+            //     description: inputs.description,
+            //     tags: inputs.tags,
+            // };
+            
+            uploadVideo(inputs);
         }
     };
 
@@ -138,6 +142,12 @@ const UploadVideoModal = memo(({addVideo, addVideoLoading}) => {
             setErrors((prev) => ({ ...prev, videoURL: "" })); // Clear errors if file is dropped
         }
     };
+
+    console.log(inputs);
+    
+    const handleRemoveFile = () => { 
+        setInputs({...inputs, videoFile:null});
+    }
     
     return (
         <div className='grid md:grid-cols-2 gap-8'>
@@ -150,7 +160,7 @@ const UploadVideoModal = memo(({addVideo, addVideoLoading}) => {
                 <div className="w-full h-48 animate-pulse">
                     <Skeleton height="100%" width="100%" borderRadius={"4px"} />
                 </div>
-                } onError={() => setimgURL("")} /> : <div onClick={focusOnThumbnailInput} className='w-full select-none cursor-pointer h-48 rounded-md bg-gray-200 flex items-center justify-center text-sm' >Add Video Thumbnail</div> 
+                } onError={() => setImgURL("")} /> : <div onClick={focusOnThumbnailInput} className='w-full select-none cursor-pointer h-48 rounded-md bg-gray-200 flex items-center justify-center text-sm' >Add Video Thumbnail</div> 
             }
             <p onClick={focusOnTitleInput} className='text-sm select-none cursor-pointer ml-2 text-gray-600 text-start max-w-full text-wrap break-words'>{inputs.title ? inputs.title : "Add the video title right here" }</p>
             {/* video tags */}
@@ -188,26 +198,32 @@ const UploadVideoModal = memo(({addVideo, addVideoLoading}) => {
         <div className='flex flex-col gap-4'>
             {/* Video upload */}
             <div className="flex flex-col items-start gap-1 cursor-pointer">
-                <span className="text-sm font-medium text-gray-700">
-                    Upload Video:
-                </span>
-                {errors.videoURL && (
-                    <div className="text-xs p-1 rounded-sm bg-red-100 text-red-500 font-semibold">
-                    {errors.videoURL}
-                    </div>
-                )}
-                <div
+                <div className='flex justify-between items-center w-full'>
+                    <span className="text-sm font-medium text-gray-700">
+                        Upload Video:
+                    </span>
+                    {errors.videoURL && (
+                        <div className="text-xs p-1 rounded-sm bg-red-100 text-red-500 font-semibold">
+                        {errors.videoURL}
+                        </div>
+                    )}
+                </div>
+                {!inputs?.videoFile && <div
                     id="dragArea"
                     onClick={handleUploadFile}
                     onDragEnter={handleDragEnter}
                     onDragLeave={handleDragLeave}
                     onDragOver={handleDragOver}
                     onDrop={handleDrop}
-                    className={`w-full ${dragging ? "scale-105" : ""} trans p-4 border-2 text-sm text-gray-400 border-dashed border-main-color rounded-md bg-gray-50 flex flex-col items-center`}
+                    className={`w-full ${dragging && !inputs.videoFile ? "bg-gray-200" : "bg-gray-50"} trans p-4 border-2 text-sm text-gray-400 ${inputs?.videoFile ? "border-2 " : "border-dashed border-main-color "} rounded-md  flex flex-col items-center`}
                 >
-                    <IoCloudUploadOutline className="text-3xl mb-1" />
-                    <p className=''>Drag and drop <span className="text-main-color">or</span> click to upload</p>
-                </div>
+                    {!inputs?.videoFile && <IoCloudUploadOutline className="text-3xl mb-1" />}
+                    {inputs?.videoFile && <IoCloudUploadOutline  className="text-xl ml-auto -mt-2 mb-1" />}
+                    {!inputs?.videoFile && <p className=''>Drag and drop <span className="text-main-color">or</span> click to upload</p>}
+                    {inputs?.videoFile && <p className=' break-all text-center text-xs mt-2'>{inputs.videoFile?.name || "Uknown Video Name"}</p>}
+
+                </div>}
+                
                 <input
                     type="file"
                     accept="video/*"
@@ -216,6 +232,19 @@ const UploadVideoModal = memo(({addVideo, addVideoLoading}) => {
                     className="hidden"
                 />
             </div>
+
+            {
+                inputs?.videoFile && 
+                <div className='w-full p-2 -mt-3 flex flex-col bg-gray-50 border-2  rounded-md'>
+                    <button onClick={handleRemoveFile} className='ml-auto trans  p-1 rounded-md hover:bg-gray-200'>
+                        <IoMdClose className='text-main-color' />
+                    </button>
+                    <div className='w-full text-left text-wrap'>
+                        <p className='text-sm '>{inputs?.videoFile.name.length <= 100 ? inputs?.videoFile.name : inputs?.videoFile.name.slice(0,100) + "..."}</p>
+                    </div>
+                    <p className='text-left text-xs mt-2 text-gray-500'>{formatFileSize(inputs.videoFile.size)}</p>
+                </div>
+            }
 
             {/* Thumbnail */}
             <label className='flex flex-col items-start gap-1 cursor-pointer'>

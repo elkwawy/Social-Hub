@@ -22,6 +22,7 @@ export const API = {
   SendMessege: `${BASE_URL}/messages`, // Post
   getUsersInChat: `${BASE_URL}/messages/getUsersWithChatMessages`, // Post
   getMessages: `${BASE_URL}/messages/conversation`, // /:recieverId
+  markMessagesAsRead : (msgId) => `${BASE_URL}/messages/${msgId}/mark-as-read`, 
   /* ======= Comments ======= */
   addComment: `${BASE_URL}/comments`,
   replyComment: `${BASE_URL}/comments/addReply`,
@@ -44,7 +45,8 @@ export const API = {
   unSaveVideo: `${BASE_URL}/videos/unsave`, //   /:videoId
   likeVideo: `${BASE_URL}/users/like`, //   /:videoId
   disLikeVideo: `${BASE_URL}/users/dislike`, //   /:videoId
-  getSavedVideos: `${BASE_URL}/videos/getSavedVideos`,
+  getSavedVideos: `${BASE_URL}/videos/getSavedVideos`,  
+  uploadVideo : `${BASE_URL}/videos/upload`,
   /* ======= Users ======= */
   getAllUsers: `${BASE_URL}/users/getRandomUsers`,
   searchByName: `${BASE_URL}/users/Search_Users_Name`,

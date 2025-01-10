@@ -5,10 +5,11 @@ import { Img } from "react-image";
 import Skeleton from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
 import { getMyChats, setActiveChat } from "../../../Redux/slices/userChats";
-import checkImageUrl from "./../../../Utils/checkImageUrl";
-import profile from "./../../../assets/profile.jpg";
 import splitTextByLength from "../../../Utils/splitTextByLength";
 import { isValidUrl } from "../../../Utils/validateURLs";
+import checkImageUrl from "./../../../Utils/checkImageUrl";
+import profile from "./../../../assets/profile.jpg";
+
 const ChatSidebar = ({
   setSelectedChat,
   friendChat,

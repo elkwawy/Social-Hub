@@ -9,6 +9,7 @@ import profile from "../../../../assets/profile.jpg";
 import LazyImage from "../../../../Utils/LazyImage";
 import Loader from "../../../../Utils/Loader";
 import Skeleton from "react-loading-skeleton";
+import { Link } from "react-router-dom";
 function PostCard({ post, user, edit, openComments }) {
   const [showActions, setShowActions] = useState(false);
   const [isValidImage, setIsValidImage] = useState(true);
@@ -86,7 +87,7 @@ function PostCard({ post, user, edit, openComments }) {
   return (
     <div className="bg-white rounded-lg  p-4 shadow-sm mb-4">
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-2">
+        <Link to={`/socialHub/profile/${user._id}`} className="flex  items-center space-x-2">
           <img
             src={user.profilePicture || profile}
             alt={user.name}
@@ -94,11 +95,11 @@ function PostCard({ post, user, edit, openComments }) {
           />
           <div>
             <h3 className="font-medium">{user.name}</h3>
-            <p className="text-sm text-gray-500">
+            {user.createdAt && <p className="text-sm text-gray-500">
               {formatDate(user.createdAt)}
-            </p>
+            </p>}
           </div>
-        </div>
+        </Link>
         <div ref={menuRef} className="relative">
           <button
             onClick={() => setShowActions(!showActions)}

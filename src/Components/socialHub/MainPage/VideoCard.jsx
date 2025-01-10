@@ -229,6 +229,7 @@ const VideoCard = React.memo(
                       onClick={handleNavToUser}
                       className="w-fit text-xs trans hover:text-black"
                     >
+
                       {user ? user.name : "Default User"}
                     </button>
                     <div
@@ -290,6 +291,7 @@ const VideoCard = React.memo(
                       )}
                     </div>
                   </div>
+
                   <div
                     role="button"
                     onClick={handleNavToVideoPlayer}

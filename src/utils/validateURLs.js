@@ -18,3 +18,15 @@ export const isValidUrl = (url) => {
         return false;
     }
 };
+
+export const formatFileSize = (sizeInBytes) => {
+    if (sizeInBytes < 1024) {
+        return `${sizeInBytes} B`;
+    } else if (sizeInBytes < 1024 ** 2) {
+        return `${(sizeInBytes / 1024).toFixed(2)} KB`;
+    } else if (sizeInBytes < 1024 ** 3) {
+        return `${(sizeInBytes / 1024 ** 2).toFixed(2)} MB`;
+    } else {
+        return `${(sizeInBytes / 1024 ** 3).toFixed(2)} GB`;
+    }
+};

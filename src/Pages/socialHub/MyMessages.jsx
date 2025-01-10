@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import ChatScreen from "../../Components/socialHub/Messages/ChatScreen";
 import ChatSidebar from "../../Components/socialHub/Messages/ChatSidebar";
-import { useLocation } from "react-router-dom";
-import { socket } from "./SocialHubLayout";
-import useChat from "../../Hooks/useChat";
-import { useDispatch, useSelector } from "react-redux";
-import { receiveMessage } from "../../Redux/slices/chatSlice";
+import { pushNewMessageToUnReadMessages, receiveMessage } from "../../Redux/slices/chatSlice";
 import { reorderChatsWhenReceive } from "../../Redux/slices/userChats";
+import { socket } from "./SocialHubLayout";
 
 const MyMessages = () => {
   const loc = useLocation();
@@ -33,6 +32,9 @@ const MyMessages = () => {
       if (selectedChat && selectedChat._id === newMessage.senderId) {
         dispatch(receiveMessage(newMessage));
       }
+
+      dispatch(pushNewMessageToUnReadMessages(newMessage))
+
 
       const sender = {
         senderId: newMessage.senderId,
