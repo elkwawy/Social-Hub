@@ -12,6 +12,7 @@ import OTPField from "./Pages/Auth/OTPField";
 // lazy loading for components
 const LandingPage = lazy(() => import("./Pages/LandingPage/LandingPage"));
 const Login = lazy(() => import("./Pages/Auth/Login"));
+const ResetPassword = lazy(() => import("./Pages/Auth/ResetPassword"));
 const SignUp = lazy(() => import("./Pages/Auth/SignUp"));
 const MainPage = lazy(() => import("./Pages/socialHub/MainPage"));
 const MyCommunities = lazy(() => import("./Pages/socialHub/MyCommunities"));
@@ -30,6 +31,7 @@ import Posts from "./Components/socialHub/Profile/Posts/Posts";
 import Saved from "./Components/socialHub/Profile/Saved/Saved";
 import Friends from "./Components/socialHub/Profile/Friends/Friends";
 import History from "./Components/socialHub/Profile/History/History";
+import VerifyOtpR_P from "./Pages/Auth/VerifyOtpR_P";
 
 const App = () => {
   const userID = Cookies.get("userID");
@@ -73,6 +75,34 @@ const App = () => {
                   }
                 >
                   <Login />
+                </Suspense>
+              }
+            />
+            <Route
+              path="resetPassword"
+              element={
+                <Suspense
+                  fallback={
+                    <div className="w-full h-[calc(100vh-70px)] flex items-center justify-center">
+                      <Loader />
+                    </div>
+                  }
+                >
+                  <ResetPassword />
+                </Suspense>
+              }
+            />
+            <Route
+              path="verifyOtp"
+              element={
+                <Suspense
+                  fallback={
+                    <div className="w-full h-[calc(100vh-70px)] flex items-center justify-center">
+                      <Loader />
+                    </div>
+                  }
+                >
+                  <VerifyOtpR_P />
                 </Suspense>
               }
             />

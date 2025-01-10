@@ -20,12 +20,12 @@ const Login = () => {
     nameError: "",
     passwordError: "",
   });
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const status = useSelector((state) => state.user.status);
   const dispatch = useDispatch();
 
-  useEffect(() => { 
+  useEffect(() => {
     if (usernameFromSignup && passwordFromSignup) {
       dispatch(
         loginUser({ name: usernameFromSignup, password: passwordFromSignup })
@@ -39,7 +39,6 @@ const Login = () => {
       dispatch(loginUser({ name: inputs.name, password: inputs.password }));
     }
   };
-  
 
   const handleInputsChange = (e) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
@@ -59,7 +58,7 @@ const Login = () => {
     } else if (!inputs.password) {
       setErrors({ ...errors, passwordError: "Please enter your password" });
       isValid = false;
-    } 
+    }
     if (isValid) {
       setErrors({});
       return true;
@@ -80,7 +79,7 @@ const Login = () => {
         <p className="text-gray-600 text-center text-sm mb-6">
           Please enter your username and password to continue
         </p>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div className={`focus:border-main-color`}>
             <div className=" w-full  flex items-center justify-between  text-sm font-medium text-gray-700 ">
               <p className="mb-2">User name:</p>
@@ -93,7 +92,6 @@ const Login = () => {
             <input
               type="text"
               name="name"
-              
               value={usernameFromSignup ? usernameFromSignup : inputs.name}
               onChange={handleInputsChange}
               className={`w-full p-2 outline-1 border-2 rounded-md bg-gray-50 ${
@@ -134,14 +132,20 @@ const Login = () => {
                 <button
                   type="button"
                   onClick={toggleShowPassword}
-                  className="bg-gray-50 w-10 flex justify-end absolute top-1/2 -translate-y-1/2 right-2 "
+                  className="w-10 flex justify-end absolute top-1/2 -translate-y-1/2 right-2 "
                 >
                   {showPassword && <LuEyeOff />}
                   {!showPassword && <LuEye />}
                 </button>
               )}
             </div>
-          </div>
+            <Link
+              to={"/resetPassword"}
+              className="text-sec-color flex float-end mt-1 cursor-pointer hover:underline"
+            >
+              Forgot Password
+            </Link>
+            </div>
           {status !== "loading" && (
             <button
               type="submit"
@@ -151,7 +155,7 @@ const Login = () => {
               Login
             </button>
           )}
-          
+
           {status === "loading" && (
             <div className="w-full justify-center h-[41px] mt-[16px] flex items-center">
               <Loader />

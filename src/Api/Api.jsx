@@ -4,6 +4,8 @@ export const API = {
   /* ======= Authentication ======= */
   signup: `${BASE_URL}/auth/signup`,
   signin: `${BASE_URL}/auth/signin`,
+  sendOtpForResetPassword: `${BASE_URL}/auth/send-password-otp`,
+  verifyOtpAndResetPassword: `${BASE_URL}/auth/reset-password-with-otp`,
   /* ======= Posts ======= */
   addPost: `${BASE_URL}/routPost`,
   deletePost: `${BASE_URL}/routPost`, //     /:idPost
@@ -50,6 +52,7 @@ export const API = {
   getMutualFriends: `${BASE_URL}/users/getMutual`, //     /:FriendID
   getUserFriendsInfo: `${BASE_URL}/users/getUserFriendsInfo/`,
   updateUser: `${BASE_URL}/users`, // :userId
+
   subscribe: `${BASE_URL}/users/sub`, //   /:userID
   unsubscribe: `${BASE_URL}/users/unsub`, //   /:userID
   addFriend: `${BASE_URL}/users/send-request`, //     /:FriendID
@@ -60,15 +63,17 @@ export const API = {
   blockUser: `${BASE_URL}/users/block`,
   unBlockUser: `${BASE_URL}/users/unblock`,
 
-  deleteUser: `${BASE_URL}/users`, //   /:userId
   likeVideo: `${BASE_URL}/users/like`, //   /:videoId
   dislikeVideo: `${BASE_URL}/users/dislike`, //   /:videoId
   getSavedItems: `${BASE_URL}/users/saved-items`,
+  deleteUser: `${BASE_URL}/users`, //   /:userId
   /* ======= Communities ======= */
   createCommunity: `${BASE_URL}/communities/create`,
   getCommunityById: `${BASE_URL}/communities/community`, // /:idCommunity
   inviteToCommunity: `${BASE_URL}/communities/invite`,
-  acceptInvitation: `${BASE_URL}/communities/accept-invitation`,
+  getCommunityRequests: `${BASE_URL}/communities/getCommunityRequests`,
+  acceptInvitation: `${BASE_URL}/communities//accept-invitation`,
+  ignoreInvitation: `${BASE_URL}/communities/ignoreCommunityInvitation`,
   leaveCommunity: `${BASE_URL}/communities/exit-community/`, // /:idCommunity
   deleteCommunity: `${BASE_URL}/communities/delete-community/`, // /:idCommunity
   /* ======= Notifications ======= */
