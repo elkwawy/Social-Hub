@@ -6,7 +6,6 @@ import AddNewTagModal from '../../MainPage/EditVideo/AddNewTagModal';
 import Loader from '../../../../Utils/Loader';
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
-import Cookies from 'js-cookie';
 import { formatFileSize, isValidUrl, isVideoURL } from '../../../../Utils/validateURLs';
 
 const UploadVideoModal = memo(({uploadVideo, addVideoLoading}) => {
@@ -62,19 +61,8 @@ const UploadVideoModal = memo(({uploadVideo, addVideoLoading}) => {
     
 
     const handleAddVideo = () => {
-        if (isValidInputs()) {
-            // const details = {
-            //     userId: Cookies.get("userID") ,
-            //     title: inputs.title,
-            //     // videoUrl: inputs.videoURL || null, // Keep the URL if provided
-            //     file: inputs.videoFile, // Add the file for upload
-            //     thumbnailUrl: inputs.thumbnailURL,
-            //     description: inputs.description,
-            //     tags: inputs.tags,
-            // };
-            
+        if (isValidInputs()) 
             uploadVideo(inputs);
-        }
     };
 
     const isValidInputs = () => {

@@ -1,26 +1,26 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { BiPlay } from "react-icons/bi";
+import { BiEdit, BiPlay, BiTrash } from "react-icons/bi";
 import { FaUserCircle } from "react-icons/fa";
+import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
+import { IoCopy } from "react-icons/io5";
 import { SlOptionsVertical } from "react-icons/sl";
 import { Img } from "react-image";
 import { useInView } from "react-intersection-observer";
 import Skeleton from "react-loading-skeleton";
 import { API } from "../../../Api/Api";
+import useSavedItems from "../../../Hooks/ProfileHooks/useSavedItemsHook";
+import checkImageUrl from "../../../Utils/checkImageUrl";
 import { getDateFormatted } from "../../../Utils/getDateFormatted";
 import LazyImage from "../../../Utils/LazyImage";
 import useNavigateTo from "../../../Utils/navigateTo";
 import { showToast } from "../../../Utils/showToast";
+import splitTextByLength from "../../../Utils/splitTextByLength";
 import sweetalert from "../../../Utils/sweetalert";
 import { isVideoURL } from "../../../Utils/validateURLs";
 import { copyURL } from "./../../../Utils/copyURL";
-import { IoCopy } from "react-icons/io5";
-import { FaRegBookmark, FaBookmark } from "react-icons/fa6";
-import useSavedItems from "../../../Hooks/ProfileHooks/useSavedItemsHook";
-import { BiEdit, BiTrash, BiShare } from "react-icons/bi";
-import checkImageUrl from "../../../Utils/checkImageUrl";
-import splitTextByLength from "../../../Utils/splitTextByLength";
+
 const VideoCard = React.memo(
   ({
     video,
@@ -34,14 +34,14 @@ const VideoCard = React.memo(
     const [user, setUser] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isOptionsOpen, setIsOptionsOpen] = useState(false);
-    const { ref, inView } = useInView({ triggerOnce: true }); // Trigger once when in view
+    const { ref, inView } = useInView({ triggerOnce: true }); 
     const userId = Cookies.get("userID");
     const { handleSaveVideo } = useSavedItems();
 
     const isValidUrl = useCallback(
       (url) => {
         try {
-          new URL(url); // Checks if the URL is valid
+          new URL(url);
           return true;
         } catch (error) {
           return false;
@@ -50,29 +50,41 @@ const VideoCard = React.memo(
       [video]
     );
 
+    const checkImg = async (url) => {
+      await checkImageUrl(url).then((isValid) => {
+        if (isValid) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    };
+
     useEffect(() => {
       if (inView) {
         // Fetch user data only when in view
         const getUser = async () => {
           try {
             const res = await axios.get(`${API.getUserById}/${video.userId}`);
-            setUser(res.data);
-            setIsLoaded(true); // Mark as loaded
+            if (res.data) { 
+              setUser(res.data);
+            }
           } catch (error) {
             setUser(null);
+          } finally { 
+            setIsLoaded(true);
           }
         };
         if (video && video.userId) getUser();
-        setIsLoaded(true); // Mark as loaded
       }
     }, [inView, video.userId]);
 
-    const validUrl = isValidUrl(video.thumbnailUrl)
+    const validUrl = isValidUrl(video.thumbnailUrl) && checkImg(video.thumbnailUrl)
       ? video.thumbnailUrl
       : "/src/assets/noImage.jpg";
 
     const handleNavToVideoPlayer = () => {
-      if (user) {
+      if (video && video.videoUrl) {
         navigateTo({
           dest: `/socialHub/video/${video._id}`,
           state: { video: video, user },
@@ -140,16 +152,8 @@ const VideoCard = React.memo(
       handleSaveVideo(video);
     };
 
-    const checkImg = async (url) => {
-      await checkImageUrl(url).then((isValid) => {
-        if (isValid) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    };
-
+    
+    
     return (
       <div
         ref={ref}
@@ -159,13 +163,17 @@ const VideoCard = React.memo(
           <div
             role="button"
             onClick={handleNavToVideoPlayer}
-            className="min-w-full relative rounded-md group overflow-hidden"
+            className="w-full relative rounded-md group overflow-hidden"
+            style={{ aspectRatio: "16/9" }}
           >
             <Img
               src={validUrl}
-              className="min-w-full overflow-hidden group-hover:scale-105 trans border rounded-md"
+              className="w-full h-full object-cover rounded-md" // Ensure the image covers the container
               loader={
-                <div className="w-full h-48 min-[450px]:h-64 min-[550px]:h-80 sm:h-40 xl:h-44 min-[1290px]:h-52 animate-pulse">
+                <div
+                  className="w-full h-full animate-pulse"
+                  style={{ aspectRatio: "16/9" }} // Match the aspect ratio
+                >
                   <Skeleton height="100%" width="100%" borderRadius={"4px"} />
                 </div>
               }
@@ -175,7 +183,7 @@ const VideoCard = React.memo(
             </div>
           </div>
         ) : (
-          // Placeholder while out of view
+          
           <div className="w-full h-48 min-[450px]:h-64 min-[550px]:h-80 sm:h-40 xl:h-44 min-[1290px]:h-52 animate-pulse">
             <Skeleton height="100%" width="100%" borderRadius={"4px"} />
           </div>
@@ -212,11 +220,11 @@ const VideoCard = React.memo(
                 )}
               </div>
               <div className="w-full flex flex-col gap-0.5  ">
-                <div className="relative group inline-block">
+                <div className="relative text-start inline-block">
                   <button
                     title={splitTextByLength(video.title, 50)}
                     onClick={handleNavToVideoPlayer}
-                    className="text-sm flex-wrap break-words text-wrap lg:text-xs xl:text-sm font-semibold break-all whitespace-normal overflow-hidden"
+                    className="text-sm text-start flex-wrap break-words text-wrap lg:text-xs xl:text-sm font-semibold break-all whitespace-normal overflow-hidden"
                   >
                     {video.title.length > 105
                       ? video.title.slice(0, 105) + " ..."
@@ -230,7 +238,7 @@ const VideoCard = React.memo(
                       className="w-fit text-xs trans hover:text-black"
                     >
 
-                      {user ? user.name : "Default User"}
+                      { isLoaded ? (user ? user.name : "Deleted User")  : <Skeleton width={15} height={5} />}
                     </button>
                     <div
                       ref={optionsRef}

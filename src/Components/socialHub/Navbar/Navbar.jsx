@@ -1,11 +1,10 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import { FaBars } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import PlansActionsHook from "../../../Hooks/PlansActionsHook";
-import Notifications from "./Notifications";
 import Coins from "./Coins";
 import DailyBonus from "./DailyBonus";
-import Massages from "./Massages";
+import Notifications from "./Notifications";
 import UserDetails from "./UserDetails";
 const Navbar = ({ toggleSidebar }) => {
   const { getUserPlan, userPlan } = PlansActionsHook();
@@ -14,7 +13,7 @@ const Navbar = ({ toggleSidebar }) => {
   useEffect(() => {
     getUserPlan();
   }, []);
-
+  
   return (
     <nav className="bg-white shadow-sm border-b max-sm:space-y-4 sm:h-[74.2px] border-gray-200 px-6 py-4">
       <div className="flex items-center justify-center sm:justify-between">

@@ -2,7 +2,7 @@ import { MdAddHomeWork } from "react-icons/md";
 
 const NoCommunitiesJoined = ({handleOpenCreateCommunityModal}) => {
     return (
-        <div className="my-auto text-center w-full mt-40 flex gap-3 items-center justify-center flex-col h-full">
+        <div className="text-center w-full my-32 flex gap-3 items-center justify-center flex-col h-full">
             <MdAddHomeWork className="text-[150px] text-main-color" />
             <p className="text-gray-500 font-semibold">
                 You have not joined or created any communities yet.

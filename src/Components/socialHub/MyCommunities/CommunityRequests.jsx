@@ -32,6 +32,7 @@ const CommunityRequests = () => {
       setInvitations(copyInvitations);
       showToast("error", "Something went wrong");
       console.error("Error accepting invitation:", error);
+      console.log("Error accepting invitation:", error);
     }
   };
 

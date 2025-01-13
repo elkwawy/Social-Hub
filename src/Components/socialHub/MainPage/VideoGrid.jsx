@@ -25,8 +25,7 @@ const VideoGrid = React.memo(({ initVideos:initialVideos, style, handleDeleteVid
         setIsVideoEditOpen(false);
     }
     const handleUpdateVideo = async (newUpdates) => { 
-        const originalVideos = [...videos]; // Clone the original videos state
-        console.log("used ID ",editedVideoId);
+        const originalVideos = [...videos]; 
         try {
             setEditVideoLoading(true)
             const updatedVideos = videos.map((video) => 
@@ -36,7 +35,6 @@ const VideoGrid = React.memo(({ initVideos:initialVideos, style, handleDeleteVid
 
             // Send API request
             const res = await axios.put(`${API.updateVideo}/${editedVideoId}`, newUpdates);
-            console.log(res.data);
             showToast("success", "Video updated successfully");
             handleCloseEditVdieo();
         } catch (error) {
@@ -63,7 +61,6 @@ const VideoGrid = React.memo(({ initVideos:initialVideos, style, handleDeleteVid
             setVideos(originalVideos);
         }
     }
-    console.log(videos);
     
     return (
         <div className={style ? style : `grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5`}>

@@ -14,11 +14,11 @@ export const loginUser = createAsyncThunk(
       // If backend returns error status code (e.g., 400 or 401), manually throw an error
       // to excute loginUser.rejected
       // unauthorized
-      if (userData.status === 401) {
+      if (response.status === 401) {
         Cookies.remove("userID");
         window.location.href = "/";
       }
-      else if (userData.status !== 200) {
+      else if (response.status !== 200) {
         throw new Error(
           response.data.message || "Something went wrong with the backend."
         );
@@ -68,7 +68,6 @@ export const signupUser = createAsyncThunk(
           response.data.message || "Something went wrong with the backend."
         );
       }
-      // console.log(response);
       return response.data; // response نجاح العملية بيرجع الـ
     } catch (error) {
       // Handle network errors (e.g., no connection, server is down)

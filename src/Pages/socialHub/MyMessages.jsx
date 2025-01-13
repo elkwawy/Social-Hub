@@ -10,7 +10,6 @@ import { socket } from "./SocialHubLayout";
 const MyMessages = () => {
   const loc = useLocation();
   const friend = loc.state?.friend || null;
-  const { isActive } = useSelector((state) => state.userChats);
   const [selectedChat, setSelectedChat] = useState(friend);
   const [isOpenSidebar, setIsOpenSidebar] = useState(true);
 
@@ -34,8 +33,7 @@ const MyMessages = () => {
       }
 
       dispatch(pushNewMessageToUnReadMessages(newMessage))
-
-
+      
       const sender = {
         senderId: newMessage.senderId,
         receiverName: newMessage.senderName,
@@ -45,15 +43,19 @@ const MyMessages = () => {
       dispatch(reorderChatsWhenReceive(sender));
     };
 
+    const logger = (notification) => {
+      console.log("New notification:", notification);
+    };
+
     // Listen for events
     socket.current.on("msg-recieve", handleMsgReceive);
+    socket.current.on("new-notification",logger);
 
     return () => {
-      // Cleanup listeners
       socket.current.off("msg-recieve", handleMsgReceive);
+      socket.current.off("new-notification", logger);
     };
   }, [dispatch, selectedChat, socket]);
-  // console.log(selectedChat);
 
   return (
     <div className="flex w-[calc(100%+48px)] -m-6 h-[calc(100vh-74px)] border border-gray-100 bg-gray-100">

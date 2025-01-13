@@ -10,10 +10,11 @@ export const fetchMessages = createAsyncThunk(
     "chat/fetchMessages",
     async (chatId, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`${API.getMessages}`, {
-                params: { receiverId: chatId },
-            });
-            return response.data;
+            console.log(chatId);
+            
+            const response = await axios.get(`${API.getMessages}/${chatId}`);
+            console.log(response.data);
+            return response.data.messages;
         } catch (error) {
             return rejectWithValue(error?.response?.data?.message || "Error fetching chat messages.");
         }
