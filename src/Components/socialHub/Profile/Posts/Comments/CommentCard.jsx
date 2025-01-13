@@ -8,10 +8,12 @@ import ReplyCard from "./ReplyCard";
 const CommentCard = ({
   comment,
   user,
+  edit,
   setComments,
   setCommentsCount,
   borderB,
 }) => {
+
   const [replies, setReplies] = useState([]);
   const [loadingReplies, setLoadingReplies] = useState(false);
   const [repliesCount, setRepliesCount] = useState(
@@ -54,6 +56,9 @@ const CommentCard = ({
       }
     }
   };
+  const handleDeleteComment = async (commentID) => {
+    await deleteComment(commentID, setComments, setCommentsCount);
+  };
 
   const handleKeyDown = (e, commentID) => {
     if (e.key === "Enter") {
@@ -89,7 +94,7 @@ const CommentCard = ({
             <button
               className="text-gray-500 hover:text-red-600"
               title="Delete"
-              onClick={() => deleteComment(comment._id)}
+              // onClick={}
             >
               <AiOutlineDelete size={16} />
             </button>

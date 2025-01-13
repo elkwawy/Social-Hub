@@ -6,6 +6,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { formatDate } from "../../Utils/formatDate";
 import profile from "../../assets/profile.jpg";
 import { isValidUrl } from "../../Utils/validateURLs";
+import { showToast } from "../../Utils/showToast";
 const Reports = () => {
   const [values, setValues] = useState({
     input_sentence: "",
@@ -22,7 +23,8 @@ const Reports = () => {
       const response = await axios.get(API.getMyReports);
       setMyReports(response.data.reports);
     } catch (error) {
-      console.error(error);
+      showToast("error", error?.response?.data?.message);
+      // console.error(error);
     }
   };
 
@@ -33,7 +35,8 @@ const Reports = () => {
       setShowForm(false);
       getMyReports();
     } catch (error) {
-      console.error(error);
+      showToast("error", error?.response?.data?.message);
+      // console.error(error);
     }
   };
 
@@ -95,6 +98,7 @@ const Reports = () => {
                   type="text"
                   id="user_name"
                   placeholder="Enter the person's name"
+                  required
                   value={values.user_name}
                   onChange={(e) =>
                     setValues({ ...values, user_name: e.target.value })
@@ -112,6 +116,7 @@ const Reports = () => {
                 </label>
                 <div className="relative">
                   <select
+                    required
                     id="message_type"
                     value={values.message_type}
                     onClick={() => setisSeletOpen(!isSeletOpen)}
@@ -147,6 +152,7 @@ const Reports = () => {
               <textarea
                 id="input_sentence"
                 placeholder="Enter the content of the message or comment"
+                required
                 value={values.input_sentence}
                 onChange={(e) =>
                   setValues({ ...values, input_sentence: e.target.value })

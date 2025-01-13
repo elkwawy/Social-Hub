@@ -6,7 +6,7 @@ import CommentCard from "./CommentCard";
 import profile from "../../../../../assets/profile.jpg";
 import CommentsActionsHook from "../../../../../Hooks/CommentsHook";
 
-const CommentsModal = ({ post, user, setModalOpen, setCommentsCount }) => {
+const CommentsModal = ({ post, user,setModalOpen, setCommentsCount , edit }) => {
   const commentsSectionRef = useRef(null);
   const { getComments, addComment } = CommentsActionsHook();
   const [comments, setComments] = useState([]);
@@ -118,6 +118,7 @@ const CommentsModal = ({ post, user, setModalOpen, setCommentsCount }) => {
                   key={index}
                   comment={comment}
                   user={user}
+                  edit={edit}
                   borderB={index !== comments.length - 1}
                   setComments={setComments}
                   setCommentsCount={setCommentsCount}
