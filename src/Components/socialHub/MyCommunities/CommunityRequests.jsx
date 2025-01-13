@@ -20,13 +20,16 @@ const CommunityRequests = () => {
       setLoading(false);
     }
   };
+  console.log(invitations);
 
   // Accept invitation
-  const handleAcceptInvitation = async (invitationId) => {
+  const handleAcceptInvitation = async (communityId) => {
     const copyInvitations = [...invitations];
-    setInvitations((prev) => prev.filter((inv) => inv._id !== invitationId));
+    setInvitations((prev) =>
+      prev.filter((inv) => inv.communityId !== communityId)
+    );
     try {
-      await axios.post(API.acceptInvitation, { communityId: invitationId });
+      await axios.post(API.acceptInvitation, { communityId: communityId });
       showToast("success", "Invitation accepted successfully");
     } catch (error) {
       setInvitations(copyInvitations);
@@ -125,7 +128,7 @@ const CommunityRequests = () => {
               </div>
               <div className="flex space-x-4 justify-center md:justify-end">
                 <button
-                  onClick={() => handleAcceptInvitation(invitation._id)}
+                  onClick={() => handleAcceptInvitation(invitation.communityId)}
                   className="px-6 py-2 hover:bg-gray-50 border border-main-color text-sec-color rounded-md"
                 >
                   Accept

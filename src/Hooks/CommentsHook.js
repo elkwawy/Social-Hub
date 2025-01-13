@@ -133,28 +133,29 @@ const CommentsActionsHook = () => {
     idComment,
     setComments,
     setCommentsCount,
-    setReplies
+    // setReplies
   ) => {
     let previousComments = [];
-    let previousReplies = [];
+    // let previousReplies = [];
 
     try {
+      
       setComments((prevComments) => {
         previousComments = [...prevComments];
         return prevComments.filter((comment) => comment._id !== idComment); // إزالة التعليق
       });
 
-      setReplies((prevReplies) => {
-        previousReplies = [...prevReplies];
-        return prevReplies.filter((reply) => reply.objectId !== idComment); // reply إزالة ال
-      });
+      // setReplies((prevReplies) => {
+      //   previousReplies = [...prevReplies];
+      //   return prevReplies.filter((reply) => reply.objectId !== idComment); // reply إزالة ال
+      // });
 
       await axios.delete(`${API.deleteComment}/${idComment}`);
       setCommentsCount((prev) => prev - 1);
       showToast("success", "Comment deleted successfully");
     } catch (error) {
       setComments(previousComments);
-      setReplies(previousReplies);
+      // setReplies(previousReplies);
       showToast("error", "Failed to delete comment");
     }
   };

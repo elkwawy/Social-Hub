@@ -74,7 +74,7 @@ export const API = {
   getCommunityById: `${BASE_URL}/communities/community`, // /:idCommunity
   inviteToCommunity: `${BASE_URL}/communities/invite`,
   getCommunityRequests: `${BASE_URL}/communities/getCommunityRequests`,
-  acceptInvitation: `${BASE_URL}/communities//accept-invitation`,
+  acceptInvitation: `${BASE_URL}/communities/accept-invitation`,
   ignoreInvitation: `${BASE_URL}/communities/ignoreCommunityInvitation`,
   leaveCommunity: `${BASE_URL}/communities/exit-community/`, // /:idCommunity
   deleteCommunity: `${BASE_URL}/communities/delete-community/`, // /:idCommunity
