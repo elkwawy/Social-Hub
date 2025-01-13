@@ -5,6 +5,7 @@ import CreateCommunity from "../../Components/socialHub/MyCommunities/CreateComm
 import NoCommunitiesJoined from "../../Components/socialHub/MyCommunities/NoCommunitiesJoined";
 import { updateUserCommunities } from "../../Redux/slices/userSlice";
 import CommunityRequests from "../../Components/socialHub/MyCommunities/CommunityRequests";
+import Error from "../../utils/Error";
 
 const MyCommunities = memo(() => {
   const dispatch = useDispatch();
@@ -78,7 +79,10 @@ const MyCommunities = memo(() => {
       </div>
 
       {/* Fetch error */}
-      {status === "failed" && <p>{error.message}</p>}
+      {
+        status === "failed" && 
+        <Error error={error} />
+      }
 
       {/* Proccess succeeded */}
       {status === "succeeded" && (
@@ -104,10 +108,10 @@ const MyCommunities = memo(() => {
               handleOpenCreateCommunityModal={handleOpenCreateCommunityModal}
             />
           )}
+          <CommunityRequests />
         </>
       )}
 
-      <CommunityRequests />
 
       {openCreateCommunityModal && (
         <CreateCommunity

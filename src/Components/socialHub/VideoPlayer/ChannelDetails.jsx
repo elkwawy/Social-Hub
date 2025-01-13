@@ -74,13 +74,13 @@ const ChannelDetails = memo(({channelId, name, profilePicture}) => {
     }
 
     const checkImg = async (url) => {
-      await checkImageUrl(url).then((isValid) => {
-        if (isValid) {
-          return true;
-        } else {
-          return false;
-        }
-      });
+        await checkImageUrl(url).then((isValid) => {
+            if (isValid) {
+            return true;
+            } else {
+            return false;
+            }
+        });
     };
 
     const currUserId = Cookies.get("userID");
@@ -88,7 +88,7 @@ const ChannelDetails = memo(({channelId, name, profilePicture}) => {
     return (
         <div className='flex items-center jusbet gap-3 '>
             {/* channel image */}
-            <Link to={`/socialHub/profile/${channelId}`} className='max-w-10 h-10 rounded-full '>
+            <Link to={`/socialHub/profile/${channelId}`} className='min-w-10 max-w-10 h-10 rounded-full '>
                 {
                 profilePicture && isValidUrl(profilePicture) && checkImg(profilePicture)
                     ? <Img src={profilePicture} className='w-full h-full rounded-full' loader={<div className='w-10 h-10 rounded-full'><Skeleton width={'100%'} height={'100%'} borderRadius={'100%'} /></div>} />

@@ -3,6 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { API } from "../../Api/Api";
 import { showToast } from "../../Utils/showToast";
+import sweetalert from "../../Utils/sweetalert";
 
 export const loginUser = createAsyncThunk(
   "user/loginUser",
@@ -208,6 +209,9 @@ const userSlice = createSlice({
       .addCase(getCurrUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
+        console.log(action.payload);
+        sweetalert.error("", "Network Error");
+
       });
   },
 });

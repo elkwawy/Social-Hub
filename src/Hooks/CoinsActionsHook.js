@@ -11,9 +11,9 @@ const CoinsActionsHook = () => {
 
   const handleError = (error, defaultMessage) => {
     const message = error.response?.data?.message || defaultMessage;
-    sweetalert.error("", message);
-    console.log(message, "from coins");
-    console.error(message);
+    console.log(error);
+    
+    // sweetalert.error("", message);
   };
 
   const getCoins = async () => {

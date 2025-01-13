@@ -13,7 +13,7 @@ export default function FriendReCarousel({
     (item) => item.senderName && item.senderName.length > 0
   );
   if (!validItems || validItems.length === 0) {
-    return <p className="text-gray-500">{message}</p>;
+    return <p className="text-gray-500 w-full text-center">{message}</p>;
   }
 
   return (

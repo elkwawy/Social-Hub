@@ -7,6 +7,12 @@ import { fetchMessages, sendMessage } from "../../../Redux/slices/chatSlice";
 import { reorderChatsWhenSend } from "../../../Redux/slices/userChats";
 import { getMsgDateFormatted } from "../../../Utils/getMsgDateFormatted";
 import Loader from "./../../../Utils/Loader";
+import { isValidUrl } from "../../../Utils/validateURLs";
+import checkImageUrl from "../../../Utils/checkImageUrl";
+import { Img } from "react-image";
+import { FaUserCircle } from "react-icons/fa";
+import Error from "../../../utils/Error";
+
 const ChatScreen = memo(({ chat, setSelectedChat, setIsOpenSidebar }) => {
   const [message, setMessage] = useState("");
   const chatScreenRef = useRef(null);
@@ -87,6 +93,16 @@ const ChatScreen = memo(({ chat, setSelectedChat, setIsOpenSidebar }) => {
     navigator.clipboard.writeText(textToCopy);
   };
 
+  const checkImg = async (url) => {
+    await checkImageUrl(url).then((isValid) => {
+      if (isValid) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  };
+
   console.log(chat);
   
 
@@ -96,8 +112,29 @@ const ChatScreen = memo(({ chat, setSelectedChat, setIsOpenSidebar }) => {
       <div className="flex items-center justify-between p-4 border-b border-gray-300">
         <Link
           to={`/socialHub/profile/${chat?._id}`}
-          className="text-lg font-semibold"
+          className="text-lg font-semibold flex gap-2 items-center"
         >
+          {chat &&  (
+              chat.picture &&
+              isValidUrl(chat.picture) &&
+              checkImg(chat.picture) ? (
+                <Img
+                  className="min-w-9 max-w-9 h-9 rounded-full"
+                  src={chat.picture}
+                  loader={
+                    <div className="w-9 h-9 rounded-full">
+                      <Skeleton
+                        height="100%"
+                        width="100%"
+                        borderRadius={"100%"}
+                      />
+                    </div>
+                  }
+                />
+              ) : (
+                <FaUserCircle className="text-gray-300 w-9 h-9" />
+              )
+          )}
           {chat?.name}
         </Link>
         <button>
@@ -122,8 +159,11 @@ const ChatScreen = memo(({ chat, setSelectedChat, setIsOpenSidebar }) => {
           </div>
         )}
 
-        {!loading &&
-          Object.keys(groupedMessages).map((date) => (
+        {!loading && !error &&
+          (
+            messages && messages.length > 0  ? 
+            (
+              Object.keys(groupedMessages).map((date) => (
             <div key={date} className="space-y-2">
               <div className="text-center text-sm p-2 rounded-md bg-white w-fit mx-auto text-black my-2">
                 {date}
@@ -151,7 +191,17 @@ const ChatScreen = memo(({ chat, setSelectedChat, setIsOpenSidebar }) => {
                 </div>
               ))}
             </div>
-          ))}
+          )))
+          : (
+            <Error error={"No messages sent"} />
+          )
+        )
+        }
+        {
+          error && <div className="h-full flex items-center justify-center mx-auto text-sm font-semibold text-gray-500">
+            {error}
+          </div>
+        }
       </div>
 
       {/* Typing area */}
@@ -161,6 +211,7 @@ const ChatScreen = memo(({ chat, setSelectedChat, setIsOpenSidebar }) => {
       >
         <input
           type="text"
+          autoFocus={true}  
           placeholder="Type a message..."
           className="flex-1 bg-white msg-area break-words max-w-full px-4 py-2 border rounded-md focus:outline-none focus:border-gray-400 resize-none overflow-y-auto"
           value={message}

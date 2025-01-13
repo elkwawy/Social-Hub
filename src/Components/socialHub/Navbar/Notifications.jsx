@@ -3,7 +3,6 @@ import { FaBell, FaTimes } from "react-icons/fa";
 import { formatDate } from "../../../Utils/formatDate";
 import NotificationsHook from "../../../Hooks/NotificationsHook";
 import Loader from "../../../Utils/Loader";
-import { socket } from "../../../Pages/socialHub/SocialHubLayout";
 
 const Notifications = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,25 +19,6 @@ const Notifications = () => {
   } = NotificationsHook();
 
   const [expandedMessages, setExpandedMessages] = useState({});
-
-  // useEffect(() => {
-  //   if (!socket) { 
-  //     console.log("NO socket");
-  //     return;
-  //   }
-  //     // Listener for new notifications
-  //     console.log("Enter Noti");
-      
-  //     socket.on("new-notification", (notification) => {
-  //       console.log("Entering");
-  //       console.log("New Notification:", notification);
-  //       // Handle the notification (e.g., show a toast, update state, etc.)
-  //     });
-  
-  //     return () => {
-  //       socket.off("new-notification"); // Cleanup the event listener when component unmounts
-  //     };
-  //   }, []);
 
   const handleMarkAllAsRead = async () => {
     await markAllAsRead();

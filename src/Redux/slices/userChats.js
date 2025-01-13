@@ -36,7 +36,8 @@ const chatsOrganizer = (friendChat, chats, userId) => {
 
     if (!friendChat) return { updatedChats: chats, activeChatIndex: null };
 
-
+    console.log("friendChat: ", friendChat);
+    
     const index = chats.findIndex(chat => {
         const friendId = userId !== chat.receiverId ? chat.receiverId : chat.senderId;
         return friendId === friendChat.receiverId;
@@ -44,7 +45,6 @@ const chatsOrganizer = (friendChat, chats, userId) => {
 
     if (index === -1) {
         // New chat, add to the top
-
         return { updatedChats: [friendChat, ...chats], activeChatIndex: friendChat.receiverId };
     }
 

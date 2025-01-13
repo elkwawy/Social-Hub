@@ -66,7 +66,7 @@ const ProfileVideos = memo(() => {
                         Upload from Device
                     </button>}
                     {edit && videos && videos.length > 0 && <button onClick={handleAddNewVideoModal} className="ml-auto text-xs bg-main-color px-3 py-2 text-white trans hover:bg-sec-color rounded-md ">
-                        Add New Video
+                        Add Youtube Video
                     </button>}
                 </div>
             </div>
@@ -78,9 +78,14 @@ const ProfileVideos = memo(() => {
             {
                 videos.length ==0 && (edit ?  (<div className="w-full mt-16 text-center flex items-center flex-col gap-3">
                     <h1 className="  text-gray-500 text-2xl font-semibold">You don't have any videos</h1>
-                    <button onClick={handleAddNewVideoModal} className="text-xs bg-main-color px-3 py-2 text-white trans hover:bg-sec-color rounded-md ">
-                        Add New Video
-                    </button>
+                    <div className="flex gap-2 items-center ">
+                        <button onClick={handleOpenUploadVideoModal} className="ml-auto text-xs border border-main-color px-3 py-2 text-main-color trans hover:bg-gray-100 rounded-md ">
+                            Upload from Device
+                        </button>
+                        <button onClick={handleAddNewVideoModal} className="text-xs bg-main-color px-3 py-2 text-white trans hover:bg-sec-color rounded-md ">
+                            Add Youtube Video
+                        </button>
+                    </div>
                 </div>)
                 : (<div className="w-full mt-16 text-center flex items-center flex-col gap-3">
                     <h1 className="  text-gray-500 text-2xl font-semibold">No videos to show</h1>
@@ -89,7 +94,7 @@ const ProfileVideos = memo(() => {
             
             {
                 isAddNewVideoModalOpen && 
-                <Modal title={'Add new video'} onClose={handleAddNewVideoModal} >
+                <Modal title={'Add Youtube Video'} onClose={handleAddNewVideoModal} >
                     <AddNewVideoModal addVideo={handleAddNewVideo} addVideoLoading={addVideoLoading}  />
                 </Modal>
             }

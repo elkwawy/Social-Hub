@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import LandingPageLayout from "./Pages/LandingPage/LandingPageLayout";
 import ProtectedRoute from "./Pages/ProtectedRoute";
 import PublicRoute from "./Pages/PublicRoute";
-import SocialHubLayout, { socket } from "./Pages/socialHub/SocialHubLayout";
+import SocialHubLayout from "./Pages/socialHub/SocialHubLayout";
 import Loader from "./Utils/Loader";
 import OTPField from "./Pages/Auth/OTPField";
 

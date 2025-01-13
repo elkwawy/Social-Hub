@@ -13,7 +13,6 @@ const SavedPosts = memo(({user, edit}) => {
             try {
                 setLoading(true);
                 const res = await axios.get(API.getSavedPosts);
-                console.log(res.data);
                 setSavedPosts(res.data.savedPosts);
             } catch (error) {
                 setError(error?.response?.data?.message || "No saved posts.");

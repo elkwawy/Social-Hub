@@ -2,18 +2,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API } from "../../Api/Api";
-
-import { socket } from "../../Pages/socialHub/SocialHubLayout";
+import socket from "../../utils/socket";
 
 // Fetch messages thunk
 export const fetchMessages = createAsyncThunk(
     "chat/fetchMessages",
     async (chatId, { rejectWithValue }) => {
         try {
-            console.log(chatId);
-            
             const response = await axios.get(`${API.getMessages}/${chatId}`);
-            console.log(response.data);
             return response.data.messages;
         } catch (error) {
             return rejectWithValue(error?.response?.data?.message || "Error fetching chat messages.");
@@ -45,7 +41,7 @@ export const sendMessage = createAsyncThunk(
                 content: newMessage.content,
             });
 
-            socket.current.emit("send-msg", newMessage);
+            socket.emit("send-msg", newMessage);
 
             return newMessage;
         } catch (error) {

@@ -82,14 +82,17 @@ const CommunityRequests = () => {
       </ul>
     );
   };
+  
 
   return (
     <div className="mt-7">
-      <h2 className="text-3xl font-bold text-gray-800">Community Requests</h2>
+      <h2 className="text-3xl font-bold text-gray-600">Community Requests</h2>
       {loading ? (
         renderSkeleton()
       ) : invitations.length === 0 ? (
-        <p className="mt-4 text-gray-600">No community requests available.</p>
+        <div>
+          <p className="mt-6 text-gray-600 w-full flex items-center justify-center ">No community requests available.</p>
+        </div>
       ) : (
         <ul className="mt-7 grid grid-cols-1 md:grid-cols-2 gap-6">
           {invitations.map((invitation) => (
@@ -126,16 +129,16 @@ const CommunityRequests = () => {
               </div>
               <div className="flex space-x-4 justify-center md:justify-end">
                 <button
-                  onClick={() => handleAcceptInvitation(invitation._id)}
-                  className="px-6 py-2 hover:bg-gray-50 border border-main-color text-sec-color rounded-md"
-                >
-                  Accept
-                </button>
-                <button
                   onClick={() => handleIgnoreInvitation(invitation._id)}
-                  className="px-6 py-2 bg-main-color text-white rounded-md hover:bg-sec-color"
+                  className="px-6 py-2 hover:bg-gray-50 border border-main-color text-main-color rounded-md"
                 >
                   Ignore
+                </button>
+                <button
+                  onClick={() => handleAcceptInvitation(invitation._id)}
+                  className="px-6 py-2  border border-main-color  bg-main-color text-white rounded-md hover:bg-sec-color"
+                >
+                  Accept
                 </button>
               </div>
             </li>

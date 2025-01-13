@@ -149,7 +149,7 @@ const Community = memo(({user, communityId, leaveCommunity, deleteCommunity}) =>
                 </Link>
             </div>}
 
-            {community && openInviteUsersModal  && <InviteUsersModal community={community ? community : null}  followersArr={user.SubscribersOrFollowers} followedArr={user.SubscriberedOrFollowed} onClose={handleCloseInviteUsersModal} /> }
+            {community && openInviteUsersModal  && <InviteUsersModal community={community ? community : null} onClose={handleCloseInviteUsersModal} /> }
         </>
     )
 })
