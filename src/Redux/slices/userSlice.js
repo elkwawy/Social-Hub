@@ -3,6 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { API } from "../../Api/Api";
 import { showToast } from "../../Utils/showToast";
+import sweetalert from "../../Utils/sweetalert";
 
 export const loginUser = createAsyncThunk(
   "user/loginUser",
@@ -10,28 +11,22 @@ export const loginUser = createAsyncThunk(
     console.log(otp);
     try {
       const response = await axios.post(API.signin, { name, password });
-
+  
       // If backend returns error status code (e.g., 400 or 401), manually throw an error
       // to excute loginUser.rejected
       // unauthorized
       if (response.status === 401) {
         Cookies.remove("userID");
         window.location.href = "/";
-      } else if (response.status !== 200) {
-        throw new Error(
-          response.data.message || "Something went wrong with the backend."
-        );
       }
-      if (response.status === 401) {
-        Cookies.remove("userID");
-        window.location.href = "/";
-      } else if (response.status !== 200) {
+      else if (response.status !== 200) {
         throw new Error(
           response.data.message || "Something went wrong with the backend."
         );
       }
       console.log(response.data.user);
       return response.data.user; // Return the data if everything is fine
+
     } catch (error) {
       // Handle network errors (e.g., no connection, server is down)
       if (!error.response) {
@@ -74,7 +69,6 @@ export const signupUser = createAsyncThunk(
           response.data.message || "Something went wrong with the backend."
         );
       }
-      // console.log(response);
       return response.data; // response نجاح العملية بيرجع الـ
     } catch (error) {
       // Handle network errors (e.g., no connection, server is down)
@@ -106,16 +100,16 @@ export const getCurrUser = createAsyncThunk(
   "user/getCurrUser",
   async (id, { rejectWithValue }) => {
     try {
-      const userData = await axios.get(`${API.getUserById}/${id}`);
+      const userData = await axios.get(`${API.getUserById}/${id}`);      
       if (userData.status !== 200) {
         throw new Error(
           response.data.message || "Something went wrong with the backend."
         );
       }
-      return userData.data;
+      return userData.data; 
     } catch (error) {
       console.log("Get user error : ", error);
-
+      
       if (error.response && error.response.data) {
         return rejectWithValue(
           error.response.data.message.slice(50) ||
@@ -148,9 +142,7 @@ const userSlice = createSlice({
     },
     unSaveVideo: (state, action) => {
       if (state.user) {
-        state.user.savedVideos = state.user.savedVideos.filter(
-          (video) => video._id !== action.payload._id
-        );
+        state.user.savedVideos = state.user.savedVideos.filter(video => video._id !== action.payload._id);
       }
     },
     savePost: (state, action) => {
@@ -199,10 +191,7 @@ const userSlice = createSlice({
         state.user = action.payload;
         state.status = "succeeded";
         // showToast('success', "Check your email and verify OTP")
-        showToast(
-          "success",
-          "OTP has been sent to your email. Please verify to complete sign-up."
-        );
+        showToast('success', "OTP has been sent to your email. Please verify to complete sign-up.")
       })
       .addCase(signupUser.rejected, (state, action) => {
         state.status = "failed";
@@ -220,10 +209,12 @@ const userSlice = createSlice({
       .addCase(getCurrUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
+        console.log(action.payload);
+        sweetalert.error("", "Network Error");
+
       });
   },
 });
 
-export const { updateUserCommunities, saveVideo, unSaveVideo, savePost } =
-  userSlice.actions;
+export const {  updateUserCommunities, saveVideo, unSaveVideo ,savePost} = userSlice.actions;
 export default userSlice.reducer;

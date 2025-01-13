@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { AiOutlineSend } from "react-icons/ai";
 import { API } from "../../Api/Api";
@@ -43,6 +43,17 @@ const BetaBotAI = () => {
     }
   };
 
+  const chatScreenRef = useRef(null);
+
+  useEffect(() => {
+      if (chatScreenRef.current) {
+        chatScreenRef.current.scrollTo({
+          top: chatScreenRef.current.scrollHeight,
+          behavior: "smooth",
+        });
+      }
+    }, [messages]);
+
   return (
     <div className="relative">
       <h1 className="text-3xl font-bold text-gray-800 mb-5 relative">
@@ -52,7 +63,7 @@ const BetaBotAI = () => {
         </span>
       </h1>
       <div className="w-full bg-white border border-gray-300 shadow-sm rounded-lg flex flex-col h-[74.5vh]">
-        <div className="flex-1 overflow-y-auto p-6 rounded-lg bg-gray-50">
+        <div ref={chatScreenRef} className="flex-1 overflow-y-auto p-6 rounded-lg bg-gray-50">
           {messages.map((msg, index) => (
             <div
               key={index}

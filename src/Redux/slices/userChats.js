@@ -31,27 +31,6 @@ export const getMyChats = createAsyncThunk(
     }
 );
 
-const handleNewChat = (myContacts) => {
-    const index = myContacts.findIndex(contact => {
-    const friendId = userId !== contact.receiverId ? contact.receiverId : contact.senderId;
-    return friendId === friendChat._id;
-    });
-    if (index === -1) { 
-    // not exist
-    const len = myContacts.length;
-    let newChatDetails = { 
-        receiverId: friendChat._id,
-        receiverName: friendChat.name,
-        receiverProfilePicture: friendChat?.photoUrl || null,
-        content: "",
-    }
-    setMyContacts(prev => [...prev, newChatDetails]);
-    setIsActive(len);
-    }
-    else { 
-    setIsActive(index);
-    }
-};
 
 const chatsOrganizer = (friendChat, chats, userId) => {
 

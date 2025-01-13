@@ -6,6 +6,7 @@ export const API = {
   signin: `${BASE_URL}/auth/signin`,
   sendOtpForResetPassword: `${BASE_URL}/auth/send-password-otp`,
   verifyOtpAndResetPassword: `${BASE_URL}/auth/reset-password-with-otp`,
+  googleAuth: `${BASE_URL}/auth/google`,
   /* ======= Posts ======= */
   addPost: `${BASE_URL}/routPost`,
   deletePost: `${BASE_URL}/routPost`, //     /:idPost
@@ -22,6 +23,8 @@ export const API = {
   SendMessege: `${BASE_URL}/messages`, // Post
   getUsersInChat: `${BASE_URL}/messages/getUsersWithChatMessages`, // Post
   getMessages: `${BASE_URL}/messages/conversation`, // /:recieverId
+  getGroupMessages: `${BASE_URL}/messages/groupConversations`, // /:groupId
+  sendGroupMessage: `${BASE_URL}/messages/sendCommunityMessage`, // /:groupId
   markMessagesAsRead : (msgId) => `${BASE_URL}/messages/${msgId}/mark-as-read`, 
   /* ======= Comments ======= */
   addComment: `${BASE_URL}/comments`,
@@ -46,7 +49,7 @@ export const API = {
   likeVideo: `${BASE_URL}/users/like`, //   /:videoId
   disLikeVideo: `${BASE_URL}/users/dislike`, //   /:videoId
   getSavedVideos: `${BASE_URL}/videos/getSavedVideos`,  
-  uploadVideo : `${BASE_URL}/videos/upload`,
+  uploadVideo : `${BASE_URL}/videos/upload/video`,
   /* ======= Users ======= */
   getAllUsers: `${BASE_URL}/users/getRandomUsers`,
   searchByName: `${BASE_URL}/users/Search_Users_Name`,

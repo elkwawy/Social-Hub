@@ -2,8 +2,8 @@ import axios from 'axios';
 import React, { memo, useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { API } from '../../../Api/Api';
-import LazyImage from '../../../Utils/LazyImage';
 import { Img } from 'react-image';
+import checkImageUrl from '../../../Utils/checkImageUrl';
 
 const Member = memo(({member, index}) => {
     // Get member's pic 
@@ -25,6 +25,16 @@ const Member = memo(({member, index}) => {
         }
         getmemberDetails();
     }, []);
+
+    const checkImg = async (url) => {
+        await checkImageUrl(url).then((isValid) => {
+        if (isValid) {
+            return true;
+        } else {
+            return false;
+        }
+        });
+    };
     
     return (
         <>
@@ -38,7 +48,7 @@ const Member = memo(({member, index}) => {
             }
             {!loading && !error && <div style={{marginLeft : index > 0 ? "-15px" : "0px"}} className="flex gap-1 items-center">
                 
-                { memberData && memberData.profilePicture ? (
+                { memberData && checkImg(memberData.profilePicture) ? (
                 <Img
                     className="w-10 h-10 rounded-full"
                     src={memberData.profilePicture}

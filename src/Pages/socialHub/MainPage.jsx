@@ -68,8 +68,7 @@ const MainPage = () => {
         <p>{error || "Failed to load videos"}</p>
       </div>
     );
-
-    console.log(currentPage);
+    
     
 
   return (

@@ -50,9 +50,7 @@ const ChatSidebar = ({
       }
     });
   };
-
-  console.log(isOpenSidebar);
-
+  
   return (
     <div
       className={`w-full min-[500px]:w-[45%] md:w-[35%] lg:w-[30%] xl:w-[25%]   bg-white border-l border-gray-300 py-4 ${isOpenSidebar ? "block" : "max-xl:hidden"}`}
@@ -85,6 +83,7 @@ const ChatSidebar = ({
                 : contact?.senderId && userId !== contact?.senderId
                   ? contact?.senderId
                   : null;
+            if ( contact?.receiverName !=="Unknown Receiver" )
             return (
               <li
                 key={chatId}

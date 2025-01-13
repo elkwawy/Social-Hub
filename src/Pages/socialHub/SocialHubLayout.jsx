@@ -21,13 +21,7 @@ const SocialHubLayout = () => {
       socket.current.emit("add-user", userID);
       console.log("User ID sent to server:", userID);
     }
-
-    // Listener for new notifications
-    // socket.current.on("new-notification", (notification) => {
-    //   console.log("New Notification:", notification);
-    // });
-
-    // Listener for connection events
+    
     socket.current.on("connect", () => {
       console.log("Socket connected:", socket.current.id);
     });

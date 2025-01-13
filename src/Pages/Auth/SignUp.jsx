@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { signupUser } from "../../Redux/slices/userSlice";
 import Loader from "../../Utils/Loader";
+import GoogleLoginAuth from "./GoogleLogin";
+
 
 const SignUp = () => {
   const [values, setValues] = useState({
@@ -65,7 +67,6 @@ const SignUp = () => {
   const status = useSelector((state) => state.user.status);
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // touched تحديد كل الحقول كـ
     const allTouched = Object.keys(values).reduce((acc, key) => {
       acc[key] = true;
@@ -96,8 +97,10 @@ const SignUp = () => {
     setErrors(validateForm(values));
   }, [values]);
 
+  
   return (
     <div className="w-full h-[calc(100vh-72px)] md:h-[calc(100vh-70px)] flex items-center justify-center">
+      
       <div className="bg-white p-4 sm:p-8 rounded-lg shadow-md border w-11/12 sm:w-[550px]">
         <h2 className="text-2xl font-bold text-center mb-2">
           Create an Account
@@ -201,6 +204,7 @@ const SignUp = () => {
             </div>
           )}
         </form>
+        <GoogleLoginAuth />
         <p className="text-gray-600 mt-4 text-center">
           Already have an account?{" "}
           <Link to="/login" className="text-main-color hover:underline">
