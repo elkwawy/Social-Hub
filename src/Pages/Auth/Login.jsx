@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { loginUser } from "../../Redux/slices/userSlice";
 import Loader from "../../Utils/Loader";
+import GoogleLoginAuth from './GoogleLogin';
 
 const Login = () => {
   const location = useLocation();
@@ -162,6 +163,7 @@ const Login = () => {
             </div>
           )}
         </form>
+        <GoogleLoginAuth />
         <p className="text-gray-600 mt-4 text-center">
           Create a new account?{" "}
           <Link to="/signup" className="text-main-color hover:underline">

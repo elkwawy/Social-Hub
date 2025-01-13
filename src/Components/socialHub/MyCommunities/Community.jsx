@@ -9,6 +9,8 @@ import InviteUsersModal from './InviteUsersModal';
 import sweetalert from '../../../Utils/sweetalert';
 import { showToast } from '../../../Utils/showToast';
 import { BiTrash } from "react-icons/bi";
+import { Link } from 'react-router-dom';
+import { TbMessages } from "react-icons/tb";
 
 const Community = memo(({user, communityId, leaveCommunity, deleteCommunity}) => {
     const [community, setcommunity] = useState(null)
@@ -142,6 +144,9 @@ const Community = memo(({user, communityId, leaveCommunity, deleteCommunity}) =>
                         </div>
                     </div>}
                 </div>
+                <Link to={`/socialHub/communityChat/${community._id}`} state={{communityName: community.name, members:community.members}} className='p-2 rounded-md trans bg-gray-200 hover:bg-gray-300 ml-auto'>
+                    <TbMessages />
+                </Link>
             </div>}
 
             {community && openInviteUsersModal  && <InviteUsersModal community={community ? community : null}  followersArr={user.SubscribersOrFollowers} followedArr={user.SubscriberedOrFollowed} onClose={handleCloseInviteUsersModal} /> }

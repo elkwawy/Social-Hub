@@ -64,19 +64,15 @@ const useProfileVideosHook = () => {
 
         // Append file if available
         if (inputs.videoFile) {
-            console.log("Enter");
             formData.append('video', inputs.videoFile); // Key matches backend's `req.file`.
         }
-
-        // Append other fields
+        
         formData.append('userId', Cookies.get("userID"));
         formData.append('title', inputs.title);
-        formData.append('description', inputs.description);
         formData.append('thumbnailUrl', inputs.thumbnailURL);
-
-        // Debugging: Log FormData
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value);
+        formData.append('description', inputs.description);
+        if (inputs.tags?.length) { 
+            formData.append('tags', inputs.tags.join(','));
         }
 
         try {
@@ -90,9 +86,9 @@ const useProfileVideosHook = () => {
                 console.log('Video uploaded successfully:', response.data.video);
                 setVideos((prev) => [...prev, response.data.video]); // Add new video to state
                 showToast('success', "Video added successfully");
-                handleAddNewVideoModal(); // Close modal
+                handleOpenUploadVideoModal(); // Close modal
             } else {
-                console.error('Error uploading video:', response.data.message);
+                showToast('success', "Something went wrong with uploading video");
             }
         } catch (error) {
             // Handle errors

@@ -11,6 +11,7 @@ import VideoDescription from './VideoDescription';
 import Skeleton from 'react-loading-skeleton';
 
 const PlayingVideo = () => {
+    
     const location = useLocation();
     const video = location.state?.video || "";
     const channel = location.state?.user || "";
@@ -19,7 +20,9 @@ const PlayingVideo = () => {
     const [loading, setLoading] = useState(true);
     const [restrictions, setRestrictions] = useState(false);
     const [error, setError] = useState("");
-    
+    const [embedUrl, setEmbedUrl] = useState("");
+    const [uploaded, setUploaded] = useState(false)
+    console.log(video); 
     useEffect(() => { 
         window.scrollTo(0, 0);
         const handleVideoData = async () => {
@@ -57,17 +60,48 @@ const PlayingVideo = () => {
         }
     };
     
-
-    const formatYouTubeEmbedUrl = (url) => {
-        const videoIdMatch = url.match(/v=([a-zA-Z0-9_-]+)/);
-        return videoIdMatch ? `https://www.youtube.com/embed/${videoIdMatch[1]}` : url;
+    const formatEmbedUrl = (url) => {
+        if (!url) return '';
+        // Handle local server-hosted video
+        if (url.includes('uploads')) {
+            console.log("Enter");
+            const trimmedPath = url.split("uploads\\")[1];
+            console.log("trimmedPath : ",trimmedPath);
+            setUploaded(true);
+            return  `http://localhost:8800/uploads/${trimmedPath}`; // Ensure correct path format
+        }
+        
+        const videoIdMatch = url.match(/(?:v=|\/embed\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+        if (videoIdMatch) {
+            return `https://www.youtube.com/embed/${videoIdMatch[1]}`;
+        }
+        
+        return url;
     };
 
-    const embedUrl = formatYouTubeEmbedUrl(videoUpdatedData.videoUrl);
+    useEffect(() => {
+        return () => {
+            if (embedUrl) {
+                URL.revokeObjectURL(embedUrl);
+            }
+        };
+    }, [embedUrl]);
+
+    useEffect(() => {
+        if (video?.videoUrl) {
+            const url = formatEmbedUrl(video.videoUrl);
+            console.log("URL : ", url);
+            setEmbedUrl(url);
+        }
+    }, [video]);
+
+    // const embedUrl = formatYouTubeEmbedUrl(videoUpdatedData.videoUrl);
 
     if (!video) return <div>Something went wrong</div>;
-    
 
+    console.log("embedUrl : ", embedUrl);
+    
+    
     return (
         <div className='w-full  flex flex-col gap-4'>
             
@@ -97,7 +131,7 @@ const PlayingVideo = () => {
             <p className='text-xl font-bold'>{videoUpdatedData?.title}</p>
 
             <div className='w-full flex flex-col md:flex-row  justify-between md:items-center gap-5 md:gap-0'>
-                <ChannelDetails channelId={channelDetails?._id} name={channelDetails?.name} profilePicture={channelDetails?.profilePicture} />
+                {channel && <ChannelDetails channelId={channelDetails?._id} name={channelDetails?.name} profilePicture={channelDetails?.profilePicture} />}
                 <div className='flex items-center justify-between md:gap-5'>
                     <PlayingVideoOptions video={video} videoURL={video.videoUrl} />
                     {

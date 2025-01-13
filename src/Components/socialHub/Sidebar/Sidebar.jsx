@@ -21,7 +21,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 const Sidebar = React.memo(({ isOpen, onClose }) => {
   const { user } = useSelector((state) => state.user);
-  console.log(user);
 
   const location = useLocation();
 

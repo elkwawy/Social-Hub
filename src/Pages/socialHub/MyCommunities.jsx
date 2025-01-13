@@ -61,7 +61,7 @@ const MyCommunities = memo(() => {
       dispatch(updateUserCommunities([...user.communities, comm]));
     }
   };
-
+  
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* Static title */}
@@ -99,7 +99,7 @@ const MyCommunities = memo(() => {
           )}
 
           {/* No communities */}
-          {user && allMyCommunities.length === 0 && (
+          {user && (allMyCommunities.length == 0 || !allMyCommunities) && (
             <NoCommunitiesJoined
               handleOpenCreateCommunityModal={handleOpenCreateCommunityModal}
             />

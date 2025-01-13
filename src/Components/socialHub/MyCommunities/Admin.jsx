@@ -4,6 +4,7 @@ import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 import { API } from '../../../Api/Api';
 import LazyImage from '../../../Utils/LazyImage';
+import checkImageUrl from '../../../Utils/checkImageUrl';
 
 const Admin = memo(({admin}) => {
     // Get admin's pic  
@@ -25,7 +26,18 @@ const Admin = memo(({admin}) => {
             }
         }
         getadminDetails();
-    }, [])
+    }, []);
+
+    const checkImg = async (url) => {
+        await checkImageUrl(url).then((isValid) => {
+        if (isValid) {
+            return true;
+        } else {
+            return false;
+        }
+        });
+    };
+
     return (
         <>
             {
@@ -41,7 +53,7 @@ const Admin = memo(({admin}) => {
             }
             {!loading && adminData && !error && <Link to={`/socialHub/profile/${admin._id}`} className="flex gap-1 items-center">
                 
-                { adminData && adminData.profilePicture ? (
+                { adminData && checkImg(adminData.profilePicture) ? (
                 <LazyImage
                     className="max-w-6 h-6 rounded-full"
                     src={adminData.profilePicture}

@@ -19,17 +19,8 @@ const ChatScreen = memo(({ chat, setSelectedChat, setIsOpenSidebar }) => {
   const dispatch = useDispatch()
   useEffect(() => {
     if (chat?._id) { 
-      console.log("fetching");
       dispatch(fetchMessages(chat._id));
-      if (newMessages && newMessages.length) { 
-        console.log(newMessages);
-        console.log(messages);
-        
-        // loop on new Msgs
-        // mark each msg with its id using API.markMessagesAsRead(msgId)
-      }
     }
-
   }, [chat._id, dispatch]);
 
   const handleSendMessage = (receiverId) => {
@@ -77,10 +68,10 @@ const ChatScreen = memo(({ chat, setSelectedChat, setIsOpenSidebar }) => {
   };
 
   useEffect(() => {
-    groupMessagesByDate(messages);
+    if (messages.length)
+      groupMessagesByDate(messages);
   }, [chat?._id, messages]); // Trigger re-grouping when `messages` changes
 
-  // console.log(chat);
 
   useEffect(() => {
     if (chatScreenRef.current) {
@@ -95,6 +86,9 @@ const ChatScreen = memo(({ chat, setSelectedChat, setIsOpenSidebar }) => {
     const textToCopy = Massage;
     navigator.clipboard.writeText(textToCopy);
   };
+
+  console.log(chat);
+  
 
   return (
     <div className="flex flex-col w-full bg-gray-50">
