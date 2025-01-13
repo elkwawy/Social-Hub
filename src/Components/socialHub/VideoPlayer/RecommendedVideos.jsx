@@ -1,36 +1,54 @@
-import { useInView } from "react-intersection-observer";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import VideoGrid from "../MainPage/VideoGrid";
-import { useEffect, useState } from "react";
 import axios from "axios";
-import { API } from "../../../Api/Api";
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 import Skeleton from "react-loading-skeleton";
+import { useParams } from "react-router-dom";
+import { API } from "../../../Api/Api";
+import VideoGrid from "../MainPage/VideoGrid";
+import Loader from "../../../Utils/Loader";
 
 const RecommendedVideos = () => {
-  const {id:videoId} = useParams(); 
-  const { ref, inView } = useInView({ triggerOnce: true });
+  const { id: videoId } = useParams();
+  const [page, setPage] = useState(1);
   const [videos, setVideos] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  // const { videos, status, error } = useSelector((state) => state.randomVideos);
-  useEffect(() => { 
-    const getVideos = async () => { 
+  const [hasMore, setHasMore] = useState(true);
+
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+  });
+  useEffect(() => {
+    const getVideos = async () => {
       try {
-        setLoading(true)
-        const res = await axios.get(`${API.getRandomVideos}?page=${1}`);
-        setVideos(res.data.videos)
+        setLoading(true);
+        const res = await axios.get(`${API.getRandomVideos}?page=${page}`);
+        setVideos((prevVideos) => [...prevVideos, ...res.data.videos]);
+        setHasMore(res.data.videos.length > 0);
       } catch (error) {
-        setLoading(false)
-        setError(error?.response?.data?.message || "Something went wrong with fetching videos")
-      }finally { 
-        setLoading(false)
+        setError(error?.response?.data?.message || "Something went wrong with fetching videos");
+      } finally {
+        setLoading(false);
       }
+    };
+
+    if (hasMore) {
+      getVideos();
     }
-    getVideos()
+  }, [page, videoId]);
+
+  useEffect(() => { 
+    setPage(1);
+    setVideos([]);
   }, [videoId])
 
-  if (loading) 
+  useEffect(() => {
+    if (inView && hasMore) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  }, [inView, hasMore]);
+
+  if (loading && page === 1) 
     return (
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 xl:gap-5">
           {Array.from({ length: 12 }).map((_, index) => (
@@ -45,13 +63,11 @@ const RecommendedVideos = () => {
           ))}
         </div>
     )
-  if (error) 
+  if (error && error!= "No more videos available.") 
     return <div className="w-full flex items-center justify-center text-gray-600 text-center">{error}</div>
   
   return (
     <>
-    {
-      
       <div ref={ref}>
         {inView  && videos && videos.length > 0 && <div>
             <VideoGrid initVideos={
@@ -59,18 +75,12 @@ const RecommendedVideos = () => {
               }/>
         </div>}
       </div>
-      // <div ref={ref}>
-      //   {inView  && videos && videos.length > 0 && <div>
-      //       <VideoGrid initVideos={
-      //         videos.length > 21 ? 
-      //           videos.filter((vid) => vid._id != videoId).slice(0, 21)
-      //           :
-      //           videos.filter((vid) => vid._id!= videoId)
-      //         }/>
-      //   </div>}
-      // </div>
-    }
-
+      
+      {hasMore && (
+        <div ref={ref}>
+          {loading && <div className="w-full flex items-center justify-center"><Loader/></div>}
+        </div>
+      )}
     </>
   )
 }

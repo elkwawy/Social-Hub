@@ -12,6 +12,7 @@ import checkImageUrl from "../../../Utils/checkImageUrl";
 import { Img } from "react-image";
 import { FaUserCircle } from "react-icons/fa";
 import Error from "../../../utils/Error";
+import Skeleton from "react-loading-skeleton";
 
 const ChatScreen = memo(({ chat, setSelectedChat, setIsOpenSidebar }) => {
   const [message, setMessage] = useState("");
@@ -115,12 +116,12 @@ const ChatScreen = memo(({ chat, setSelectedChat, setIsOpenSidebar }) => {
           className="text-lg font-semibold flex gap-2 items-center"
         >
           {chat &&  (
-              chat.picture &&
-              isValidUrl(chat.picture) &&
-              checkImg(chat.picture) ? (
+              chat.photoUrl &&
+              isValidUrl(chat.photoUrl) &&
+              checkImg(chat.photoUrl) ? (
                 <Img
                   className="min-w-9 max-w-9 h-9 rounded-full"
-                  src={chat.picture}
+                  src={chat.photoUrl}
                   loader={
                     <div className="w-9 h-9 rounded-full">
                       <Skeleton
