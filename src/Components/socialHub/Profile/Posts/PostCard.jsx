@@ -84,6 +84,9 @@ function PostCard({ post, user, edit, openComments }) {
     };
   }, [showActions]);
 
+  console.log(post);
+  
+
   return (
     <div className="bg-white rounded-lg  p-4 shadow-sm mb-4">
       <div className="flex items-center justify-between mb-4">

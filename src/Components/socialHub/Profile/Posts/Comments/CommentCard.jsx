@@ -4,7 +4,6 @@ import { MdOutlineReply } from "react-icons/md";
 import profile from "../../../../../assets/profile.jpg";
 import CommentsActionsHook from "../../../../../Hooks/CommentsHook";
 import ReplyCard from "./ReplyCard";
-
 const CommentCard = ({
   comment,
   user,
@@ -13,7 +12,6 @@ const CommentCard = ({
   setCommentsCount,
   borderB,
 }) => {
-
   const [replies, setReplies] = useState([]);
   const [loadingReplies, setLoadingReplies] = useState(false);
   const [repliesCount, setRepliesCount] = useState(
@@ -66,6 +64,8 @@ const CommentCard = ({
       handleReply(commentID);
     }
   };
+  console.log(comment);
+  
 
   return (
     <div className="flex items-start gap-3 mb-4">
@@ -94,7 +94,7 @@ const CommentCard = ({
             <button
               className="text-gray-500 hover:text-red-600"
               title="Delete"
-              // onClick={}
+              onClick={() => handleDeleteComment(comment.objectId)}
             >
               <AiOutlineDelete size={16} />
             </button>
@@ -118,7 +118,7 @@ const CommentCard = ({
         {replyToComment && (
           <div className="flex items-center py-4 gap-3 rounded-b-lg">
             <img
-              src={user.profilePicture}
+            src={user.profilePicture || profile}
               alt={user.name}
               className="w-10 h-10 rounded-full"
             />

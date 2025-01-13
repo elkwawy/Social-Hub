@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineSend } from "react-icons/ai";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css"; // تأكد من استيراد الـ CSS
+import "react-loading-skeleton/dist/skeleton.css";
 import CommentCard from "./CommentCard";
 import profile from "../../../../../assets/profile.jpg";
 import CommentsActionsHook from "../../../../../Hooks/CommentsHook";
