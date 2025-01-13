@@ -16,8 +16,6 @@ const useSavedItems = () => {
         try {
             setVideosLoading(true)
             const res = await axios.get(API.getSavedVideos);
-            console.log(res.data);
-            
             setVideos(res.data.savedVideos);
         } catch (error) {
             console.error('Error fetching videos:', error);
@@ -30,7 +28,6 @@ const useSavedItems = () => {
     const handleSaveVideo = async (video) => {
         try {
             const response = await axios.post(`${API.saveVideo}/${video._id}`);
-            console.log(response.data);
             showToast('success', "Video saved successfully");
             dispatch(saveVideo(video));
         } catch (error) {

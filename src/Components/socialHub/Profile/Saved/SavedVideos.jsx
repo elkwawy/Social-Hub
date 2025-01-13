@@ -37,7 +37,6 @@ const SavedVideos = () => {
                 }}
                 >
                 {videos && videos.map((video) => { 
-                    console.log("video: ", video)
                     const vid  = {...video,userId:video.ownerId}
                     return (<SwiperSlide key={video._id} >
                         <div>

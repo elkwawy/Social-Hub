@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { API } from '../../../Api/Api';
 import LazyImage from '../../../Utils/LazyImage';
 import checkImageUrl from '../../../Utils/checkImageUrl';
+import { Img } from 'react-image';
 
 const Admin = memo(({admin}) => {
     // Get admin's pic  
@@ -55,7 +56,7 @@ const Admin = memo(({admin}) => {
                 
                 { adminData && checkImg(adminData.profilePicture) ? (
                 <LazyImage
-                    className="max-w-6 h-6 rounded-full"
+                    className="min-w-6 max-w-6 h-6 rounded-full"
                     src={adminData.profilePicture}
                     loader={
                         <div className="w-6 h-6 rounded-full">
@@ -64,7 +65,7 @@ const Admin = memo(({admin}) => {
                     }
                     />
                 ) : (
-                    <LazyImage
+                    <Img
                             className="w-6 h-6 rounded-full bg-white"
                             src={`/src/assets/user.svg`}
                             loader={
@@ -74,7 +75,7 @@ const Admin = memo(({admin}) => {
                             }
                             />
                 )}
-                <p className="text-xs text-gray-600">{admin.name.length > 10 ? admin.name.slice(0, 7) + "..."  : admin.name}</p>
+                <button title={admin.name} className="text-xs text-gray-600">{admin.name.length > 10 ? admin.name.slice(0, 7) + "..."  : admin.name}</button>
             </Link>}
             {
                 error &&

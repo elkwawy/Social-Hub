@@ -6,14 +6,12 @@ import VideoGrid from "../../Components/socialHub/MainPage/VideoGrid";
 import { getRandomVideos } from "../../Redux/slices/randomVideos";
 import { useLocation } from "react-router-dom";
 import Loader from "../../Utils/Loader";
-import { socket } from "./SocialHubLayout";
+import Error from "../../utils/Error";
 
 const MainPage = () => {
   const dispatch = useDispatch();
   const { videos, status, error, currentPage, hasMore } = useSelector((state) => state.randomVideos);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
-  
-  
 
   useEffect(() => {
     // Fetch initial videos on mount
@@ -62,15 +60,15 @@ const MainPage = () => {
       </div>
     );
 
-  if (status === "failed" && error !== "No more videos available.")
+  if (status === "failed" && error !== "No more videos available.") { 
+    let err = error ? error : "Failed to load videos";
     return (
-      <div className="col-span-full  text-center bg-gray-200 text-red-500">
-        <p>{error || "Failed to load videos"}</p>
+      <div className="col-span-full h-[calc(100vh-123px)]  text-center flex items-center justify-center ">
+        <Error error={err} fontSize={"text-lg"} />
       </div>
-    );
-    
-    
-
+    )
+  }
+  
   return (
     <div className="min-h-screen">
       <VideoGrid initVideos={videos} />

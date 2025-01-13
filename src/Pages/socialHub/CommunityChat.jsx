@@ -13,6 +13,8 @@ import Loader from "../../Utils/Loader";
 import { isValidUrl } from "../../Utils/validateURLs";
 import Skeleton from "react-loading-skeleton";
 import { showToast } from "../../Utils/showToast";
+import Error from "../../utils/Error";
+import socket, { joinCommunity } from "../../utils/socket";
 const CommunityChat = memo(() => {
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
@@ -64,16 +66,55 @@ const CommunityChat = memo(() => {
                 content: message,
                 senderId: userId,
                 senderName: user?.name,
+                communityId:id,
                 senderProfilePicture: user?.profilePicture,
                 timestamp: new Date(),
                 isRead: false,
                 type:"community"
             }
-            setMessages((prevMessages) => prevMessages.length ? [...prevMessages, msg] : msg);
+            setMessages((prevMessages) => prevMessages.length ? [...prevMessages, msg] : [msg]);
             handleSendMessage();
+            socket.emit("send-community-message", {...msg});
             setMessage("");
         }
     };
+
+    useEffect(() => {
+        const handleConnect = () => {
+        if (id) {
+            console.log("Socket connected. Emitting join-community event.");
+            joinCommunity(id);
+        }
+        };
+
+        // Listen for the "connect" event
+        socket.on("connect", handleConnect);
+
+        // Join the community if the socket is already connected
+        if (socket.connected && id) {
+        joinCommunity(id);
+        }
+
+        // Clean up the event listener on unmount
+        return () => {
+        socket.off("connect", handleConnect);
+        };
+    }, [id, socket.connected]);
+
+    useEffect(() => {
+        const handleMsgReceive = (data) => {
+            console.log("done", data);
+            setMessages((prevMessages) => [...prevMessages, data]);
+        };
+
+        // Listen for the "community-message-received" event
+        socket.on("community-message-received", handleMsgReceive);
+
+        // Clean up the event listener on unmount
+        return () => {
+            socket.off("community-message-received", handleMsgReceive);
+        };
+    }, [socket, id]);
 
     const groupMessagesByDate = (messages) => {
         const today = new Date();
@@ -169,51 +210,60 @@ const CommunityChat = memo(() => {
             )}
 
             {!loading && !error &&
-            Object.keys(groupedMessages).map((date) => (
-                <div key={date} className="space-y-2">
-                <div className="text-center text-sm p-2 rounded-md bg-white w-fit mx-auto text-black my-2">
-                    {date}
-                </div>
-                {groupedMessages[date].map((msg) => (
-                    <div
-                    key={msg._id}
-                    className={`flex ${msg.senderId === userId ? "justify-end" : "justify-start"}`}
-                    >
-                    <div className={`flex ${msg.senderId === userId ? "flex-row-reverse" : "flex-row"} gap-2`}>
-                        {
-                                msg.senderProfilePicture && isValidUrl(msg.senderProfilePicture) && checkImg(msg.senderProfilePicture)
-                                ? <Img src={msg.senderProfilePicture} className='w-8 h-8 rounded-full' loader={<div className='w-10 h-10 rounded-full'><Skeleton width={'100%'} height={'100%'} borderRadius={'100%'} /></div>} />
-                                : <FaUserCircle className="text-gray-300 w-9 h-9" />
-                            }
+                (
+                    messages.length > 0 ? 
+                    (
+                        Object.keys(groupedMessages).map((date) => (
+                    <div key={date} className="space-y-2">
+                    <div className="text-center text-sm p-2 rounded-md bg-white w-fit mx-auto text-black my-2">
+                        {date}
+                    </div>
+                    {groupedMessages[date].map((msg) => (
                         <div
-                            className={`max-w-xs break-words px-4 py-2 rounded-lg text-white relative ${
-                            msg.senderId === userId ? "bg-main-color" : "bg-gray-400"
-                            }`}
+                        key={msg._id}
+                        className={`flex ${msg.senderId === userId ? "justify-end" : "justify-start"}`}
                         >
-                            <IoCopy
-                            size={10}
-                            onClick={() => handleCopy(msg.content)}
-                            className={`absolute top-1 ${msg.senderId === userId ? "right-1" : "left-1"} cursor-pointer`}
-                            />
-                            <div className="flex items-center mt-1 gap-1">
-                                <button onClick={() => navToUser(msg.senderId)} title={msg.senderName} className="text-sm font-semibold">
-                                    {msg.senderName.length > 13 ? msg.senderName.slice(0,10) + "..." : msg.senderName}
-                                </button>
+                            <div className={`flex ${msg.senderId === userId ? "flex-row-reverse" : "flex-row"} gap-2`}>
+                                {
+                                        msg.senderProfilePicture && isValidUrl(msg.senderProfilePicture) && checkImg(msg.senderProfilePicture)
+                                        ? <Img src={msg.senderProfilePicture} className='w-8 h-8 rounded-full' loader={<div className='w-10 h-10 rounded-full'><Skeleton width={'100%'} height={'100%'} borderRadius={'100%'} /></div>} />
+                                        : <FaUserCircle className="text-gray-300 w-9 h-9" />
+                                    }
+                                <div
+                                    className={`max-w-xs break-words px-4 py-2 rounded-lg text-white relative ${
+                                    msg.senderId === userId ? "bg-main-color" : "bg-gray-400"
+                                    }`}
+                                >
+                                    <IoCopy
+                                    size={10}
+                                    onClick={() => handleCopy(msg.content)}
+                                    className={`absolute top-1 ${msg.senderId === userId ? "right-1" : "left-1"} cursor-pointer`}
+                                    />
+                                    <div className="flex items-center mt-1 gap-1">
+                                        <button onClick={() => navToUser(msg.senderId)} title={msg.senderName} className="text-sm font-semibold">
+                                            {msg.senderName.length > 13 ? msg.senderName.slice(0,10) + "..." : msg.senderName}
+                                        </button>
+                                    </div>
+                                    <span className="text-gray-100">{msg.content}</span>
+                                    <span className="block text-right text-xs text-gray-200 mt-1">
+                                    {getMsgDateFormatted(msg.timestamp)}
+                                    </span>
+                                </div>
                             </div>
-                            {msg.content}
-                            <span className="block text-right text-xs text-gray-200 mt-1">
-                            {getMsgDateFormatted(msg.timestamp)}
-                            </span>
                         </div>
+                    ))}
                     </div>
-                    </div>
-                ))}
-                </div>
-            ))}
+                )))
+                :
+                    <Error error={"No messages sent"} />
+                )
+            }
             
             {
                 error && 
-                <div className="text-center text-gray-500 text-xl ">{error}</div>
+                <div className="text-center flex items-center justify-center h-full">
+                    <Error error={error} />
+                </div>
             }
         </div>
 

@@ -38,8 +38,6 @@ const Profile = () => {
     window.scrollTo(0, 0);
     fetchUserById();
   }, [id]);
-  console.log(user);
-
   const currentTab = useMemo(() => pathSegments[4] || null, [pathSegments]);
 
   return (

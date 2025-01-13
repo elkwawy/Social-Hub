@@ -40,8 +40,7 @@ const History = () => {
       setError("Please select a date.");
     }
   };
-
-  console.log(selectedDate);
+  
 
   return (
     <div className="max-w-4xl  mt-3 mx-auto p-6 shadow  rounded-lg">

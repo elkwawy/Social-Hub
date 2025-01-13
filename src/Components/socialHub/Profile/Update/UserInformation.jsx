@@ -7,11 +7,9 @@ import ButtonForm from "../../../helpers/ButtonForm";
 import { useUsers } from "../../../../Hooks/useUsers";
 import { useDispatch } from "react-redux";
 import { getCurrUser } from "../../../../Redux/slices/userSlice";
-import LoaderW from "../../../../Utils/LoaderW";
 import GhostMode from "../GhostMode";
+import LoaderW from "../../../../Utils/loaderW";
 function UserInformation({ user, edit, setnameUser , fetchUserById }) {
-  console.log(user);
-
   const dispatch = useDispatch();
   const { handleUpdateUser, statusUpdate } = useUsers();
   const [isOpen, setIsOpen] = useState(false);
@@ -54,8 +52,6 @@ function UserInformation({ user, edit, setnameUser , fetchUserById }) {
     }, {});
 
     selectedValues.currentPassword = values.currentPassword;
-
-    console.log(selectedValues);
 
     if (Object.keys(selectedValues).length === 1) {
       showToast("error", "Please select at least one field to update.");

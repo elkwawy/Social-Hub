@@ -9,6 +9,9 @@ import { API } from "../../../Api/Api";
 import axios from "axios";
 import { isValidUrl } from "../../../Utils/validateURLs";
 import LoaderW from "../../../Utils/loaderW";
+import { Img } from "react-image";
+import checkImageUrl from "../../../Utils/checkImageUrl";
+import Skeleton from "react-loading-skeleton";
 const PeopleCard = ({ person }) => {
   const { handleSubscribe, handleUnsubscribe, handleAddFriend, error } =
     useUsers();
@@ -61,17 +64,52 @@ const PeopleCard = ({ person }) => {
     getMutualFriends();
   }, [person._id]);
 
+  const checkImg = async (url) => {
+      await checkImageUrl(url).then((isValid) => {
+        if (isValid) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    };
+    console.log(person.profilePicture);
   return (
     <div className="flex items-center max-[540px]:flex-col max-[540px]:gap-2 p-5 bg-gray-100 shadow border border-gray-300 rounded-lg hover:shadow-md transition-shadow duration-200">
       {/* صورة المستخدم */}
       <Link to={`/socialHub/profile/${person._id}`}>
-        <img
-          src={
-            isValidUrl(person.profilePicture) ? person.profilePicture : profile
-          }
+        {(person.profilePicture &&  isValidUrl(person.profilePicture) && checkImg(person.profilePicture)) ? 
+        <Img
+          src={person.profilePicture}
           alt={person.name}
           className="w-[96px] h-[96px] rounded-full"
+          loader={
+            <div className="w-[96px] h-[96px] rounded-full">
+              <Skeleton
+                height="100%"
+                width="100%"
+                borderRadius={"100%"}
+              />
+            </div>
+          }
         />
+        :
+        <Img
+          src={profile}
+          alt={person.name}
+          className="w-[96px] h-[96px] rounded-full"
+          loader={
+            <div className="w-[96px] h-[96px] rounded-full">
+              <Skeleton
+                height="100%"
+                width="100%"
+                borderRadius={"100%"}
+              />
+            </div>
+          }
+        />
+
+      }
       </Link>
 
       {/* بيانات المستخدم */}

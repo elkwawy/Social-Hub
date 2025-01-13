@@ -5,7 +5,7 @@ import ChatScreen from "../../Components/socialHub/Messages/ChatScreen";
 import ChatSidebar from "../../Components/socialHub/Messages/ChatSidebar";
 import { pushNewMessageToUnReadMessages, receiveMessage } from "../../Redux/slices/chatSlice";
 import { reorderChatsWhenReceive } from "../../Redux/slices/userChats";
-import { socket } from "./SocialHubLayout";
+import socket from "../../utils/socket";
 
 const MyMessages = () => {
   const loc = useLocation();
@@ -42,18 +42,12 @@ const MyMessages = () => {
       };
       dispatch(reorderChatsWhenReceive(sender));
     };
-
-    const logger = (notification) => {
-      console.log("New notification:", notification);
-    };
-
+    
     // Listen for events
-    socket.current.on("msg-recieve", handleMsgReceive);
-    socket.current.on("new-notification",logger);
-
+    socket.on("msg-recieve", handleMsgReceive);
+    
     return () => {
-      socket.current.off("msg-recieve", handleMsgReceive);
-      socket.current.off("new-notification", logger);
+      socket.off("msg-recieve", handleMsgReceive);
     };
   }, [dispatch, selectedChat, socket]);
 

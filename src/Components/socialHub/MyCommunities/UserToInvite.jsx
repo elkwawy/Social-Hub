@@ -3,34 +3,18 @@ import React, { memo, useEffect, useState } from 'react';
 import { FaUserCircle } from "react-icons/fa";
 import Skeleton from 'react-loading-skeleton';
 import { API } from '../../../Api/Api';
-import LazyImage from '../../../Utils/LazyImage';
 import Loader from '../../../Utils/Loader';
 import { showToast } from '../../../Utils/showToast';
+import { Img } from 'react-image';
 
 const UserToInvite = memo(({ user, communityId }) => {
     // Redux selectors and dispatch
-    const [userData, setUserData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [inviteSent, setInviteSent] = useState(false);
     const [pendingUser, setPendingUser] = useState(false)
     const [inviteLoading, setinviteLoading] = useState(false)
 
     // Fetch user data
-    useEffect(() => { 
-        const getUserDetails = async () => { 
-            try {
-                setLoading(true);
-                const response = await axios.get(`${API.getUserById}/${user._id}`);
-                setUserData(response.data);
-            } catch (error) {
-                setError(error.response?.data?.message || "Somthing went wrong");
-            } finally{ 
-                setLoading(false);
-            }
-        }
-        getUserDetails();
-    }, [user])
-
     const handleInviteUser = async () => {
         try {
             setinviteLoading(true)
@@ -51,19 +35,15 @@ const UserToInvite = memo(({ user, communityId }) => {
     };
 
     useEffect(() => { 
-        console.log(userData)
-        const hasPendingInvitation = userData?.invitations?.some(
+        const hasPendingInvitation = user?.invitations?.some(
             (c) => (c.communityId === communityId) && !c.accepted
         );
         if (hasPendingInvitation) {
             setPendingUser(true);
-        }else { 
+        } else { 
             setPendingUser(false);
         }
-    }, [userData, communityId]);
-
-
-    
+    }, [communityId]);
 
     return (
         <>
@@ -77,13 +57,13 @@ const UserToInvite = memo(({ user, communityId }) => {
                     </div>
                 </div>
             )}
-            {!loading && userData &&  (
+            {!loading && user &&  (
                 <div className="flex gap-1 w-full justify-between items-center">
                     <div className="flex items-center justify-center gap-1">
-                        {userData && userData.profilePicture ? (
-                            <LazyImage
-                                className="max-w-10 h-10 rounded-full"
-                                src={userData.profilePicture}
+                        {user && user.profilePicture ? (
+                            <Img
+                                className="min-w-10 max-w-10 h-10 rounded-full"
+                                src={user.profilePicture}
                                 loader={
                                     <div className="w-10 h-10 rounded-full">
                                         <Skeleton height="100%" width="100%" borderRadius={"100%"} />
@@ -106,9 +86,6 @@ const UserToInvite = memo(({ user, communityId }) => {
                     {(pendingUser || inviteSent) && <button className="select-none text-white pointer-events-none text-xs bg-red-300 px-3 py-2 ml-5 rounded-md ">Pending</button>}
                     {inviteLoading && <div className='px-3'><Loader width={'30px'} /></div>}
                 </div>
-            )}
-            {!loading && !userData &&  (
-                <div className="text-center text-sm text-red-500">{error}</div>
             )}
         </>
     );

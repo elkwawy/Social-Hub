@@ -130,8 +130,6 @@ const UploadVideoModal = memo(({uploadVideo, addVideoLoading}) => {
             setErrors((prev) => ({ ...prev, videoURL: "" })); // Clear errors if file is dropped
         }
     };
-
-    console.log(inputs);
     
     const handleRemoveFile = () => { 
         setInputs({...inputs, videoFile:null});

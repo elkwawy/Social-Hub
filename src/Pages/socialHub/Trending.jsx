@@ -52,7 +52,7 @@ const Trending = () => {
   }, [dispatch, status, hasMore, isFetchingMore, currentPage]);
 
   // Show skeletons while loading
-  if (status === "loading" && videos.length === 0)
+  if (status === "loading" && videos.length === 0) {
     return (
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 xl:gap-5">
         {Array.from({ length: 9 }).map((_, index) => (
@@ -67,14 +67,17 @@ const Trending = () => {
         ))}
       </div>
     );
+  }
 
   // Show error message if loading failed
-  if (status === "failed" && error != 'No more trending videos available.')
+  if (status === "failed" && error !== "No more trending videos available.") { 
+    let err = error ? error : "Failed to load videos";
     return (
-      <div className="col-span-full text-center bg-gray-200 text-red-500">
-        <p>{error || "Failed to load videos"}</p>
+      <div className="col-span-full h-[calc(100vh-123px)]  text-center flex items-center justify-center ">
+        <Error error={err} fontSize={"text-lg"} />
       </div>
-    );
+    )
+  }
 
   return (
     <div className="min-h-screen">

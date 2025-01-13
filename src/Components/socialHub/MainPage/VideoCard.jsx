@@ -199,8 +199,8 @@ const VideoCard = React.memo(
                 {user && user.profilePicture ? (
                   isValidUrl(user.profilePicture) &&
                   checkImg(user.profilePicture) ? (
-                    <LazyImage
-                      className="max-w-9 h-9 rounded-full"
+                    <Img
+                      className="min-w-9 max-w-9 h-9 rounded-full"
                       src={user.profilePicture}
                       loader={
                         <div className="w-9 h-9 rounded-full">
