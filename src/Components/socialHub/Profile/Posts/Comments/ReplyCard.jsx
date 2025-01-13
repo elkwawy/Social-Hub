@@ -3,18 +3,18 @@ import { MdOutlineReply } from "react-icons/md";
 import { useState } from "react";
 import profile from "../../../../../assets/profile.jpg";
 
-const ReplyCard = ({ reply, handleDeleteComment, borderB, user }) => {
-  const [replyText, setReplyText] = useState("");
-  const [replyToReply, setReplyToReply] = useState(false);
+const ReplyCard = ({ reply,  borderB, user }) => {
+  // const [replyText, setReplyText] = useState("");
+  // const [replyToReply, setReplyToReply] = useState(false);
 
-  const handleReplyToReply = async (replyID) => {
-    // Logic to reply to a reply
-    if (replyText.trim()) {
-      console.log(`Replying to reply with ID ${replyID}`);
-      setReplyText("");
-      setReplyToReply(false);
-    }
-  };
+  // const handleReplyToReply = async (replyID) => {
+  //   // Logic to reply to a reply
+  //   if (replyText.trim()) {
+  //     console.log(`Replying to reply with ID ${replyID}`);
+  //     setReplyText("");
+  //     setReplyToReply(false);
+  //   }
+  // };
 
   return (
     <div className="flex items-center justify-between">

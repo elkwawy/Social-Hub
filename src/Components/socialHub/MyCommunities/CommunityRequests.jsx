@@ -20,14 +20,18 @@ const CommunityRequests = () => {
       setLoading(false);
     }
   };
-
+  console.log(invitations);
+  
   // Accept invitation
-  const handleAcceptInvitation = async (invitationId) => {
+  const handleAcceptInvitation = async (communityId) => {
     const copyInvitations = [...invitations];
-    setInvitations((prev) => prev.filter((inv) => inv._id !== invitationId));
+    setInvitations((prev) =>
+      prev.filter((inv) => inv.communityId !== communityId)
+    );
     try {
-      await axios.post(API.acceptInvitation, { communityId: invitationId });
+      await axios.post(API.acceptInvitation, { communityId: communityId });
       showToast("success", "Invitation accepted successfully");
+      console.log("Invitation accepted successfully");
     } catch (error) {
       setInvitations(copyInvitations);
       showToast("error", "Something went wrong");
@@ -85,14 +89,12 @@ const CommunityRequests = () => {
   
 
   return (
-    <div className="mt-7">
-      <h2 className="text-3xl font-bold text-gray-600">Community Requests</h2>
+    <div className="mt-6">
+      <h2 className="text-3xl font-bold text-gray-800">Community Requests</h2>
       {loading ? (
         renderSkeleton()
       ) : invitations.length === 0 ? (
-        <div>
-          <p className="mt-6 text-gray-600 w-full flex items-center justify-center ">No community requests available.</p>
-        </div>
+        <p className="mt-2 text-gray-600">No community requests available.</p>
       ) : (
         <ul className="mt-7 grid grid-cols-1 md:grid-cols-2 gap-6">
           {invitations.map((invitation) => (
@@ -135,7 +137,7 @@ const CommunityRequests = () => {
                   Ignore
                 </button>
                 <button
-                  onClick={() => handleAcceptInvitation(invitation._id)}
+                  onClick={() => handleAcceptInvitation(invitation.communityId)}
                   className="px-6 py-2  border border-main-color  bg-main-color text-white rounded-md hover:bg-sec-color"
                 >
                   Accept
