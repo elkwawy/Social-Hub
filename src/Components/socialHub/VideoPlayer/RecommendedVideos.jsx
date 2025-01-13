@@ -8,6 +8,7 @@ import VideoGrid from "../MainPage/VideoGrid";
 import Loader from "../../../Utils/Loader";
 
 const RecommendedVideos = () => {
+  
   const { id: videoId } = useParams();
   const [page, setPage] = useState(1);
   const [videos, setVideos] = useState([]);
