@@ -25,7 +25,7 @@ export const API = {
   getMessages: `${BASE_URL}/messages/conversation`, // /:recieverId
   getGroupMessages: `${BASE_URL}/messages/groupConversations`, // /:groupId
   sendGroupMessage: `${BASE_URL}/messages/sendCommunityMessage`, // /:groupId
-  markMessagesAsRead : (msgId) => `${BASE_URL}/messages/${msgId}/mark-as-read`, 
+  markMessagesAsRead: (msgId) => `${BASE_URL}/messages/${msgId}/mark-as-read`,
   /* ======= Comments ======= */
   addComment: `${BASE_URL}/comments`,
   replyComment: `${BASE_URL}/comments/addReply`,
@@ -48,8 +48,8 @@ export const API = {
   unSaveVideo: `${BASE_URL}/videos/unsave`, //   /:videoId
   likeVideo: `${BASE_URL}/users/like`, //   /:videoId
   disLikeVideo: `${BASE_URL}/users/dislike`, //   /:videoId
-  getSavedVideos: `${BASE_URL}/videos/getSavedVideos`,  
-  uploadVideo : `${BASE_URL}/videos/upload/video`,
+  getSavedVideos: `${BASE_URL}/videos/getSavedVideos`,
+  uploadVideo: `${BASE_URL}/videos/upload/video`,
   /* ======= Users ======= */
   getAllUsers: `${BASE_URL}/users/getRandomUsers`,
   searchByName: `${BASE_URL}/users/Search_Users_Name`,
@@ -103,4 +103,8 @@ export const API = {
   getUserPlanById: `${BASE_URL}/premium-plans/PlanType`, //     /:idUser
   currentUserPlanExpiration: `${BASE_URL}/premium-plans/premium/expiration`,
   ghostMode: `${BASE_URL}/premium-plans/ghost-mode`,
+  /* ======= Market ======= */
+  icrementLikes: `${BASE_URL}/store/icrementlikes`,
+  icrementViews: `${BASE_URL}/store/icrementviews`,
+  icrementcomments: `${BASE_URL}/store/icrementcomments`,
 };

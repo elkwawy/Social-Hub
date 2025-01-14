@@ -37,7 +37,8 @@ const VideoCard = React.memo(
     const { ref, inView } = useInView({ triggerOnce: true }); 
     const userId = Cookies.get("userID");
     const { handleSaveVideo } = useSavedItems();
-
+  //  console.log(video);
+   
     const isValidUrl = useCallback(
       (url) => {
         try {

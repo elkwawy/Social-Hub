@@ -5,15 +5,16 @@ import "react-loading-skeleton/dist/skeleton.css";
 import CommentCard from "./CommentCard";
 import profile from "../../../../../assets/profile.jpg";
 import CommentsActionsHook from "../../../../../Hooks/CommentsHook";
+import { useSelector } from "react-redux";
 
 const CommentsModal = ({ post, user,setModalOpen, setCommentsCount , edit }) => {
-  const commentsSectionRef = useRef(null);
+  const { user: me } =  useSelector((state) => state.user);
   const { getComments, addComment } = CommentsActionsHook();
+  const commentsSectionRef = useRef(null);
   const [comments, setComments] = useState([]);
   const [loadingComments, setLoadingComments] = useState(false);
   const [newComment, setNewComment] = useState("");
   console.log(comments);
-
   useEffect(() => {
     if (post?._id) {
       setLoadingComments(true);
@@ -34,9 +35,9 @@ const CommentsModal = ({ post, user,setModalOpen, setCommentsCount , edit }) => 
             objectId: post._id,
             userId: {
               // local data
-              name: user?.name,
-              profilePicture: user?.profilePicture,
-              _id: user?._id,
+              name: me?.name,
+              profilePicture: me?.profilePicture,
+              _id: me?._id,
             },
           },
           setComments
@@ -55,6 +56,9 @@ const CommentsModal = ({ post, user,setModalOpen, setCommentsCount , edit }) => 
       handleAddComment();
     }
   };
+
+  console.log(comments);
+  
 
   useEffect(() => {
     if (commentsSectionRef.current) {
@@ -118,6 +122,7 @@ const CommentsModal = ({ post, user,setModalOpen, setCommentsCount , edit }) => 
                   key={index}
                   comment={comment}
                   user={user}
+                  me={me}
                   edit={edit}
                   borderB={index !== comments.length - 1}
                   setComments={setComments}
@@ -130,8 +135,8 @@ const CommentsModal = ({ post, user,setModalOpen, setCommentsCount , edit }) => 
         {/* Add Comment Section */}
         <div className="flex items-center py-4 gap-3 rounded-b-lg bg-white border-t px-4">
           <img
-            src={user.profilePicture || profile}
-            alt={user.name}
+            src={me.profilePicture || profile}
+            alt={me.name}
             className="w-10 h-10 rounded-full"
           />
           <input

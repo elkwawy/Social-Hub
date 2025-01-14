@@ -1,17 +1,16 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   FaHome,
   FaUsers,
   FaSignOutAlt,
   FaClipboard,
-  FaUserFriends,
+  FaStore,
 } from "react-icons/fa";
 import { TbMessagePlus } from "react-icons/tb";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { TbMessages } from "react-icons/tb";
 import { RiCommunityLine } from "react-icons/ri";
-import { FaRegSave } from "react-icons/fa";
 import SidebarHeader from "./SidebarHeader";
 import SidebarItem from "./SidebarItem";
 import { useDispatch } from "react-redux";
@@ -74,6 +73,12 @@ const Sidebar = React.memo(({ isOpen, onClose }) => {
       text: "Beta Bot AI",
       path: "betaBotAi",
       scr: "/socialHub/betaBotAi",
+    },
+    {
+      icon: FaStore,
+      text: "Market Hub",
+      path: "marketHub",
+      scr: "/socialHub/marketHub",
     },
     {
       icon: FaClipboard,

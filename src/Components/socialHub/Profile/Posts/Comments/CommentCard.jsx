@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
+import Cookie from "js-cookie";
 import { AiOutlineSend, AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineReply } from "react-icons/md";
 import profile from "../../../../../assets/profile.jpg";
-import CommentsActionsHook from "../../../../../Hooks/CommentsHook";
 import ReplyCard from "./ReplyCard";
+import CommentsActionsHook from "../../../../../Hooks/CommentsHook";
 const CommentCard = ({
   comment,
   user,
+  me,
   edit,
   setComments,
   setCommentsCount,
   borderB,
 }) => {
+  const { getRepliesOnComment, replyComment, deleteComment } =
+    CommentsActionsHook();
+
   const [replies, setReplies] = useState([]);
   const [loadingReplies, setLoadingReplies] = useState(false);
   const [repliesCount, setRepliesCount] = useState(
@@ -28,9 +33,6 @@ const CommentCard = ({
     }
   }, [repliesCount]);
 
-  const { getRepliesOnComment, replyComment, deleteComment } =
-    CommentsActionsHook();
-
   const handleReply = async (commentID) => {
     if (replyText.trim()) {
       let savedReply = replyText;
@@ -42,8 +44,8 @@ const CommentCard = ({
             desc: replyText,
             commentId: commentID,
             user: {
-              name: user?.name,
-              profilePicture: user?.profilePicture,
+              name: me?.name,
+              profilePicture: me?.profilePicture,
             },
           },
           setReplies
@@ -64,8 +66,7 @@ const CommentCard = ({
       handleReply(commentID);
     }
   };
-  console.log(comment);
-  
+
 
   return (
     <div className="flex items-start gap-3 mb-4">
@@ -76,10 +77,12 @@ const CommentCard = ({
       />
       <div className={`flex-1 pb-1 ${borderB && "border-b"} border-gray-200`}>
         <div className="flex justify-between items-center">
+          {/* User Name and Comment */}
           <div className="space-y-1">
             <p className="text-sm font-medium">{comment.userId.name}</p>
             <p className="text-sm text-gray-600">{comment.desc}</p>
           </div>
+          {/* Reply, Delete Buttons */}
           <div className="flex items-center gap-2">
             <button
               className="text-gray-500 hover:text-gray-700"
@@ -91,23 +94,46 @@ const CommentCard = ({
             >
               <MdOutlineReply size={16} />
             </button>
-            <button
-              className="text-gray-500 hover:text-red-600"
-              title="Delete"
-              onClick={() => handleDeleteComment(comment.objectId)}
-            >
-              <AiOutlineDelete size={16} />
-            </button>
+            {edit ? (
+              <button
+                className="text-gray-500 hover:text-red-600"
+                title="Delete"
+                onClick={() => handleDeleteComment(comment._id)}
+              >
+                <AiOutlineDelete size={16} />
+              </button>
+            ) : (
+              Cookie.get("userID") === comment?.userId?._id && (
+                <button
+                  className="text-gray-500 hover:text-red-600"
+                  title="Delete"
+                  onClick={() => handleDeleteComment(comment._id)}
+                >
+                  <AiOutlineDelete size={16} />
+                </button>
+              )
+            )}
           </div>
         </div>
 
+        {/* Show Replies Button */}
+        {replies && replies.length > 0 && (
+          <button
+            className="text-sm text-sec-color mt-2"
+            onClick={() => setShowReplies(!showReplies)}
+          >
+            {showReplies ? "Hide Replies" : `${replies.length} Replies`}
+          </button>
+        )}
+        {/* Show Replies */}
         {showReplies && (
           <div className="mt-4 space-y-5">
             {replies.map((reply, index) => (
               <ReplyCard
                 key={index}
                 reply={reply}
-                handleDeleteComment={deleteComment}
+                edit={edit}
+                setReplies={setReplies}
                 borderB={index !== replies.length - 1}
                 user={user}
               />
@@ -115,11 +141,12 @@ const CommentCard = ({
           </div>
         )}
 
+        {/* Reply Input */}
         {replyToComment && (
           <div className="flex items-center py-4 gap-3 rounded-b-lg">
             <img
-            src={user.profilePicture || profile}
-              alt={user.name}
+              src={me.profilePicture || profile}
+              alt={me.name}
               className="w-10 h-10 rounded-full"
             />
             <input

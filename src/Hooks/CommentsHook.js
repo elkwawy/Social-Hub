@@ -59,11 +59,8 @@ const CommentsActionsHook = () => {
     setReplies((prevReplies) => [...prevReplies, data]);
     const { user, ...cleanedData } = data;
 
-    // console.log("data = ", data);
-
     try {
-      const response = await axios.post(API.replyComment, cleanedData); // إرسال الطلب
-      // console.log("response.data = ", response.data);
+      const response = await axios.post(API.replyComment, cleanedData); 
 
       // Replies تحويل البيانات المرجعة إلى نفس شكل
       const newReply = {
@@ -74,8 +71,6 @@ const CommentsActionsHook = () => {
         replyTo: response.data.replyTo,
         user: response.data.user,
       };
-
-      // console.log("newReply = ", newReply);
 
       setReplies((prevReplies) => {
         const filteredReplies = prevReplies.filter(
@@ -95,11 +90,10 @@ const CommentsActionsHook = () => {
     }
   };
 
-
   const replyToReply = async (data, setReplies) => {
     setReplies((prevReplies) => [...prevReplies, data]);
     const { user, ...cleanedData } = data;
-  
+
     try {
       const response = await axios.post(API.replyComment, cleanedData);
       const newReply = {
@@ -110,14 +104,14 @@ const CommentsActionsHook = () => {
         replyTo: response.data.reply.replyTo,
         user: response.data.user,
       };
-  
+
       setReplies((prevReplies) => {
         const filteredReplies = prevReplies.filter(
           (comment) => comment !== data
         );
         return [...filteredReplies, newReply];
       });
-  
+
       showToast("success", "Reply to reply added successfully");
     } catch (error) {
       setReplies((prevReplies) => {
@@ -129,33 +123,37 @@ const CommentsActionsHook = () => {
     }
   };
 
-  const deleteComment = async (
-    idComment,
-    setComments,
-    setCommentsCount,
-    // setReplies
-  ) => {
+  const deleteComment = async (idComment, setComments, setCommentsCount) => {
     let previousComments = [];
-    // let previousReplies = [];
 
     try {
-      
       setComments((prevComments) => {
         previousComments = [...prevComments];
-        return prevComments.filter((comment) => comment._id !== idComment); // إزالة التعليق
+        return prevComments.filter((comment) => comment._id !== idComment);
       });
-
-      // setReplies((prevReplies) => {
-      //   previousReplies = [...prevReplies];
-      //   return prevReplies.filter((reply) => reply.objectId !== idComment); // reply إزالة ال
-      // });
 
       await axios.delete(`${API.deleteComment}/${idComment}`);
       setCommentsCount((prev) => prev - 1);
       showToast("success", "Comment deleted successfully");
     } catch (error) {
       setComments(previousComments);
-      // setReplies(previousReplies);
+      showToast("error", "Failed to delete comment");
+    }
+  };
+
+  const deleteReply = async (idComment, setReplies) => {
+    let previousReplies = [];
+
+    try {
+      setReplies((prevReplies) => {
+        previousReplies = [...prevReplies];
+        return prevReplies.filter((reply) => reply.objectId !== idComment);
+      });
+
+      await axios.delete(`${API.deleteComment}/${idComment}`);
+      showToast("success", "Reply deleted successfully");
+    } catch (error) {
+      setReplies(previousReplies);
       showToast("error", "Failed to delete comment");
     }
   };
@@ -166,6 +164,7 @@ const CommentsActionsHook = () => {
     addComment,
     replyComment,
     deleteComment,
+    deleteReply,
   };
 };
 

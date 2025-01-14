@@ -19,6 +19,7 @@ const MyCommunities = lazy(() => import("./Pages/socialHub/MyCommunities"));
 const MyMessages = lazy(() => import("./Pages/socialHub/MyMessages"));
 const PeopleList = lazy(() => import("./Pages/socialHub/People/PeopleList"));
 const Plans = lazy(() => import("./Pages/socialHub/Plans"));
+const MarketHub = lazy(() => import("./Pages/socialHub/MarketHub"));
 const Reports = lazy(() => import("./Pages/socialHub/Reports"));
 const Trending = lazy(() => import("./Pages/socialHub/Trending"));
 const VideoPlayer = lazy(() => import("./Pages/socialHub/VideoPlayer"));
@@ -263,6 +264,20 @@ const App = () => {
                       }
                     >
                       <BetaBotAi />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="marketHub"
+                  element={
+                    <Suspense
+                      fallback={
+                        <div className="w-full h-screen flex items-center justify-center">
+                          <Loader />
+                        </div>
+                      }
+                    >
+                      <MarketHub />
                     </Suspense>
                   }
                 />

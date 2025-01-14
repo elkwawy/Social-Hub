@@ -1,6 +1,5 @@
 import { FaTimes } from "react-icons/fa";
-import logo from "../../../assets/socialHub 1.svg";
-import LazyImage from "../../../Utils/LazyImage";
+
 const SidebarHeader = ({ onClose }) => {
   return (
     <div className="p-[20.7px] flex items-center justify-between border-b-2 border-h-bg1">
