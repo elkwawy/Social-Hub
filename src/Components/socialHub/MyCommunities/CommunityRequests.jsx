@@ -7,7 +7,6 @@ import Skeleton from "react-loading-skeleton";
 import { Img } from "react-image";
 import profile from "../../../assets/profile.jpg";
 import { isValidUrl } from "../../../Utils/validateURLs";
-
 const CommunityRequests = () => {
   const [invitations, setInvitations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,7 +23,7 @@ const CommunityRequests = () => {
     }
   };
   console.log(invitations);
-  
+
   // Accept invitation
   const handleAcceptInvitation = async (communityId) => {
     const copyInvitations = [...invitations];
@@ -34,7 +33,7 @@ const CommunityRequests = () => {
     try {
       await axios.post(API.acceptInvitation, { communityId: communityId });
       showToast("success", "Invitation accepted successfully");
-      console.log("Invitation accepted successfully");
+      // console.log("Invitation accepted successfully");
     } catch (error) {
       setInvitations(copyInvitations);
       showToast("error", "Something went wrong");
@@ -42,6 +41,8 @@ const CommunityRequests = () => {
       console.log("Error accepting invitation:", error);
     }
   };
+
+  console.log(invitations);
 
   // Ignore invitation
   const handleIgnoreInvitation = async (invitationId) => {
@@ -53,6 +54,7 @@ const CommunityRequests = () => {
       });
       showToast("success", "Invitation ignored successfully");
     } catch (error) {
+      console.error("Error ignoring invitation:", error);
       setInvitations(copyInvitations);
       showToast(
         "error",
@@ -89,7 +91,6 @@ const CommunityRequests = () => {
       </ul>
     );
   };
-  
 
   return (
     <div className="mt-6">

@@ -11,7 +11,7 @@ const MarketActionsHook = () => {
   const incrementLikes = async (postKey, amount) => {
     try {
       await axios.put(API.icrementLikes, {
-        postKey: postKey,
+        objectKey: postKey,
         amount: amount,
       });
       showToast("success", "Likes successfully incremented");
