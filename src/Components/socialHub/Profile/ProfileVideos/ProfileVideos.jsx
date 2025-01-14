@@ -58,7 +58,7 @@ const ProfileVideos = memo(() => {
             </div>
         )
     return (
-        <div className="w-full flex flex-col gap-6 ">
+        <div className="w-full flex flex-col gap-6 pb-8">
             <div className="w-full flex items-center justify-between">
                 <h2 className="text-2xl font-bold text-gray-800 ">{edit ? "My videos" : "Videos"}</h2>
                 <div className="flex items-center gap-3">

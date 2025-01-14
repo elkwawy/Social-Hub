@@ -26,7 +26,7 @@ const SavedVideos = () => {
         </div>
         : (
             (videos && videos.length > 0) ? 
-            <Swiper className="w-full"
+            <Swiper className="w-full pb-8"
                 modules={[Navigation, Pagination, Autoplay]} // إضافة الموديولات المطلوبة
                 spaceBetween={24} // المسافة بين الشرائح
                 slidesPerView={1} // عدد الشرائح المرئية في العرض

@@ -20,6 +20,8 @@ import splitTextByLength from "../../../Utils/splitTextByLength";
 import sweetalert from "../../../Utils/sweetalert";
 import { isVideoURL } from "../../../Utils/validateURLs";
 import { copyURL } from "./../../../Utils/copyURL";
+import { FaLink } from "react-icons/fa6";
+import { IoKeySharp } from "react-icons/io5";
 
 const VideoCard = React.memo(
   ({
@@ -142,10 +144,8 @@ const VideoCard = React.memo(
     };
 
     const handleCopyVideoURL = () => {
-      if (video && video.videoUrl && isVideoURL(video.videoUrl)) {
-        copyURL(video.videoUrl);
-      } else {
-        showToast("error", "Invalid Video URL");
+      if (video && video.videoUrl) {
+        copyURL(video.videoUrl,"Link copied successfully");
       }
     };
 
@@ -153,7 +153,11 @@ const VideoCard = React.memo(
       handleSaveVideo(video);
     };
 
-    
+    const handleCopyVideoKey = () => { 
+        if (video && video.videoKey) { 
+          copyURL(video.videoKey,"Key copied successfully");
+        }
+    };
     
     return (
       <div
@@ -248,13 +252,22 @@ const VideoCard = React.memo(
                     >
                       <SlOptionsVertical className="text-sm" />
                       {isOptionsOpen && (
-                        <div className="absolute text-black flex flex-col items-start overflow-hidden  -top-14 right-8 z-10 w-44  transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm  ">
+                        <div className="absolute text-black flex flex-col items-start overflow-hidden  -top-20 right-8 z-10 w-44  transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm  ">
                           <button
                             onClick={handleCopyVideoURL}
                             className="w-full flex gap-2 items-center text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
                           >
-                            <IoCopy />
+                            
+                            <FaLink className="mt-0.5" />
                             <p className="">Copy Link</p>
+                          </button>
+                          <button
+                            onClick={handleCopyVideoKey}
+                            className="w-full flex gap-2 items-center text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
+                          >
+                            
+                            <IoKeySharp className="mt-0.5" />
+                            <p className="">Copy Key</p>
                           </button>
                           {!isSaved && (
                             <button
