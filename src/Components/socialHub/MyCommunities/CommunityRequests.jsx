@@ -4,7 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { showToast } from "../../../Utils/showToast";
 import Skeleton from "react-loading-skeleton";
-
+import Profile from "../../../assets/profile.jpg";
 const CommunityRequests = () => {
   const [invitations, setInvitations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +21,7 @@ const CommunityRequests = () => {
     }
   };
   console.log(invitations);
-  
+
   // Accept invitation
   const handleAcceptInvitation = async (communityId) => {
     const copyInvitations = [...invitations];
@@ -31,7 +31,7 @@ const CommunityRequests = () => {
     try {
       await axios.post(API.acceptInvitation, { communityId: communityId });
       showToast("success", "Invitation accepted successfully");
-      console.log("Invitation accepted successfully");
+      // console.log("Invitation accepted successfully");
     } catch (error) {
       setInvitations(copyInvitations);
       showToast("error", "Something went wrong");
@@ -39,6 +39,8 @@ const CommunityRequests = () => {
       console.log("Error accepting invitation:", error);
     }
   };
+
+  console.log(invitations);
 
   // Ignore invitation
   const handleIgnoreInvitation = async (invitationId) => {
@@ -50,6 +52,7 @@ const CommunityRequests = () => {
       });
       showToast("success", "Invitation ignored successfully");
     } catch (error) {
+      console.error("Error ignoring invitation:", error);
       setInvitations(copyInvitations);
       showToast(
         "error",
@@ -86,7 +89,6 @@ const CommunityRequests = () => {
       </ul>
     );
   };
-  
 
   return (
     <div className="mt-6">
@@ -108,7 +110,7 @@ const CommunityRequests = () => {
                   className="w-14"
                 >
                   <img
-                    src={invitation.senderProfilePicture}
+                    src={invitation.senderProfilePicture || Profile}
                     alt={invitation.senderName}
                     className="w-14 h-14 rounded-full border border-gray-300"
                   />
