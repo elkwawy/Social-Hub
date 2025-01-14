@@ -1,13 +1,13 @@
 import { showToast } from "./showToast";
 
-export const copyURL = (url) => { 
+export const copyURL = (url,msg) => { 
     if (url) {
         navigator.clipboard.writeText(url)
         .then(() => {
-            showToast('success', 'URL copied successfully');
+            showToast('success', msg);
         })
         .catch(() => {
-            showToast( "error", "Failed to copy URL");
+            showToast( "error", msg);
         });
     }
 }
