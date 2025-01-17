@@ -1,12 +1,11 @@
 import Cookies from "js-cookie";
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense} from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import LandingPageLayout from "./Pages/LandingPage/LandingPageLayout";
 import ProtectedRoute from "./Pages/ProtectedRoute";
 import PublicRoute from "./Pages/PublicRoute";
 import SocialHubLayout from "./Pages/socialHub/SocialHubLayout";
-import Loader from "./Utils/Loader";
 import OTPField from "./Pages/Auth/OTPField";
 
 // lazy loading for components
@@ -35,6 +34,7 @@ import History from "./Components/socialHub/Profile/History/History";
 import VerifyOtpR_P from "./Pages/Auth/VerifyOtpR_P";
 import {GoogleOAuthProvider} from "@react-oauth/google";
 import CommunityChat from "./Pages/socialHub/CommunityChat";
+import Loader from "./Utils/Loader";
 
 const App = () => {
   const userID = Cookies.get("userID");

@@ -2,8 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { API } from "../../Api/Api"
-import { showToast } from "../../Utils/showToast";
-import sweetalert from './../../utils/sweetalert';
+import sweetalert, { showToast } from '../../Utils/sweetalert';
 
 export const loginUser = createAsyncThunk(
   "user/loginUser",

@@ -5,7 +5,7 @@ import ChatScreen from "../../Components/socialHub/Messages/ChatScreen";
 import ChatSidebar from "../../Components/socialHub/Messages/ChatSidebar";
 import { pushNewMessageToUnReadMessages, receiveMessage } from "../../Redux/slices/chatSlice";
 import { reorderChatsWhenReceive } from "../../Redux/slices/userChats";
-import socket from "../../utils/socket";
+import socket from "../../Utils/socket";
 
 const MyMessages = () => {
   const loc = useLocation();

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import Loader from "../../../../Utils/Loader";
-import Modal from './../../../../Utils/Modal';
+import Modal from '../../../../Utils/Modal';
 import { showToast } from "../../../../Utils/showToast";
 
 

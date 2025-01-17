@@ -6,12 +6,12 @@ import { Link } from "react-router-dom";
 import { fetchMessages, sendMessage } from "../../../Redux/slices/chatSlice";
 import { reorderChatsWhenSend } from "../../../Redux/slices/userChats";
 import { getMsgDateFormatted } from "../../../Utils/getMsgDateFormatted";
-import Loader from "./../../../Utils/Loader";
+import Loader from "../../../Utils/Loader";
 import { isValidUrl } from "../../../Utils/validateURLs";
 import checkImageUrl from "../../../Utils/checkImageUrl";
 import { Img } from "react-image";
 import { FaUserCircle } from "react-icons/fa";
-import Error from "../../../utils/Error";
+import Error from "../../../Utils/Error";
 import Skeleton from "react-loading-skeleton";
 
 const ChatScreen = memo(({ chat, setSelectedChat, setIsOpenSidebar }) => {
