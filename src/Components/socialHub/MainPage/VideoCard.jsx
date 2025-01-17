@@ -196,135 +196,137 @@ const VideoCard = React.memo(
         {inView &&
           (isLoaded ? (
             <div className="flex gap-2 mt-3 w-full items-center">
-              <div
-                role="button"
-                className="cursor-pointer float-start"
-                onClick={handleNavToUser}
-              >
-                {user && user.profilePicture ? (
-                  isValidUrl(user.profilePicture) &&
-                  checkImg(user.profilePicture) ? (
-                    <Img
-                      className="min-w-9 max-w-9 h-9 rounded-full"
-                      src={user.profilePicture}
-                      loader={
-                        <div className="w-9 h-9 rounded-full">
-                          <Skeleton
-                            height="100%"
-                            width="100%"
-                            borderRadius={"100%"}
-                          />
-                        </div>
-                      }
-                    />
-                  ) : (
-                    <FaUserCircle className="text-gray-300 w-9 h-9" />
-                  )
-                ) : (
-                  <FaUserCircle className="text-gray-300 w-9 h-9" />
-                )}
-              </div>
-              <div className="w-full flex flex-col gap-0.5  ">
-                <div className="relative text-start inline-block">
-                  <button
-                    title={splitTextByLength(video.title, 50)}
-                    onClick={handleNavToVideoPlayer}
-                    className="text-sm text-start flex-wrap break-words text-wrap lg:text-xs xl:text-sm font-semibold break-all whitespace-normal overflow-hidden"
-                  >
-                    {video.title.length > 105
-                      ? video.title.slice(0, 105) + " ..."
-                      : video.title}
-                  </button>
-                </div>
-                <div className="w-full flex flex-col text-gray-600">
-                  <div className="w-full flex justify-between items-center">
-                    <button
-                      onClick={handleNavToUser}
-                      className="w-fit text-xs trans hover:text-black"
-                    >
-
-                      { isLoaded ? (user ? user.name : "Deleted User")  : <Skeleton width={15} height={5} />}
-                    </button>
+              
+              <div className="w-full flex flex-col gap-2  ">
+                <button
+                  title={splitTextByLength(video.title, 50)}
+                  onClick={handleNavToVideoPlayer}
+                  className="text-sm text-start flex-wrap break-words text-wrap lg:text-xs xl:text-sm font-semibold break-all whitespace-normal overflow-hidden"
+                >
+                  {video.title.length > 105
+                    ? video.title.slice(0, 105) + " ..."
+                    : video.title}
+                </button>
+                <div className="flex gap-1">
                     <div
-                      ref={optionsRef}
-                      onClick={handleOpenOptions}
-                      className="relative w-6 h-6 group rounded-full flex items-center justify-center trans focus:bg-gray-200 hover:bg-gray-200 -mr-1"
-                    >
-                      <SlOptionsVertical className="text-sm" />
-                      {isOptionsOpen && (
-                        <div className="absolute text-black flex flex-col items-start overflow-hidden  -top-20 right-8 z-10 w-44  transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm  ">
-                          <button
-                            onClick={handleCopyVideoURL}
-                            className="w-full flex gap-2 items-center text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
-                          >
-                            
-                            <FaLink className="mt-0.5" />
-                            <p className="">Copy Link</p>
-                          </button>
-                          <button
-                            onClick={handleCopyVideoKey}
-                            className="w-full flex gap-2 items-center text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
-                          >
-                            
-                            <IoKeySharp className="mt-0.5" />
-                            <p className="">Copy Key</p>
-                          </button>
-                          {!isSaved && (
+                    role="button"
+                    className="cursor-pointer float-start"
+                    onClick={handleNavToUser}
+                  >
+                    {user && user.profilePicture ? (
+                      isValidUrl(user.profilePicture) &&
+                      checkImg(user.profilePicture) ? (
+                        <Img
+                          className="min-w-9 max-w-9 h-9 rounded-full"
+                          src={user.profilePicture}
+                          loader={
+                            <div className="w-9 h-9 rounded-full">
+                              <Skeleton
+                                height="100%"
+                                width="100%"
+                                borderRadius={"100%"}
+                              />
+                            </div>
+                          }
+                        />
+                      ) : (
+                        <FaUserCircle className="text-gray-300 w-9 h-9" />
+                      )
+                    ) : (
+                      <FaUserCircle className="text-gray-300 w-9 h-9" />
+                    )}
+                  </div>
+                  <div className="w-full flex flex-col text-gray-600">
+                    <div className="w-full flex justify-between items-center">
+                      <button
+                        onClick={handleNavToUser}
+                        className="w-fit text-xs trans hover:text-black"
+                      >
+
+                        { isLoaded ? (user ? user.name : "Deleted User")  : <Skeleton width={15} height={5} />}
+                      </button>
+                      <div
+                        ref={optionsRef}
+                        onClick={handleOpenOptions}
+                        className="relative w-6 h-6 group rounded-full flex items-center justify-center trans focus:bg-gray-200 hover:bg-gray-200 -mr-1"
+                      >
+                        <SlOptionsVertical className="text-sm" />
+                        {isOptionsOpen && (
+                          <div className="absolute text-black flex flex-col items-start overflow-hidden  -top-20 right-8 z-10 w-44  transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm  ">
                             <button
-                              onClick={handleSaveVideoClicked}
-                              className="w-full flex items-center gap-2 text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
+                              onClick={handleCopyVideoURL}
+                              className="w-full flex gap-2 items-center text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
                             >
-                              <FaBookmark />
-                              Save Video
+                              
+                              <FaLink className="mt-0.5" />
+                              <p className="">Copy Link</p>
                             </button>
-                          )}
-                          {isSaved && (
                             <button
-                              onClick={() => unsaveVideo(video)}
-                              className="w-full flex items-center gap-2 text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
+                              onClick={handleCopyVideoKey}
+                              className="w-full flex gap-2 items-center text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
                             >
-                              <FaRegBookmark />
-                              Unsave Video
+                              
+                              <IoKeySharp className="mt-0.5" />
+                              <p className="">Copy Key</p>
                             </button>
-                          )}
-                          {video.userId &&
-                            video.userId === userId &&
-                            inProfile && (
+                            {!isSaved && (
                               <button
-                                onClick={handleClickEditBtn}
+                                onClick={handleSaveVideoClicked}
                                 className="w-full flex items-center gap-2 text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
                               >
-                                <BiEdit />
-                                Edit Video
+                                <FaBookmark />
+                                Save Video
                               </button>
                             )}
-                          {video.userId &&
-                            video.userId === userId &&
-                            inProfile && (
+                            {isSaved && (
                               <button
-                                onClick={handleClickDeleteBtn}
-                                className="w-full text-main-color flex items-center gap-2 text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
+                                onClick={() => unsaveVideo(video)}
+                                className="w-full flex items-center gap-2 text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
                               >
-                                <BiTrash />
-                                Delete Video
+                                <FaRegBookmark />
+                                Unsave Video
                               </button>
                             )}
-                        </div>
-                      )}
+                            {video.userId &&
+                              video.userId === userId &&
+                              inProfile && (
+                                <button
+                                  onClick={handleClickEditBtn}
+                                  className="w-full flex items-center gap-2 text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
+                                >
+                                  <BiEdit />
+                                  Edit Video
+                                </button>
+                              )}
+                            {video.userId &&
+                              video.userId === userId &&
+                              inProfile && (
+                                <button
+                                  onClick={handleClickDeleteBtn}
+                                  className="w-full text-main-color flex items-center gap-2 text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
+                                >
+                                  <BiTrash />
+                                  Delete Video
+                                </button>
+                              )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div
+                      role="button"
+                      onClick={handleNavToVideoPlayer}
+                      className="w-full  font-normal items-center flex gap-1 text-xs"
+                    >
+                      <p className=" trans ">{video.views} views</p>
+                      <span className="w-1 h-1 rounded-full bg-gray-600 mt-0.5" />
+                      <p className="text-xs ">
+                        {getDateFormatted(video.createdAt)}
+                      </p>
                     </div>
                   </div>
 
-                  <div
-                    role="button"
-                    onClick={handleNavToVideoPlayer}
-                    className="w-full  font-normal items-center flex gap-1 text-xs"
-                  >
-                    <p className=" trans ">{video.views} views</p>
-                    <span className="w-1 h-1 rounded-full bg-gray-600 mt-0.5" />
-                    <p className="text-xs ">
-                      {getDateFormatted(video.createdAt)}
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>

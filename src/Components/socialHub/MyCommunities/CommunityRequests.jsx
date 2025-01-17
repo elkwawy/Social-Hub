@@ -4,7 +4,9 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { showToast } from "../../../Utils/showToast";
 import Skeleton from "react-loading-skeleton";
-import Profile from "../../../assets/profile.jpg";
+import { Img } from "react-image";
+import profile from "../../../assets/profile.jpg";
+import { isValidUrl } from "../../../Utils/validateURLs";
 const CommunityRequests = () => {
   const [invitations, setInvitations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -92,7 +94,7 @@ const CommunityRequests = () => {
 
   return (
     <div className="mt-6">
-      <h2 className="text-3xl font-bold text-gray-800">Community Requests</h2>
+      <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">Community Requests</h2>
       {loading ? (
         renderSkeleton()
       ) : invitations.length === 0 ? (
@@ -109,11 +111,13 @@ const CommunityRequests = () => {
                   to={`/socialHub/profile/${invitation.senderId}`}
                   className="w-14"
                 >
-                  <img
-                    src={invitation.senderProfilePicture || Profile}
+                  {(invitation.senderProfilePicture && isValidUrl(invitation.senderProfilePicture)) ? <Img
+                    src={invitation.senderProfilePicture}
                     alt={invitation.senderName}
                     className="w-14 h-14 rounded-full border border-gray-300"
                   />
+                  : <Img src={profile} className="w-14 h-14 rounded-full border border-gray-300" />
+                }
                 </Link>
                 <div>
                   <Link
