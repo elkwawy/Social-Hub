@@ -67,8 +67,6 @@ export const API = {
 
   blockUser: `${BASE_URL}/users/block`,
   unBlockUser: `${BASE_URL}/users/unblock`,
-
-  likeVideo: `${BASE_URL}/users/like`, //   /:videoId
   dislikeVideo: `${BASE_URL}/users/dislike`, //   /:videoId
   getSavedItems: `${BASE_URL}/users/saved-items`,
   deleteUser: `${BASE_URL}/users`, //   /:userId
