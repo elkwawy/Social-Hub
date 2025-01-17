@@ -19,7 +19,7 @@ import { showToast } from "../../../Utils/showToast";
 import splitTextByLength from "../../../Utils/splitTextByLength";
 import sweetalert from "../../../Utils/sweetalert";
 import { isVideoURL } from "../../../Utils/validateURLs";
-import { copyURL } from "./../../../Utils/copyURL";
+import { copyURL } from "../../../Utils/copyURL";
 import { FaLink } from "react-icons/fa6";
 import { IoKeySharp } from "react-icons/io5";
 

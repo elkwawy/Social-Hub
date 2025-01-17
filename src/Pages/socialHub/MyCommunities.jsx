@@ -5,7 +5,7 @@ import CreateCommunity from "../../Components/socialHub/MyCommunities/CreateComm
 import NoCommunitiesJoined from "../../Components/socialHub/MyCommunities/NoCommunitiesJoined";
 import { updateUserCommunities } from "../../Redux/slices/userSlice";
 import CommunityRequests from "../../Components/socialHub/MyCommunities/CommunityRequests";
-import Error from "../../utils/Error";
+import Error from "../../Utils/Error";
 import { RiAddBoxFill } from "react-icons/ri";
 
 const MyCommunities = memo(() => {

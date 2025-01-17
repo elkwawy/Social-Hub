@@ -7,9 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMyChats, setActiveChat } from "../../../Redux/slices/userChats";
 import splitTextByLength from "../../../Utils/splitTextByLength";
 import { isValidUrl } from "../../../Utils/validateURLs";
-import checkImageUrl from "./../../../Utils/checkImageUrl";
+import checkImageUrl from "../../../Utils/checkImageUrl";
 import profile from "./../../../assets/profile.jpg";
-import Error from "../../../utils/Error";
+import Error from "../../../Utils/Error";
 
 const ChatSidebar = ({
   setSelectedChat,

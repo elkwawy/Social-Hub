@@ -13,8 +13,8 @@ import Loader from "../../Utils/Loader";
 import { isValidUrl } from "../../Utils/validateURLs";
 import Skeleton from "react-loading-skeleton";
 import { showToast } from "../../Utils/showToast";
-import Error from "../../utils/Error";
-import socket, { joinCommunity } from "../../utils/socket";
+import Error from "../../Utils/Error";
+import socket, { joinCommunity } from "../../Utils/socket";
 const CommunityChat = memo(() => {
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);

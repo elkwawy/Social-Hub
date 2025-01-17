@@ -6,7 +6,7 @@ import VideoGrid from "../../Components/socialHub/MainPage/VideoGrid";
 import { getRandomVideos } from "../../Redux/slices/randomVideos";
 import { useLocation } from "react-router-dom";
 import Loader from "../../Utils/Loader";
-import Error from "../../utils/Error";
+import Error from "../../Utils/Error";
 
 const MainPage = () => {
   const dispatch = useDispatch();
