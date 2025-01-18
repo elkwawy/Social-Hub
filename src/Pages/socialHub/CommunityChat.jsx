@@ -7,7 +7,6 @@ import { Img } from "react-image";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { API } from "../../Api/Api";
-import checkImageUrl from "../../Utils/checkImageUrl";
 import { getMsgDateFormatted } from "../../Utils/getMsgDateFormatted";
 import Loader from "../../Utils/Loader";
 import { isValidUrl } from "../../Utils/validateURLs";
@@ -15,6 +14,7 @@ import Skeleton from "react-loading-skeleton";
 import { showToast } from "../../Utils/showToast";
 import Error from "../../Utils/Error";
 import socket, { joinCommunity } from "../../Utils/socket";
+import checkImg from "../../Utils/checkImg";
 const CommunityChat = memo(() => {
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
@@ -158,16 +158,6 @@ const CommunityChat = memo(() => {
     const handleCopy = (Massage) => {
         const textToCopy = Massage;
         navigator.clipboard.writeText(textToCopy);
-    };
-
-    const checkImg = async (url) => {
-        await checkImageUrl(url).then((isValid) => {
-            if (isValid) {
-            return true;
-            } else {
-            return false;
-            }
-        });
     };
 
     const nav = useNavigate()

@@ -34,17 +34,16 @@ const useSavedItems = () => {
             showToast("error", error?.response?.data?.message || "Failed to save video");
         }
     }
-    const handleUnsaveVideo = async(comingVideo) => { 
-        const oldSavedVideos = videos ;
-        setVideos(videos.filter((video) => video._id !== comingVideo._id));
+    const handleUnsaveVideo = async (comingVideo) => {
         try {
+            setVideos((prevVideos) => prevVideos.filter((video) => video._id !== comingVideo._id));
             await axios.post(`${API.unSaveVideo}/${comingVideo._id}`);
-            showToast('success', "Video unsaved successfully")
+            showToast('success', "Video unsaved successfully");
         } catch (error) {
             showToast('error', error?.response?.data?.message || "Video wasn't unsaved");
-            setVideos(oldSavedVideos);
+            setVideos((prevVideos) => [...prevVideos, comingVideo]);
         }
-    }
+    };
     
     return { videos,videosLoading, handleSaveVideo,handleUnsaveVideo, getSavedVideos };
 };

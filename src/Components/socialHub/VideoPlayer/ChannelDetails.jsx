@@ -7,7 +7,7 @@ import { API } from '../../../Api/Api';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import { isValidUrl } from '../../../Utils/validateURLs';
-import checkImageUrl from '../../../Utils/checkImageUrl';
+import checkImg from '../../../Utils/checkImg';
 
 const ChannelDetails = memo(({channelId, name, profilePicture}) => {
     const [channel, setChannel] = useState(null);
@@ -72,31 +72,22 @@ const ChannelDetails = memo(({channelId, name, profilePicture}) => {
             }
         }
     }
-
-    const checkImg = async (url) => {
-        await checkImageUrl(url).then((isValid) => {
-            if (isValid) {
-            return true;
-            } else {
-            return false;
-            }
-        });
-    };
+    
 
     const currUserId = Cookies.get("userID");
     const isMyVideo = channelId == currUserId;
     return (
         <div className='flex items-center jusbet gap-3 '>
             {/* channel image */}
-            <Link to={`/socialHub/profile/${channelId}`} className='min-w-10 max-w-10 h-10 rounded-full '>
+            <Link aria-disabled={name ? false : true} to={`/socialHub/profile/${channelId}`} className='min-w-10 max-w-10 h-10 rounded-full '>
                 {
-                profilePicture && isValidUrl(profilePicture) && checkImg(profilePicture)
+                    profilePicture && isValidUrl(profilePicture) && checkImg(profilePicture)
                     ? <Img src={profilePicture} className='w-full h-full rounded-full' loader={<div className='w-10 h-10 rounded-full'><Skeleton width={'100%'} height={'100%'} borderRadius={'100%'} /></div>} />
                     : <FaUserCircle className="text-gray-300 w-9 h-9" />
                 }
             </Link>
             <div className='flex flex-col text-sm'>
-                <Link to={`/socialHub/profile/${channelId}`} className=''>{name ? name : "Channel"}</Link>
+                <Link to={`/socialHub/profile/${channelId}`} className=''>{name ? name : "Deleted user"}</Link>
                 <div className='text-gray-500 flex items-center'>
                     {
                         loading ? <p className='blur-sm'>0 </p> 
@@ -105,7 +96,7 @@ const ChannelDetails = memo(({channelId, name, profilePicture}) => {
                     {" "}Subscribers
                 </div>
             </div>
-            {!isMyVideo && <button  onClick={handleFollowAndUnfollow} className={` rounded-full ${amISubscriber ? "bg-white text-black hover:bg-gray-100" : "text-white hover:bg-sec-color bg-main-color"}  border shadow-sm py-2 px-4 sm:px-8 text-sm ml-auto sm:ml-2  trans `}>{amISubscriber ? "Unsubscribe" :"Subscribe"}</button>}
+            {!isMyVideo && name && <button  onClick={handleFollowAndUnfollow} className={` rounded-full ${amISubscriber ? "bg-white text-black hover:bg-gray-100" : "text-white hover:bg-sec-color bg-main-color"}  border shadow-sm py-2 px-4 sm:px-8 text-sm ml-auto sm:ml-2  trans `}>{amISubscriber ? "Unsubscribe" :"Subscribe"}</button>}
         </div>
     )
 })

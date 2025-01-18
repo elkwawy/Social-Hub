@@ -131,7 +131,7 @@ const PlayingVideo = () => {
             <p className='text-xl font-bold'>{videoUpdatedData?.title}</p>
 
             <div className='w-full flex flex-col md:flex-row  justify-between md:items-center gap-5 md:gap-0'>
-                {channel && <ChannelDetails channelId={channelDetails?._id} name={channelDetails?.name} profilePicture={channelDetails?.profilePicture} />}
+                {<ChannelDetails channelId={channelDetails?._id} name={channelDetails?.name} profilePicture={channelDetails?.profilePicture} />}
                 <div className='flex items-center justify-between md:gap-5'>
                     <PlayingVideoOptions video={video} videoURL={video.videoUrl} />
                     {

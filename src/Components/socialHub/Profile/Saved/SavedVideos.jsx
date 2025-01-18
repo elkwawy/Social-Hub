@@ -10,15 +10,11 @@ import VideoCard from "../../MainPage/VideoCard";
 
 const SavedVideos = () => {
     
-    const {videos,videosLoading:loading,  handleUnsaveVideo, getSavedVideos} = useSavedItems();
+    const {videos,videosLoading:loading, getSavedVideos} = useSavedItems();
 
     useEffect(() => {
         getSavedVideos();
     }, []);
-
-    const handleUnSaveVideoClicked = (video) => { 
-        handleUnsaveVideo(video);
-    }
     
     return ( loading ? 
         <div className="w-full h-[250px] flex items-center justify-center">
@@ -26,21 +22,21 @@ const SavedVideos = () => {
         </div>
         : (
             (videos && videos.length > 0) ? 
-            <Swiper className="w-full pb-8"
-                modules={[Navigation, Pagination, Autoplay]} // إضافة الموديولات المطلوبة
-                spaceBetween={24} // المسافة بين الشرائح
-                slidesPerView={1} // عدد الشرائح المرئية في العرض
+            <Swiper className="w-full pb-8 select-none"
+                modules={[Navigation, Pagination, Autoplay]}
+                spaceBetween={24} 
+                slidesPerView={1} 
                 breakpoints={{
-                    640: { slidesPerView: 2 }, // عرض شريحتين للشاشات الصغيرة
-                    1024: { slidesPerView: 3 }, // ثلاث شرائح للشاشات المتوسطة
-                    1280: { slidesPerView: 4 }, // أربع شرائح للشاشات الكبيرة
+                    640: { slidesPerView: 2 }, 
+                    1024: { slidesPerView: 3 }, 
+                    1280: { slidesPerView: 4 }, 
                 }}
                 >
                 {videos && videos.map((video) => { 
                     const vid  = {...video,userId:video.ownerId}
                     return (<SwiperSlide key={video._id} >
                         <div>
-                            <VideoCard video={vid} isSaved={true} unsaveVideo={handleUnSaveVideoClicked} />
+                            <VideoCard video={vid} isSaved={true} />
                         </div>
                     </SwiperSlide>)
                 }

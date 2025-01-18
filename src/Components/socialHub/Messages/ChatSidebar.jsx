@@ -7,9 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMyChats, setActiveChat } from "../../../Redux/slices/userChats";
 import splitTextByLength from "../../../Utils/splitTextByLength";
 import { isValidUrl } from "../../../Utils/validateURLs";
-import checkImageUrl from "../../../Utils/checkImageUrl";
 import profile from "./../../../assets/profile.jpg";
 import Error from "../../../Utils/Error";
+import checkImg from "../../../Utils/checkImg";
 
 const ChatSidebar = ({
   setSelectedChat,
@@ -42,16 +42,7 @@ const ChatSidebar = ({
     setSelectedChat(contactSent);
     dispatch(setActiveChat(id));
   };
-
-  const checkImg = async (url) => {
-    await checkImageUrl(url).then((isValid) => {
-      if (isValid) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-  };
+  
   
   return (
     <div
