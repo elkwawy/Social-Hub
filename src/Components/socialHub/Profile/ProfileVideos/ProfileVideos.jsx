@@ -62,9 +62,9 @@ const ProfileVideos = memo(() => {
             <div className="w-full flex items-center justify-between">
                 <h2 className="text-2xl font-bold text-gray-800 ">{edit ? "My videos" : "Videos"}</h2>
                 <div className="flex items-center gap-3">
-                    {edit && videos && videos.length > 0 && <button onClick={handleOpenUploadVideoModal} className="ml-auto text-xs border border-main-color px-3 py-2 text-main-color trans hover:bg-gray-100 rounded-md ">
+                    {/* {edit && videos && videos.length > 0 && <button onClick={handleOpenUploadVideoModal} className="ml-auto text-xs border border-main-color px-3 py-2 text-main-color trans hover:bg-gray-100 rounded-md ">
                         Upload from Device
-                    </button>}
+                    </button>} */}
                     {edit && videos && videos.length > 0 && <button onClick={handleAddNewVideoModal} className="ml-auto text-xs bg-main-color px-3 py-2 text-white trans hover:bg-sec-color rounded-md ">
                         Add Youtube Video
                     </button>}
@@ -79,9 +79,9 @@ const ProfileVideos = memo(() => {
                 videos.length ==0 && (edit ?  (<div className="w-full mt-16 text-center flex items-center flex-col gap-3">
                     <h1 className="  text-gray-500 text-2xl font-semibold">You don't have any videos</h1>
                     <div className="flex gap-2 items-center ">
-                        <button onClick={handleOpenUploadVideoModal} className="ml-auto text-xs border border-main-color px-3 py-2 text-main-color trans hover:bg-gray-100 rounded-md ">
+                        {/* <button onClick={handleOpenUploadVideoModal} className="ml-auto text-xs border border-main-color px-3 py-2 text-main-color trans hover:bg-gray-100 rounded-md ">
                             Upload from Device
-                        </button>
+                        </button> */}
                         <button onClick={handleAddNewVideoModal} className="text-xs bg-main-color px-3 py-2 text-white trans hover:bg-sec-color rounded-md ">
                             Add Youtube Video
                         </button>
