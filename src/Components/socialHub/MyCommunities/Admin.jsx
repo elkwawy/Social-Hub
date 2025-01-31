@@ -4,10 +4,10 @@ import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 import { API } from '../../../Api/Api';
 import LazyImage from '../../../Utils/LazyImage';
-import checkImageUrl from '../../../Utils/checkImageUrl';
 import { Img } from 'react-image';
 import profile from "../../../assets/profile.jpg";
 import { isValidUrl } from '../../../Utils/validateURLs';
+import checkImg from '../../../Utils/checkImg';
 
 const Admin = memo(({admin}) => {
     // Get admin's pic  
@@ -30,16 +30,7 @@ const Admin = memo(({admin}) => {
         }
         getadminDetails();
     }, []);
-
-    const checkImg = async (url) => {
-        await checkImageUrl(url).then((isValid) => {
-        if (isValid) {
-            return true;
-        } else {
-            return false;
-        }
-        });
-    };
+    
 
     return (
         <>

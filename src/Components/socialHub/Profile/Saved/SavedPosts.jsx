@@ -1,27 +1,16 @@
-import { memo, useEffect, useState } from "react"
-import PostCard from "../Posts/PostCard"
-import axios from "axios";
-import { API } from "../../../../Api/Api";
+import { memo, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getSavedPosts } from "../../../../Redux/slices/postsReducer";
 import Loader from "../../../../Utils/Loader";
+import PostCard from "../Posts/PostCard";
 
-const SavedPosts = memo(({user, edit}) => {
-    const [savedPosts, setSavedPosts] = useState([]);
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState("");
+const SavedPosts = memo(({edit}) => {
+    const {savedPosts, savedLoading:loading, savedError:error} = useSelector((state) => state.posts);
+    
+    const dispatch = useDispatch();
+
     useEffect(() => { 
-        const getSavedPosts = async () => { 
-            try {
-                setLoading(true);
-                const res = await axios.get(API.getSavedPosts);
-                setSavedPosts(res.data.savedPosts);
-            } catch (error) {
-                setError(error?.response?.data?.message || "No saved posts.");
-                setLoading(false);
-            } finally { 
-                setLoading(false);
-            }
-        };
-        getSavedPosts();
+        dispatch(getSavedPosts());
     }, []);
     
     return (
@@ -34,7 +23,7 @@ const SavedPosts = memo(({user, edit}) => {
                         name: post.owner.name,
                         profilePicture: post.owner.profilePicture
                     }
-                    return <PostCard key={post._id} post={post} user={user} edit={edit} />
+                    return <PostCard key={post._id} isSaved={true} post={post} user={user} edit={edit} />
                 })}
             </div>
         </div>

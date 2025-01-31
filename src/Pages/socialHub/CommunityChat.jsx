@@ -7,7 +7,6 @@ import { Img } from "react-image";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { API } from "../../Api/Api";
-import checkImageUrl from "../../Utils/checkImageUrl";
 import { getMsgDateFormatted } from "../../Utils/getMsgDateFormatted";
 import Loader from "../../Utils/Loader";
 import { isValidUrl } from "../../Utils/validateURLs";
@@ -15,6 +14,8 @@ import Skeleton from "react-loading-skeleton";
 import { showToast } from "../../Utils/showToast";
 import Error from "../../Utils/Error";
 import socket, { joinCommunity } from "../../Utils/socket";
+import checkImg from "../../Utils/checkImg";
+import { groupMessagesByDate } from "../../Utils/date/groupMsgsByDate";
 const CommunityChat = memo(() => {
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
@@ -61,6 +62,8 @@ const CommunityChat = memo(() => {
 
     const handleSubmitMsg = (e) => {
         e.preventDefault();
+        console.log("called");
+        
         if (user) { 
             const msg = {
                 content: message,
@@ -72,7 +75,7 @@ const CommunityChat = memo(() => {
                 isRead: false,
                 type:"community"
             }
-            setMessages((prevMessages) => prevMessages.length ? [...prevMessages, msg] : [msg]);
+            setMessages((prevMessages) => prevMessages.length > 0 ? [...prevMessages, msg] : [msg]);
             handleSendMessage();
             socket.emit("send-community-message", {...msg});
             setMessage("");
@@ -104,7 +107,8 @@ const CommunityChat = memo(() => {
     useEffect(() => {
         const handleMsgReceive = (data) => {
             console.log("done", data);
-            setMessages((prevMessages) => [...prevMessages, data]);
+            if (data.senderId !== userId) 
+                setMessages((prevMessages) => [...prevMessages, data]);
         };
 
         // Listen for the "community-message-received" event
@@ -115,59 +119,28 @@ const CommunityChat = memo(() => {
             socket.off("community-message-received", handleMsgReceive);
         };
     }, [socket, id]);
-
-    const groupMessagesByDate = (messages) => {
-        const today = new Date();
-        const yesterday = new Date();
-        yesterday.setDate(today.getDate() - 1);
-
-        const grouped = messages?.reduce((acc, msg) => {
-        const msgDate = new Date(msg.timestamp);
-        let formattedDate;
-
-        if (msgDate.toDateString() === today.toDateString()) {
-            formattedDate = "Today";
-        } else if (msgDate.toDateString() === yesterday.toDateString()) {
-            formattedDate = "Yesterday";
-        } else {
-            formattedDate = msgDate.toLocaleDateString();
-        }
-
-        if (!acc[formattedDate]) acc[formattedDate] = [];
-        acc[formattedDate].push(msg);
-        return acc;
-        }, {});
-        setGroupedMessages(grouped);
-    };
+    
 
     useEffect(() => {
-        if (messages.length)
-            groupMessagesByDate(messages);
+        if (messages.length) { 
+            const grouped = groupMessagesByDate(messages);
+            setGroupedMessages(grouped);
+        }
     }, [id, messages]); 
 
 
     useEffect(() => {
         if (chatScreenRef.current) {
-        chatScreenRef.current.scrollTo({
-            top: chatScreenRef.current.scrollHeight,
-            behavior: "smooth",
-        });
+            chatScreenRef.current.scrollTo({
+                top: chatScreenRef.current.scrollHeight,
+                behavior: "smooth",
+            });
         }
     }, [messages, groupedMessages]);
 
     const handleCopy = (Massage) => {
         const textToCopy = Massage;
         navigator.clipboard.writeText(textToCopy);
-    };
-
-    const checkImg = async (url) => {
-        await checkImageUrl(url).then((isValid) => {
-            if (isValid) {
-            return true;
-            } else {
-            return false;
-            }
-        });
     };
 
     const nav = useNavigate()

@@ -1,27 +1,17 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { BiEdit, BiPlay, BiTrash } from "react-icons/bi";
+import { BiPlay } from "react-icons/bi";
 import { FaUserCircle } from "react-icons/fa";
-import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
-import { IoCopy } from "react-icons/io5";
 import { SlOptionsVertical } from "react-icons/sl";
 import { Img } from "react-image";
 import { useInView } from "react-intersection-observer";
 import Skeleton from "react-loading-skeleton";
 import { API } from "../../../Api/Api";
-import useSavedItems from "../../../Hooks/ProfileHooks/useSavedItemsHook";
-import checkImageUrl from "../../../Utils/checkImageUrl";
 import { getDateFormatted } from "../../../Utils/getDateFormatted";
-import LazyImage from "../../../Utils/LazyImage";
 import useNavigateTo from "../../../Utils/navigateTo";
-import { showToast } from "../../../Utils/showToast";
 import splitTextByLength from "../../../Utils/splitTextByLength";
-import sweetalert from "../../../Utils/sweetalert";
-import { isVideoURL } from "../../../Utils/validateURLs";
-import { copyURL } from "../../../Utils/copyURL";
-import { FaLink } from "react-icons/fa6";
-import { IoKeySharp } from "react-icons/io5";
+import VideoOptions from "./VideoOptions";
+import checkImg from "../../../Utils/checkImg";
 
 const VideoCard = React.memo(
   ({
@@ -30,17 +20,13 @@ const VideoCard = React.memo(
     handleDeleteVideo,
     inProfile,
     isSaved = false,
-    unsaveVideo,
   }) => {
     const navigateTo = useNavigateTo();
     const [user, setUser] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isOptionsOpen, setIsOptionsOpen] = useState(false);
     const { ref, inView } = useInView({ triggerOnce: true }); 
-    const userId = Cookies.get("userID");
-    const { handleSaveVideo } = useSavedItems();
-  //  console.log(video);
-   
+  
     const isValidUrl = useCallback(
       (url) => {
         try {
@@ -53,15 +39,7 @@ const VideoCard = React.memo(
       [video]
     );
 
-    const checkImg = async (url) => {
-      await checkImageUrl(url).then((isValid) => {
-        if (isValid) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    };
+    
 
     useEffect(() => {
       if (inView) {
@@ -94,6 +72,7 @@ const VideoCard = React.memo(
         });
       }
     };
+
     const handleNavToUser = () => {
       if (user) {
         navigateTo({
@@ -102,11 +81,12 @@ const VideoCard = React.memo(
         });
       }
     };
-    const optionsRef = useRef(null);
 
     const handleOpenOptions = () => {
       setIsOptionsOpen((prev) => !prev);
     };
+    const optionsRef = useRef(null);
+
 
     // Close the popover if clicked outside
     useEffect(() => {
@@ -120,44 +100,6 @@ const VideoCard = React.memo(
         document.removeEventListener("mousedown", handleClickOutside);
       };
     }, []);
-
-    const handleClickEditBtn = () => {
-      const details = {
-        _id: video._id,
-        title: video.title,
-        description: video.description,
-        videoURL: video.videoUrl,
-        thumbnailURL: video.thumbnailUrl,
-        tags: video.tags,
-      };
-      handleOpenVideoEdit(details);
-    };
-    const handleClickDeleteBtn = async () => {
-      const res = await sweetalert.deleteOrNot({
-        title: `Do you want to delete "${video.title.slice(0, 10)}..." video?`,
-        confirmBtn: "Delete",
-        cancelBtn: "Cancel",
-      });
-      if (res.isConfirmed) {
-        handleDeleteVideo(video._id);
-      }
-    };
-
-    const handleCopyVideoURL = () => {
-      if (video && video.videoUrl) {
-        copyURL(video.videoUrl,"Link copied successfully");
-      }
-    };
-
-    const handleSaveVideoClicked = () => {
-      handleSaveVideo(video);
-    };
-
-    const handleCopyVideoKey = () => { 
-        if (video && video.videoKey) { 
-          copyURL(video.videoKey,"Key copied successfully");
-        }
-    };
     
     return (
       <div
@@ -248,69 +190,10 @@ const VideoCard = React.memo(
                       <div
                         ref={optionsRef}
                         onClick={handleOpenOptions}
-                        className="relative w-6 h-6 group rounded-full flex items-center justify-center trans focus:bg-gray-200 hover:bg-gray-200 -mr-1"
-                      >
+                        className={`relative w-6 h-6 group rounded-full flex items-center justify-center trans ${isOptionsOpen ? "bg-gray-200" : ""} hover:bg-gray-200 -mr-1`}
+                        >
                         <SlOptionsVertical className="text-sm" />
-                        {isOptionsOpen && (
-                          <div className="absolute text-black flex flex-col items-start overflow-hidden  -top-20 right-8 z-10 w-44  transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm  ">
-                            <button
-                              onClick={handleCopyVideoURL}
-                              className="w-full flex gap-2 items-center text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
-                            >
-                              
-                              <FaLink className="mt-0.5" />
-                              <p className="">Copy Link</p>
-                            </button>
-                            <button
-                              onClick={handleCopyVideoKey}
-                              className="w-full flex gap-2 items-center text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
-                            >
-                              
-                              <IoKeySharp className="mt-0.5" />
-                              <p className="">Copy Key</p>
-                            </button>
-                            {!isSaved && (
-                              <button
-                                onClick={handleSaveVideoClicked}
-                                className="w-full flex items-center gap-2 text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
-                              >
-                                <FaBookmark />
-                                Save Video
-                              </button>
-                            )}
-                            {isSaved && (
-                              <button
-                                onClick={() => unsaveVideo(video)}
-                                className="w-full flex items-center gap-2 text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
-                              >
-                                <FaRegBookmark />
-                                Unsave Video
-                              </button>
-                            )}
-                            {video.userId &&
-                              video.userId === userId &&
-                              inProfile && (
-                                <button
-                                  onClick={handleClickEditBtn}
-                                  className="w-full flex items-center gap-2 text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
-                                >
-                                  <BiEdit />
-                                  Edit Video
-                                </button>
-                              )}
-                            {video.userId &&
-                              video.userId === userId &&
-                              inProfile && (
-                                <button
-                                  onClick={handleClickDeleteBtn}
-                                  className="w-full text-main-color flex items-center gap-2 text-left px-4 trans hover:bg-gray-200 cursor-pointer py-2"
-                                >
-                                  <BiTrash />
-                                  Delete Video
-                                </button>
-                              )}
-                          </div>
-                        )}
+                        {isOptionsOpen && <VideoOptions video={video} isSaved={isSaved} inProfile={inProfile} openVideoEdit={handleOpenVideoEdit} handleDeleteVideo={handleDeleteVideo}  />}
                       </div>
                     </div>
 

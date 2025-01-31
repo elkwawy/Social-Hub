@@ -8,11 +8,11 @@ import { reorderChatsWhenSend } from "../../../Redux/slices/userChats";
 import { getMsgDateFormatted } from "../../../Utils/getMsgDateFormatted";
 import Loader from "../../../Utils/Loader";
 import { isValidUrl } from "../../../Utils/validateURLs";
-import checkImageUrl from "../../../Utils/checkImageUrl";
 import { Img } from "react-image";
 import { FaUserCircle } from "react-icons/fa";
 import Error from "../../../Utils/Error";
 import Skeleton from "react-loading-skeleton";
+import checkImg from "../../../Utils/checkImg";
 
 const ChatScreen = memo(({ chat, setSelectedChat, setIsOpenSidebar }) => {
   const [message, setMessage] = useState("");
@@ -93,20 +93,7 @@ const ChatScreen = memo(({ chat, setSelectedChat, setIsOpenSidebar }) => {
     const textToCopy = Massage;
     navigator.clipboard.writeText(textToCopy);
   };
-
-  const checkImg = async (url) => {
-    await checkImageUrl(url).then((isValid) => {
-      if (isValid) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-  };
-
-  console.log(chat);
   
-
   return (
     <div className="flex flex-col w-full bg-gray-50">
       {/* Title */}
