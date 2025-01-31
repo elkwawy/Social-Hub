@@ -8,19 +8,23 @@ const MarketActionsHook = () => {
     console.error(error);
   };
 
-  const incrementLikes = async (postKey, amount) => {
+  const incrementLikes = async (objectKey, amount, setLoading) => {
+    setLoading(true);
     try {
       await axios.put(API.icrementLikes, {
-        objectKey: postKey,
+        postKey: objectKey,
         amount: amount,
       });
       showToast("success", "Likes successfully incremented");
     } catch (error) {
       handleError(error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const incrementViews = async (videoKey, amount) => {
+  const incrementViews = async (videoKey, amount, setLoading) => {
+    setLoading(true);
     try {
       await axios.put(API.icrementViews, {
         videoKey: videoKey,
@@ -29,10 +33,13 @@ const MarketActionsHook = () => {
       showToast("success", "Views successfully incremented");
     } catch (error) {
       handleError(error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const incrementComments = async (objectKey, amount) => {
+  const incrementComments = async (objectKey, amount, setLoading) => {
+    setLoading(true);
     try {
       await axios.put(API.icrementcomments, {
         objectKey: objectKey,
@@ -41,6 +48,8 @@ const MarketActionsHook = () => {
       showToast("success", "Comments successfully incremented");
     } catch (error) {
       handleError(error);
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -28,15 +28,24 @@ const CommunityRequests = () => {
     setInvitations((prev) =>
       prev.filter((inv) => inv.communityId !== communityId)
     );
+
     try {
-      await axios.post(API.acceptInvitation, { communityId: communityId });
+      console.log("Sending Community ID:", communityId); // تسجيل ID المرسل
+      const response = await axios.post(API.acceptInvitation, {
+        communityId: communityId,
+      });
+      console.log("Response from server:", response.data); // تسجيل استجابة الخادم
       showToast("success", "Invitation accepted successfully");
-      // console.log("Invitation accepted successfully");
     } catch (error) {
-      setInvitations(copyInvitations);
-      showToast("error", "Something went wrong");
-      console.error("Error accepting invitation:", error);
-      console.log("Error accepting invitation:", error);
+      console.error(
+        "Error accepting invitation:",
+        error.response?.data || error.message
+      );
+      setInvitations(copyInvitations); // إعادة الحالة الأصلية
+      showToast(
+        "error",
+        error.response?.data?.message || "Something went wrong"
+      );
     }
   };
 
@@ -46,13 +55,14 @@ const CommunityRequests = () => {
   const handleIgnoreInvitation = async (invitationId) => {
     const copyInvitations = [...invitations];
     setInvitations((prev) => prev.filter((inv) => inv._id !== invitationId));
+    console.log("Invitation ID:", invitationId);
+
     try {
       await axios.post(API.ignoreInvitation, {
         invitationId: invitationId,
       });
       showToast("success", "Invitation ignored successfully");
     } catch (error) {
-      console.error("Error ignoring invitation:", error);
       setInvitations(copyInvitations);
       showToast(
         "error",

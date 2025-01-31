@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { FaThumbsUp, FaEye, FaComment } from "react-icons/fa"; // Icons from React Icons
 import MarketActionsHook from "../../Hooks/MarketActionsHook";
+import Loader from "../../Utils/Loader";
 
 const MarketHub = () => {
+  const [loadingLikes, setLoadingLikes] = useState(false);
+  const [loadingViews, setLoadingViews] = useState(false);
+  const [loadingComments, setLoadingComments] = useState(false);
   const { incrementLikes, incrementViews, incrementComments } =
     MarketActionsHook();
 
@@ -28,19 +32,18 @@ const MarketHub = () => {
   const handlePurchase = (type, quantity, key) => {
     switch (type) {
       case "like":
-        incrementLikes(key, quantity);
+        incrementLikes(key, quantity, setLoadingLikes);
         break;
       case "view":
-        incrementViews(key, quantity);
+        incrementViews(key, quantity, setLoadingViews);
         break;
       case "comment":
-        incrementComments(key, quantity);
+        incrementComments(key, quantity, setLoadingComments);
         break;
       default:
         break;
     }
   };
-  
 
   return (
     <div className="">
@@ -70,12 +73,18 @@ const MarketHub = () => {
                 onChange={(e) => setLikeQuantity(parseInt(e.target.value))}
                 className="border-2 border-gray-300 p-3 rounded-lg w-28 text-center focus:outline-none focus:border-sec-color focus:ring-1 focus:ring-sec-color"
               />
-              <button
-                onClick={() => handlePurchase("like", likeQuantity, postKey)}
-                className="bg-sec-color hover:bg-main-color text-white px-8 md:ml-4 py-3 rounded-lg font-medium transition-all duration-300 focus:outline-none"
-              >
-                Buy
-              </button>
+              {loadingLikes ? (
+                <div className="pt-1 pl-8">
+                  <Loader width="40px" />
+                </div>
+              ) : (
+                <button
+                  onClick={() => handlePurchase("like", likeQuantity, postKey)}
+                  className="bg-sec-color hover:bg-main-color text-white px-8 md:ml-4 py-3 rounded-lg font-medium transition-all duration-300 focus:outline-none"
+                >
+                  Buy
+                </button>
+              )}
             </div>
             <p className="text-gray-500 mt-2 text-sm">
               {likeQuantity} Likes = {totalLikeCost} Coins
@@ -106,13 +115,18 @@ const MarketHub = () => {
                 onChange={(e) => setViewQuantity(parseInt(e.target.value))}
                 className="border-2 border-gray-300 p-3 rounded-lg w-28 text-center focus:outline-none focus:border-sec-color focus:ring-1 focus:ring-sec-color"
               />
-
-              <button
-                onClick={() => handlePurchase("view", viewQuantity, videoKey)}
-                className="bg-sec-color hover:bg-main-color text-white px-8 md:ml-4 py-3 rounded-lg font-medium transition-all duration-300 focus:outline-none"
-              >
-                Buy
-              </button>
+              {loadingViews ? (
+                <div className="pt-1 pl-8">
+                  <Loader width="40px" />
+                </div>
+              ) : (
+                <button
+                  onClick={() => handlePurchase("view", viewQuantity, videoKey)}
+                  className="bg-sec-color hover:bg-main-color text-white px-8 md:ml-4 py-3 rounded-lg font-medium transition-all duration-300 focus:outline-none"
+                >
+                  Buy
+                </button>
+              )}
             </div>
             <p className="text-gray-500 mt-2 text-sm">
               {viewQuantity} Likes = {totalViewCost} Coins
@@ -145,15 +159,20 @@ const MarketHub = () => {
                 onChange={(e) => setCommentQuantity(parseInt(e.target.value))}
                 className="border-2 border-gray-300 p-3 rounded-lg w-28 text-center focus:outline-none focus:border-sec-color focus:ring-1 focus:ring-sec-color"
               />
-
-              <button
-                onClick={() =>
-                  handlePurchase("comment", commentQuantity, objectKey)
-                }
-                className="bg-sec-color hover:bg-main-color text-white px-8 md:ml-4 py-3 rounded-lg font-medium transition-all duration-300 focus:outline-none"
-              >
-                Buy
-              </button>
+              {loadingComments ? (
+                <div className="pt-1 pl-8">
+                  <Loader width="40px" />
+                </div>
+              ) : (
+                <button
+                  onClick={() =>
+                    handlePurchase("comment", commentQuantity, objectKey)
+                  }
+                  className="bg-sec-color hover:bg-main-color text-white px-8 md:ml-4 py-3 rounded-lg font-medium transition-all duration-300 focus:outline-none"
+                >
+                  Buy
+                </button>
+              )}
             </div>
             <p className="text-gray-500 mt-2 text-sm">
               {commentQuantity} Likes = {totalCommentCost} Coins
