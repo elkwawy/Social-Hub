@@ -9,7 +9,7 @@ import { formatDate } from "../../../../Utils/formatDate";
 import LazyImage from "../../../../Utils/LazyImage";
 import CommentsModal from "../Posts/Comments/CommentsModal";
 import PostActions from "./PostActions";
-function PostCard({ post, user, edit, openComments }) {
+function PostCard({ post,isSaved=false, user, edit=false, openComments }) {
   const [showActions, setShowActions] = useState(false);
   const [isValidImage, setIsValidImage] = useState(true);
 
@@ -83,10 +83,7 @@ function PostCard({ post, user, edit, openComments }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showActions]);
-
-  console.log(post);
   
-
   return (
     <div className="bg-white rounded-lg  p-4 shadow-sm mb-4">
       <div className="flex items-center justify-between mb-4">
@@ -113,6 +110,7 @@ function PostCard({ post, user, edit, openComments }) {
           {showActions && (
             <PostActions
               post={post}
+              saved={isSaved}
               edit={edit}
               setShowActions={setShowActions}
               showActions={showActions}

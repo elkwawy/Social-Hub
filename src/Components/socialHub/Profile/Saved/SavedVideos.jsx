@@ -1,27 +1,31 @@
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import useSavedItems from "../../../../Hooks/ProfileHooks/useSavedItemsHook";
+import { getSavedVideos } from "../../../../Redux/slices/savedVideos";
 import Loader from "../../../../Utils/Loader";
 import VideoCard from "../../MainPage/VideoCard";
 
 const SavedVideos = () => {
+    const {savedVideos,loading} = useSelector(state => state.savedVideos);
+    const dispatch = useDispatch();
     
-    const {videos,videosLoading:loading, getSavedVideos} = useSavedItems();
+    useEffect(() => {
+        dispatch(getSavedVideos());
+    }, []);
 
     useEffect(() => {
-        getSavedVideos();
-    }, []);
+    }, [savedVideos]);
     
     return ( loading ? 
         <div className="w-full h-[250px] flex items-center justify-center">
             <Loader />
         </div>
         : (
-            (videos && videos.length > 0) ? 
+            (savedVideos && savedVideos.length > 0) ? 
             <Swiper className="w-full pb-8 select-none"
                 modules={[Navigation, Pagination, Autoplay]}
                 spaceBetween={24} 
@@ -32,7 +36,7 @@ const SavedVideos = () => {
                     1280: { slidesPerView: 4 }, 
                 }}
                 >
-                {videos && videos.map((video) => { 
+                {savedVideos && savedVideos.map((video) => { 
                     const vid  = {...video,userId:video.ownerId}
                     return (<SwiperSlide key={video._id} >
                         <div>

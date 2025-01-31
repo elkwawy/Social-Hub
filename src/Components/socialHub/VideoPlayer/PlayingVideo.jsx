@@ -98,13 +98,10 @@ const PlayingVideo = () => {
     // const embedUrl = formatYouTubeEmbedUrl(videoUpdatedData.videoUrl);
 
     if (!video) return <div>Something went wrong</div>;
-
-    console.log("embedUrl : ", embedUrl);
-    
     
     return (
         <div className='w-full  flex flex-col gap-4'>
-            
+            {/* Playing video */}
             <div className='w-[calc(100%+48px)] sm:w-full -ml-6 -mt-6 sm:mt-0 sm:ml-0 h-[320px] sm:h-[400px] lg:h-[450px] xl:h-[500px]'>
                 {!error && !restrictions && <ReactPlayer
                     url={embedUrl}
@@ -128,8 +125,10 @@ const PlayingVideo = () => {
                     </div>
                 }
             </div>
-            <p className='text-xl font-bold'>{videoUpdatedData?.title}</p>
 
+            <p className='text-xl font-bold'>{videoUpdatedData?.title}</p>
+            
+            {/* channel details && likes */}
             <div className='w-full flex flex-col md:flex-row  justify-between md:items-center gap-5 md:gap-0'>
                 {<ChannelDetails channelId={channelDetails?._id} name={channelDetails?.name} profilePicture={channelDetails?.profilePicture} />}
                 <div className='flex items-center justify-between md:gap-5'>
@@ -141,7 +140,8 @@ const PlayingVideo = () => {
                     }
                 </div>
             </div>
-
+            
+            {/* video description */}
             <div className='flex flex-col gap-1'>
                 {
                     loading 
@@ -150,6 +150,8 @@ const PlayingVideo = () => {
                 }
                 <VideoDescription description={videoUpdatedData?.description} />
             </div>
+            
+            {/* Video comments Here */}
         </div>
     );
 };

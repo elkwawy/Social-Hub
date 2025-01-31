@@ -96,15 +96,15 @@ export const dislikePost = createAsyncThunk(
 );
 
 // Save Post
-export const savePost = createAsyncThunk(
-  "posts/savePost",
-  async (idPost, { rejectWithValue }) => {
+export const getSavedPosts = createAsyncThunk(
+  "posts/getSavedPosts",
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API.savePost}/${idPost}`, {
-        idPost,
-      });
-      return response.data;
+      const res = await axios.get(API.getSavedPosts);
+      return res.data.savedPosts;
     } catch (error) {
+      console.log(error);
+      
       return rejectWithValue(
         error.response ? error.response.data : error.message
       );
@@ -112,19 +112,41 @@ export const savePost = createAsyncThunk(
   }
 );
 
-// Unsave Post
-export const unsavePost = createAsyncThunk(
-  "posts/unsavePost",
-  async (idPost, { rejectWithValue }) => {
+export const savePost = createAsyncThunk(
+  "posts/savePost",
+  async (post, { getState, rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API.unsavePost}/${idPost}`, {
-        idPost,
+      const response = await axios.post(`${API.savePost}/${post._id}`, {
+        idPost: post._id,
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(
-        error.response ? error.response.data : error.message
-      );
+      // Rollback if API request false
+      const state = getState().savedPosts;
+      return rejectWithValue({
+          error: error?.response?.data?.message || "Failed to save video",
+          rollback: state.savedPosts.filter(p => p._id !== post._id),
+      });
+    }
+  }
+);
+
+// Unsave Post
+export const unsavePost = createAsyncThunk(
+  "posts/unsavePost",
+  async (post, {getState,rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${API.unsavePost}/${post._id}`, {
+        idPost: post._id,
+      });
+      return response.data;
+    } catch (error) {
+      // Rollback if API request fails
+      const state = getState().savedPosts;
+      return rejectWithValue({
+          error: error?.response?.data?.message || "Failed to unsave video",
+          rollback: [...state.savedPosts, post],
+      });
     }
   }
 );
@@ -135,6 +157,9 @@ const postsSlice = createSlice({
     posts: [],
     status: "idle",
     error: null,
+    savedPosts:[],
+    savedLoading:false,
+    savedError: null,
   },
   reducers: {
     clearError(state) {
@@ -237,19 +262,43 @@ const postsSlice = createSlice({
       .addCase(dislikePost.rejected, (state, action) => {
         state.error = action.payload;
       })
-      // Save Post
+      .addCase(getSavedPosts.pending, (state, action) => {
+        state.savedLoading = true;
+        state.savedError = null;
+      })
+      .addCase(getSavedPosts.fulfilled, (state, action) => {
+        state.savedPosts = action.payload;
+        state.savedLoading = false;
+      })
+      .addCase(getSavedPosts.rejected, (state, action) => {
+        state.savedLoading = false;
+        state.savedError = action.payload.message;
+        console.log(action.payload.message);
+        
+      })
       .addCase(savePost.fulfilled, (state, action) => {
-        showToast("success", "Post saved successfully");
+        showToast("success", "Post was saved successfully");
       })
       .addCase(savePost.rejected, (state, action) => {
-        state.error = action.payload;
+        if (action.payload) { 
+          state.error = action.payload;
+          console.log(action.payload.error, "lol");
+          showToast("error", action.payload.error ||"Post wasn't saved");
+
+        }
+        state.savedPosts = action.payload.rollback || state.savedPosts || [] ;
       })
       // Unsave Post
+      .addCase(unsavePost.pending, (state, action) => {
+        state.savedPosts = state.savedPosts.filter(p => p._id !== action.meta.arg._id);
+      })
       .addCase(unsavePost.fulfilled, (state, action) => {
-        showToast("success", "Post unsaved successfully");
+        showToast("success", "Post was unsaved successfully");
       })
       .addCase(unsavePost.rejected, (state, action) => {
         state.error = action.payload;
+        showToast("error", action.payload || "Post wasn't unsaved");
+        state.savedPosts = action.payload?.rollback || state.savedPosts;
       });
   },
 });

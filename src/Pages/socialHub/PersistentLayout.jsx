@@ -1,8 +1,7 @@
-import { lazy, memo, Suspense, useCallback, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import Navbar from "../../Components/socialHub/Navbar/Navbar";
-const Sidebar = lazy(() =>
-  import("../../Components/socialHub/Sidebar/Sidebar")
-);
+import Sidebar from "../../Components/socialHub/Sidebar/Sidebar";
+
 
 const PersistentLayout = memo(({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -13,12 +12,10 @@ const PersistentLayout = memo(({ children }) => {
 
   return (
     <div className="min-h-screen bg-c-bg2 overflow-x-hidden">
-      <Suspense>
         <Sidebar
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
         />
-      </Suspense>
       <div className={`lg:ml-[225px]`}>
         <Navbar toggleSidebar={toggleSidebar} />
       </div>

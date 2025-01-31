@@ -3,13 +3,13 @@ import { BiEdit, BiTrash } from "react-icons/bi";
 import { FaBookmark, FaLink, FaRegBookmark } from "react-icons/fa6";
 import { IoKeySharp } from "react-icons/io5";
 import { copyURL } from "../../../Utils/copyURL";
-import useSavedItems from "../../../Hooks/ProfileHooks/useSavedItemsHook";
 import Cookies from 'js-cookie';
 import sweetalert from "../../../Utils/sweetalert";
+import { handleSaveVideo, handleUnsaveVideo } from "../../../Redux/slices/savedVideos";
+import { useDispatch } from "react-redux";
 
 const VideoOptions = memo(({video, isSaved, inProfile=false, openVideoEdit, handleDeleteVideo}) => {
     const userId = Cookies.get("userID");
-    const {handleSaveVideo, handleUnsaveVideo} = useSavedItems();
     const handleClickEditBtn = () => {
         const details = {
             _id: video._id,
@@ -21,6 +21,8 @@ const VideoOptions = memo(({video, isSaved, inProfile=false, openVideoEdit, hand
         };
         openVideoEdit(details);
     };
+
+    const dispatch = useDispatch();
 
     const handleClickDeleteBtn = async () => {
         const res = await sweetalert.deleteOrNot({
@@ -40,7 +42,7 @@ const VideoOptions = memo(({video, isSaved, inProfile=false, openVideoEdit, hand
     };
 
     const handleSaveVideoClicked = () => {
-        handleSaveVideo(video);
+        dispatch(handleSaveVideo(video));
     };
 
     const handleCopyVideoKey = () => { 
@@ -48,10 +50,10 @@ const VideoOptions = memo(({video, isSaved, inProfile=false, openVideoEdit, hand
             copyURL(video.videoKey,"Key copied successfully");
         }
     };
-
-    const handleUnSaveVideoClicked = (video) => { 
-        handleUnsaveVideo(video);
+    const handleUnSaveVideoClicked = () => { 
+        dispatch(handleUnsaveVideo(video));
     }
+    
     return (
         <div>
             {(
