@@ -11,6 +11,7 @@ import { showToast } from '../../../Utils/showToast';
 import { BiTrash } from "react-icons/bi";
 import { Link } from 'react-router-dom';
 import { TbMessages } from "react-icons/tb";
+import AllMembersModal from './AllMembersModal';
 
 const Community = memo(({user, communityId, leaveCommunity, deleteCommunity}) => {
     const [community, setcommunity] = useState(null)
@@ -18,6 +19,7 @@ const Community = memo(({user, communityId, leaveCommunity, deleteCommunity}) =>
     const [error, seterror] = useState(null)
     const [openInviteUsersModal, setOpenInviteUsersModal] = useState(false);
     const [isCurrUserAdmin, setIsCurrUserAdmin] = useState(false);
+    const [showAllMembers, setShowAllMembers] = useState(false);
     // Fetch and process community details
     useEffect(() => {
         const fetchCommunity = async () => {
@@ -95,6 +97,13 @@ const Community = memo(({user, communityId, leaveCommunity, deleteCommunity}) =>
         }
         
     }
+
+    const handleShowAllMembers = () => { 
+        setShowAllMembers(true);
+    }
+    const handleCloseAllMembers = () => { 
+        setShowAllMembers(false);
+    }
     
     return (
         <>
@@ -137,7 +146,7 @@ const Community = memo(({user, communityId, leaveCommunity, deleteCommunity}) =>
                     </div>}
                     {community.members && community.members.length > 0 && <div className="flex flex-col  w-fit select-none   rounded-md">
                         <h4  className="flex items-center text-xs text-gray-500 font-semibold">Members</h4>
-                        <div className=" mt-1  rounded-md cursor-pointer trans ">
+                        <div onClick={handleShowAllMembers} className=" mt-1  rounded-md cursor-pointer trans ">
                             {
                                 <CommunityMembers members={community.members} />
                             }
@@ -148,7 +157,10 @@ const Community = memo(({user, communityId, leaveCommunity, deleteCommunity}) =>
                     <TbMessages />
                 </Link>
             </div>}
-
+            {
+                community && community.members && showAllMembers && 
+                <AllMembersModal communityName={community.name} members={community.members} onClose={handleCloseAllMembers} />
+            }
             {community && openInviteUsersModal  && <InviteUsersModal community={community ? community : null} onClose={handleCloseInviteUsersModal} /> }
         </>
     )

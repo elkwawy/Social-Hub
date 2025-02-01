@@ -27,7 +27,7 @@ const AddNewTagModal = ({handleAddNewTag, handleCloseTagModal}) => {
     }
     const handleTagNameChange = e => setTagName(e.target.value);
     return (
-        <Modal title={"Add New Tag"} onClose={handleCloseTagModal}>
+        <Modal title={"Add New Tag"} onClose={handleCloseTagModal}  >
             <form onSubmit={addNewTag} className="flex  gap-5">
                 <input
                     type="text"
