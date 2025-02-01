@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Outlet } from "react-router-dom";
 import { getCurrUser } from "../../Redux/slices/userSlice";
-import socket from "../../Utils/socket";
 import PersistentLayout from "./PersistentLayout";
+import socket from "../../utils/socket";
 // export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 // export const socket = io(SOCKET_URL);
 

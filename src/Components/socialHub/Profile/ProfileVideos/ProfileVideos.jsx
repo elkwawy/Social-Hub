@@ -94,13 +94,13 @@ const ProfileVideos = memo(() => {
             
             {
                 isAddNewVideoModalOpen && 
-                <Modal title={'Add Youtube Video'} onClose={handleAddNewVideoModal} >
+                <Modal title={'Add Youtube Video'} onClose={handleAddNewVideoModal}  >
                     <AddNewVideoModal addVideo={handleAddNewVideo} addVideoLoading={addVideoLoading}  />
                 </Modal>
             }
             {
                 isUploadVideoModal && 
-                <Modal title={'Upload video from device'} onClose={handleOpenUploadVideoModal} >
+                <Modal title={'Upload video from device'} onClose={handleOpenUploadVideoModal}  >
                     <UploadVideoModal uploadVideo={handleUploadVideo} addVideoLoading={addVideoLoading}  />
                 </Modal>
             }

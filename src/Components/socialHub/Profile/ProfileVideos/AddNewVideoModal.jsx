@@ -290,7 +290,6 @@ const AddNewVideoModal = memo(({addVideo, addVideoLoading}) => {
             className={`w-full p-2 outline-1 border-2 rounded-md bg-gray-50 focus:outline-gray-400`}
             placeholder="Enter video description" 
           />
-
         </label>
 
         

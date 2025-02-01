@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API } from "../../Api/Api";
-import socket from "../../Utils/socket";
+import socket from "../../utils/socket";
 
 // Fetch messages thunk
 export const fetchMessages = createAsyncThunk(

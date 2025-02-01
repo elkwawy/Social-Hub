@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { IoClose } from "react-icons/io5";
-const Modal = memo(({children, title, onClose}) => {
+const backgroundStyle = "fixed h-full w-full top-0 left-0 z-50 backdrop-blur-sm bg-black bg-opacity-60"
+const Modal = memo(({children, title, onClose, style}) => {
     return (
         <>
             <div className="fixed  overflow-y-auto text-center friendsInModal  sm:max-h-[80%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-3 py-6 sm:p-6  z-[60] bg-white 
@@ -13,7 +14,7 @@ const Modal = memo(({children, title, onClose}) => {
                 </div>
                 <div className="text-center">{children}</div>
             </div>
-            <div onClick={onClose} className="fixed w-full h-full top-0 left-0 z-50 backdrop-blur-sm bg-black bg-opacity-60" />
+            <div onClick={onClose} className={style || backgroundStyle} />
         </>
     )
 })
