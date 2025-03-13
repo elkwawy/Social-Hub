@@ -1,8 +1,7 @@
-import { lazy, memo, Suspense, useCallback, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import Navbar from "../../Components/socialHub/Navbar/Navbar";
-const Sidebar = lazy(() =>
-  import("../../Components/socialHub/Sidebar/Sidebar")
-);
+import Sidebar from "../../Components/socialHub/Sidebar/Sidebar";
+
 
 const PersistentLayout = memo(({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

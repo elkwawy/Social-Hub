@@ -14,7 +14,7 @@ import { RiCommunityLine } from "react-icons/ri";
 import SidebarHeader from "./SidebarHeader";
 import SidebarItem from "./SidebarItem";
 import { useDispatch } from "react-redux";
-import sweetalert from "./../../../Utils/sweetalert";
+import sweetalert from "../../../Utils/sweetalert";
 import { logUserOut } from "../../../Redux/slices/userSlice";
 import React from "react";
 import { useSelector } from "react-redux";

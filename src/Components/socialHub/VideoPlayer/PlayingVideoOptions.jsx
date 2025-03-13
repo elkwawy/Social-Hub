@@ -1,13 +1,12 @@
 import React, { memo, useEffect, useState } from 'react'
 import { copyURL } from '../../../Utils/copyURL'
-import useSavedItems from '../../../Hooks/ProfileHooks/useSavedItemsHook'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { handleSaveVideo } from '../../../Redux/slices/savedVideos';
 
 const PlayingVideoOptions = memo(({video,videoURL}) => {
     const [isVideoSaved, setisVideoSaved] = useState(false);
-    const {handleSaveVideo, handleUnsaveVideo} = useSavedItems();
     const {user} = useSelector((state) => state.user);
-
+    const dispatch = useDispatch();
     useEffect(() => { 
         if (user) { 
             const isSaved = user.savedVideos.some(vid => vid._id === video._id);
@@ -20,7 +19,7 @@ const PlayingVideoOptions = memo(({video,videoURL}) => {
     }
     const saveVideo = () => { 
         if (video) { 
-            handleSaveVideo(video)
+            dispatch(handleSaveVideo(video))
             setisVideoSaved(true);
         }
     }

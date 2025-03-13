@@ -5,12 +5,12 @@ import { useState } from "react";
 import UpdatePostModal from "./UpdatePostModal";
 import Modal from "../../../../Utils/Modal";
 import { FaRegBookmark, FaBookmark } from "react-icons/fa6";
-function PostActions({ post, setShowActions, edit }) {
+function PostActions({ post,saved=false, setShowActions, edit }) {
   const { removePost, saveAPost, unsaveAPost } = usePosts();
   const [deletePostLoading, setDeletePostLoading] = useState(false);
   const [isUpdatePostModalOpen, setIsUpdatePostModalOpen] = useState(false);
 
-  const [isSaved, setIsSaved] = useState(post.isSaved || false);
+  const [isSaved, setIsSaved] = useState(saved || false);
   const [isProcessingSave, setIsProcessingSave] = useState(false);
 
   const handleSave = async () => {
@@ -20,7 +20,7 @@ function PostActions({ post, setShowActions, edit }) {
     setIsSaved(true);
 
     try {
-      await saveAPost(post._id);
+      await saveAPost(post);
     } catch (err) {
       setIsSaved(false);
     } finally {
@@ -35,7 +35,7 @@ function PostActions({ post, setShowActions, edit }) {
     setIsSaved(false);
 
     try {
-      await unsaveAPost(post._id);
+      await unsaveAPost(post);
     } catch (err) {
       setIsSaved(true);
     } finally {
@@ -68,7 +68,7 @@ function PostActions({ post, setShowActions, edit }) {
   return (
     <>
       <div className="absolute right-0 top-10 bg-white rounded-lg shadow-lg  w-48 z-10">
-        {edit && (
+        {edit && !saved &&(
           <button
             onClick={handleEdit}
             className="w-full px-4 py-2 text-left flex items-center space-x-2 hover:bg-gray-100"
@@ -77,7 +77,7 @@ function PostActions({ post, setShowActions, edit }) {
             <span>Edit Post</span>
           </button>
         )}
-        {edit && (
+        {edit && !saved &&(
           <button
             onClick={handleDeletePost}
             disabled={deletePostLoading}

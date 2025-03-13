@@ -1,22 +1,22 @@
-import { useState, useEffect, useRef } from "react";
-import { BiLike, BiDotsHorizontalRounded, BiDislike } from "react-icons/bi";
-import PostActions from "./PostActions";
-import { formatDate } from "../../../../Utils/formatDate";
-import checkImageUrl from "../../../../Utils/checkImageUrl";
-import { usePosts } from "../../../../Hooks/usePosts";
-import CommentsModal from "../Posts/Comments/CommentsModal";
-import profile from "../../../../assets/profile.jpg";
-import LazyImage from "../../../../Utils/LazyImage";
-import Loader from "../../../../Utils/Loader";
+import { useEffect, useRef, useState } from "react";
+import { BiDislike, BiDotsHorizontalRounded, BiLike } from "react-icons/bi";
 import Skeleton from "react-loading-skeleton";
 import { Link } from "react-router-dom";
-function PostCard({ post, user, edit, openComments }) {
+import profile from "../../../../assets/profile.jpg";
+import { usePosts } from "../../../../Hooks/usePosts";
+import checkImg from "../../../../Utils/checkImg";
+import { formatDate } from "../../../../Utils/formatDate";
+import LazyImage from "../../../../Utils/LazyImage";
+import CommentsModal from "../Posts/Comments/CommentsModal";
+import PostActions from "./PostActions";
+function PostCard({ post,isSaved=false, user, edit=false, openComments }) {
   const [showActions, setShowActions] = useState(false);
   const [isValidImage, setIsValidImage] = useState(true);
 
   useEffect(() => {
     if (post.imgUrl) {
-      checkImageUrl(post.imgUrl).then((isValid) => setIsValidImage(isValid));
+      const isValid = checkImg(post.imgUrl)
+      setIsValidImage(isValid);
     }
   }, [post.imgUrl]);
 
@@ -83,10 +83,7 @@ function PostCard({ post, user, edit, openComments }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showActions]);
-
-  console.log(post);
   
-
   return (
     <div className="bg-white rounded-lg  p-4 shadow-sm mb-4">
       <div className="flex items-center justify-between mb-4">
@@ -113,6 +110,7 @@ function PostCard({ post, user, edit, openComments }) {
           {showActions && (
             <PostActions
               post={post}
+              saved={isSaved}
               edit={edit}
               setShowActions={setShowActions}
               showActions={showActions}

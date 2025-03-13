@@ -5,7 +5,8 @@ import CreateCommunity from "../../Components/socialHub/MyCommunities/CreateComm
 import NoCommunitiesJoined from "../../Components/socialHub/MyCommunities/NoCommunitiesJoined";
 import { updateUserCommunities } from "../../Redux/slices/userSlice";
 import CommunityRequests from "../../Components/socialHub/MyCommunities/CommunityRequests";
-import Error from "../../utils/Error";
+import Error from "../../Utils/Error";
+import { RiAddBoxFill } from "react-icons/ri";
 
 const MyCommunities = memo(() => {
   const dispatch = useDispatch();
@@ -69,12 +70,17 @@ const MyCommunities = memo(() => {
       <div className="w-full flex items-end mb-9 justify-between">
         <h2 className="text-2xl sm:text-3xl font-bold ">My Communities</h2>
         {user && user.communities && user.communities.length > 0 && (
-          <button
-            onClick={handleOpenCreateCommunityModal}
-            className="text-xs trans bg-main-color hover:bg-sec-color text-white py-2 px-2 sm:px-4 rounded-md"
-          >
-            Create Community
-          </button>
+          <div>
+            <button
+              onClick={handleOpenCreateCommunityModal}
+              className="text-xs hidden sm:block trans bg-main-color hover:bg-sec-color text-white py-2 px-2 sm:px-4 rounded-md"
+            >
+              Create Community
+            </button>
+            <button onClick={handleOpenCreateCommunityModal} className="translate-y-1.5 sm:hidden">
+              <RiAddBoxFill className="text-main-color trans hover:text-sec-color text-3xl" />
+            </button>
+          </div>
         )}
       </div>
 

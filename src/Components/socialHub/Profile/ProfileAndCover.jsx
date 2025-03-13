@@ -6,6 +6,7 @@ import CoverPicture from "./Update/CoverPicture";
 import ProfilePicture from "./Update/ProfilePicture";
 import { isValidUrl } from "../../../Utils/validateURLs";
 import { useEffect, useState } from "react";
+import checkImg from "../../../Utils/checkImg";
 const ProfileAndCover = ({ user, loading, edit }) => {
   const [coverPicture, setCoverPicture] = useState("start");
   const [profilePicture, setProfilePicture] = useState("start");
@@ -40,7 +41,7 @@ const ProfileAndCover = ({ user, loading, edit }) => {
           </div>
         ) : (
           <img
-            src={isValidUrl(profilePicture) ? profilePicture : profile}
+            src={(isValidUrl(profilePicture) && checkImg(profilePicture) )? profilePicture : profile}
             alt="profile"
             className="mr-5 Cover Picture -mt-11 w-20 h-20 sm:-mt-12 sm:w-[105px] sm:h-[105px] lg:w-36 lg:h-36 lg:-mt-20 rounded-full border-2 border-gray-300"
           />

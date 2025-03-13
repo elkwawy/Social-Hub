@@ -4,8 +4,10 @@ import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 import { API } from '../../../Api/Api';
 import LazyImage from '../../../Utils/LazyImage';
-import checkImageUrl from '../../../Utils/checkImageUrl';
 import { Img } from 'react-image';
+import profile from "../../../assets/profile.jpg";
+import { isValidUrl } from '../../../Utils/validateURLs';
+import checkImg from '../../../Utils/checkImg';
 
 const Admin = memo(({admin}) => {
     // Get admin's pic  
@@ -28,16 +30,7 @@ const Admin = memo(({admin}) => {
         }
         getadminDetails();
     }, []);
-
-    const checkImg = async (url) => {
-        await checkImageUrl(url).then((isValid) => {
-        if (isValid) {
-            return true;
-        } else {
-            return false;
-        }
-        });
-    };
+    
 
     return (
         <>
@@ -54,7 +47,7 @@ const Admin = memo(({admin}) => {
             }
             {!loading && adminData && !error && <Link to={`/socialHub/profile/${admin._id}`} className="flex gap-1 items-center">
                 
-                { adminData && checkImg(adminData.profilePicture) ? (
+                { adminData && isValidUrl(adminData.profilePicture) && checkImg(adminData.profilePicture) ? (
                 <LazyImage
                     className="min-w-6 max-w-6 h-6 rounded-full"
                     src={adminData.profilePicture}
@@ -67,7 +60,7 @@ const Admin = memo(({admin}) => {
                 ) : (
                     <Img
                             className="w-6 h-6 rounded-full bg-white"
-                            src={`/src/assets/user.svg`}
+                            src={profile}
                             loader={
                                 <div className="w-6 h-6 rounded-full">
                                     <Skeleton height="100%" width="100%" borderRadius={"100%"} />

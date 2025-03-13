@@ -3,7 +3,7 @@ import { IoMdAdd } from "react-icons/io";
 import { Img } from 'react-image';
 import Skeleton from 'react-loading-skeleton';
 import { showToast } from '../../../Utils/showToast';
-import { isValidUrl, isVideoURL } from './../../../Utils/validateURLs';
+import { isValidUrl, isVideoURL } from '../../../Utils/validateURLs';
 import AddNewTagModal from './EditVideo/AddNewTagModal';
 import Loader from '../../../Utils/Loader';
 

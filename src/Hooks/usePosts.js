@@ -60,15 +60,15 @@ export const usePosts = () => {
   );
 
   const saveAPost = useMemo(
-    () => (postId) => {
-      return dispatch(savePost(postId)).unwrap();
+    () => (post) => {
+      return dispatch(savePost(post)).unwrap();
     },
     [dispatch]
   );
 
   const unsaveAPost = useMemo(
-    () => (postId) => {
-      return dispatch(unsavePost(postId)).unwrap();
+    () => (post) => {
+      return dispatch(unsavePost(post)).unwrap();
     },
     [dispatch]
   );

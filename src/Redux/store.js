@@ -7,6 +7,7 @@ import postsSlice from "./slices/postsReducer";
 import usersSlice from "./slices/usersSlice";
 import userChats from "./slices/userChats";
 import chatReducer from "./slices/chatSlice";
+import savedVideosSlice from "./slices/savedVideos";
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     users: usersSlice,
     userChats: userChats,
     chat: chatReducer,
+    savedVideos:savedVideosSlice
   },
 });
 

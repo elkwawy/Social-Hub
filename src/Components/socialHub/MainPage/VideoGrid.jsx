@@ -53,7 +53,7 @@ const VideoGrid = React.memo(({ initVideos:initialVideos, style, handleDeleteVid
             // Perform optimistic delete
             const updatedVideos = videos.filter((video) => video._id!== videoId);
             setVideos(updatedVideos);
-            const response = await axios.delete(`${API.deleteVideo}/${videoId}`);
+            await axios.delete(`${API.deleteVideo}/${videoId}`);
             showToast("success", "Video deleted successfully")
             handleDeleteVideo(videoId)
         }catch(error){
@@ -65,23 +65,20 @@ const VideoGrid = React.memo(({ initVideos:initialVideos, style, handleDeleteVid
     return (
         <div className={style ? style : `grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5`}>
             {videos && videos.length > 0 && videos.map((vid) => (
-            <div key={vid._id} className="mx-auto w-full">
-                <MemoizedVideoCard
-                    video={vid}
-                    handleOpenVideoEdit={handleOpenEditVdieo}
-                    handleDeleteVideo={deleteVideo}
-                    inProfile={inProfile}  // Passing inProfile prop to VideoCard for different behavior in profile and main page. In profile, it shows edit and delete buttons. In main page, it only shows delete button.
-                />
-            </div>
+                <div key={vid._id} className="mx-auto w-full">
+                    <MemoizedVideoCard
+                        video={vid}
+                        handleOpenVideoEdit={handleOpenEditVdieo}
+                        handleDeleteVideo={deleteVideo}
+                        inProfile={inProfile}  // Passing inProfile prop to VideoCard for different behavior in profile and main page. In profile, it shows edit and delete buttons. In main page, it only shows delete button.
+                    />
+                </div>
             ))}
-            {/* {
-                videos && videos.length == 0 && 
-                <p className='text-3xl text-gray-600 w-full text-center col-span-full font-semibold'>Something went wrong</p>
-            } */}
             {isVideoEditOpen && 
                 <Modal title={'Edit Video'} onClose={handleCloseEditVdieo} >
                     <EditVideoModal videoDetails={editedVideoDetails} updateVideo={handleUpdateVideo} loading={editVideoLoading}   />
-                </Modal>}
+                </Modal>
+            }
         </div>
     )
 });

@@ -10,8 +10,8 @@ import axios from "axios";
 import { isValidUrl } from "../../../Utils/validateURLs";
 import LoaderW from "../../../Utils/loaderW";
 import { Img } from "react-image";
-import checkImageUrl from "../../../Utils/checkImageUrl";
 import Skeleton from "react-loading-skeleton";
+import checkImg from "../../../Utils/checkImg";
 const PeopleCard = ({ person }) => {
   const { handleSubscribe, handleUnsubscribe, handleAddFriend, error } =
     useUsers();
@@ -63,17 +63,7 @@ const PeopleCard = ({ person }) => {
   useEffect(() => {
     getMutualFriends();
   }, [person._id]);
-
-  const checkImg = async (url) => {
-      await checkImageUrl(url).then((isValid) => {
-        if (isValid) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    };
-    console.log(person.profilePicture);
+  
   return (
     <div className="flex items-center max-[540px]:flex-col max-[540px]:gap-2 p-5 bg-gray-100 shadow border border-gray-300 rounded-lg hover:shadow-md transition-shadow duration-200">
       {/* صورة المستخدم */}

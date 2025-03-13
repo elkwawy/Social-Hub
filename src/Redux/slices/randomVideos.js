@@ -11,7 +11,6 @@ export const getRandomVideos = createAsyncThunk(
             return { videos: res.data.videos, page };
         } catch (error) {
         // Handle network errors (e.g., no connection, server is down)
-            console.log(error);
             if (!error.response) {
                 console.error('Network error:', error.message);
                 
