@@ -13,12 +13,10 @@ const PersistentLayout = memo(({ children }) => {
 
   return (
     <div className="min-h-screen bg-c-bg2 overflow-x-hidden">
-      <Suspense>
         <Sidebar
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
         />
-      </Suspense>
       <div className={`lg:ml-[225px]`}>
         <Navbar toggleSidebar={toggleSidebar} />
       </div>
